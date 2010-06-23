@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    flaskext.unittest
+    flaskext.unit
     ~~~~~~~~~~~~~~~~~
 
     Description of the module goes here...
