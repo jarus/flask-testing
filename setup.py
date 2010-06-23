@@ -1,15 +1,15 @@
 """
-flask-testing
+Flask-Testing
 --------------
 
-Description goes here...
+Unit testing utilities for Flask.
 
 Links
 `````
 
-* `documentation <http://packages.python.org/flask-unittest>`_
+* `documentation <http://packages.python.org/flask-testing>`_
 * `development version
-  <http://bitbucket.org/USERNAME/REPOSITORY/get/tip.gz#egg=flask-unittest-dev`_
+  <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=flask-testing`_
 
 
 """
@@ -17,13 +17,13 @@ from setuptools import setup
 
 
 setup(
-    name='flask-testing',
+    name='Flask-Testing',
     version='0.1',
-    url='<enter URL here>',
+    url='http://bitbucket.org/danjac/flask-testing',
     license='BSD',
     author='Dan Jacob',
-    author_email='your-email-here@example.com',
-    description='<enter short description here>',
+    author_email='danjac354@gmail.com',
+    description='Unit testing for Flask',
     long_description=__doc__,
     packages=['flaskext'],
     namespace_packages=['flaskext'],
