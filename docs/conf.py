@@ -93,6 +93,10 @@ exclude_patterns = ['_build']
 # a list of builtin themes.
 html_theme = 'flask_small'
 
+html_theme_options = {
+     'index_logo': 'flask-testing.png',
+     'github_fork': None
+}
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -178,7 +182,7 @@ htmlhelp_basename = 'flask-unittestdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'flask-unittest.tex', u'flask-unittest Documentation',
+  ('index', 'flask-testing.tex', u'flask-testing Documentation',
    u'Dan Jacob', 'manual'),
 ]
 
@@ -211,6 +215,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'flask-unittest', u'flask-unittest Documentation',
+    ('index', 'flask-testing', u'flask-testing Documentation',
      [u'Dan Jacob'], 1)
 ]
