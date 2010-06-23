@@ -1,5 +1,5 @@
 """
-flask-unittest
+flask-testing
 --------------
 
 Description goes here...
@@ -17,7 +17,7 @@ from setuptools import setup
 
 
 setup(
-    name='flask-unittest',
+    name='flask-testing',
     version='0.1',
     url='<enter URL here>',
     license='BSD',

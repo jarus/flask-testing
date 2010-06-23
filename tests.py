@@ -1,6 +1,6 @@
 from flask import Flask, Response, abort, redirect, url_for
 
-from flaskext.unit import TestCase
+from flaskext.testing import TestCase
 
 def create_app():
 
