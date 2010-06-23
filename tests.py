@@ -18,6 +18,8 @@ def create_app():
     def redirect_to_index():
         return redirect(url_for("index"))
 
+    return app
+
 class TestSetup(TestCase):
 
     def create_app(self):
