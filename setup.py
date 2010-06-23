@@ -30,7 +30,8 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'Flask'
+        'Flask',
+        'simplejson',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

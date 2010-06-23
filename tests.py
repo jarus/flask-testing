@@ -1,4 +1,4 @@
-from flask import Flask, Response, abort, redirect, url_for
+from flask import Flask, Response, abort, redirect, url_for, jsonify
 
 from flaskext.testing import TestCase
 
@@ -18,6 +18,10 @@ def create_app():
     def redirect_to_index():
         return redirect(url_for("index"))
 
+    @app.route("/ajax/")
+    def ajax():
+        return jsonify(name="test")
+
     return app
 
 class TestSetup(TestCase):
@@ -36,6 +40,16 @@ class TestClientUtils(TestCase):
 
     def create_app(self):
         return create_app()
+    
+    def test_getJSON(self):
+
+        response = self.client.get("/ajax/")
+        assert self.getJSON(response) == dict(name="test")
+
+    def test_assert_json(self):
+
+        response = self.client.get("/ajax/")
+        self.assertJSON(response, "name", "test")
 
     def test_assert_200(self):
 

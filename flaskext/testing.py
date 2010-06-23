@@ -10,6 +10,7 @@
 """
 
 import unittest
+import simplejson
 
 class TestCase(unittest.TestCase):
 
@@ -41,6 +42,21 @@ class TestCase(unittest.TestCase):
 
     def _post_tearDown(self):
        self._ctx.pop()
+
+    def getJSON(self, response):
+        """
+        Returns a JSON value from a response
+        """
+        
+        return simplejson.loads(response.data)
+
+    def assertJSON(self, response, name, value):
+        """
+        If JSON dict, checks if name matches value
+        """
+        
+        data = self.getJSON(response)
+        assert name in data and data[name] == value
 
     def assertRedirects(self, response, location):
         assert response.status_code in (301, 302)
