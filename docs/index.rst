@@ -88,5 +88,20 @@ API
 
         :param response: Response returned from test client
 
+    .. method:: getJSON(response)
+
+        Returns Pythonized data from Response if JSON
+
+        :param response: Response returned from test client
+
+    .. method:: assertJSON(response, name, value)
+
+        If JSON returned in dict format, checks if ``name`` in dict and 
+        that ``name`` equals ``value``.
+        
+        :param response: Response returned from test client
+        :param name: name in dict
+        :param value: value of dict[name]
+
 .. _Flask: http://flask.pocoo.org
 .. _Bitbucket: http://bitbucket.org/danjac/flask-testing
