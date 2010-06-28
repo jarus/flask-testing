@@ -35,6 +35,20 @@ class TestSetup(TestCase):
         assert self.client
         assert self._ctx
 
+class TestTwill(TestCase):
+
+    TWILL_ENABLED = True
+    
+    def create_app(self):
+        app = create_app()
+        app.config.from_object(self)
+        return app
+
+    def test_twill_setup(self):
+        
+        assert self.twill_enabled
+        assert self.twill_host == '127.0.0.1'
+        assert self.twill_port == 5000
 
 class TestClientUtils(TestCase):
 
@@ -49,7 +63,7 @@ class TestClientUtils(TestCase):
     def test_assert_json(self):
 
         response = self.client.get("/ajax/")
-        self.assertJSON(response, "name", "test")
+        self.assertJSONEquals(response, "name", "test")
 
     def test_assert_200(self):
 

@@ -51,6 +51,25 @@ You must specify the ``create_app`` method, which should return a Flask instance
 
 If you don't define ``create_app`` a ``NotImplementedError`` will be raised.
 
+Using with Twill
+----------------
+
+`Twill <http://twill.idyll.org/>`_ is a simple language for browing the Web through
+a command line interface. You can use it in conjunction with ``TestCase`` to write
+functional tests for your views.
+
+To use Twill with ``TestCase`` you need the following configuration settings:
+
+    * ``TWILL_ENABLED`` : default ``False``
+    * ``TWILL_SCHEME`` : default ``http://``
+    * ``TWILL_HOST`` : default ``localhost``
+    * ``TWILL_PORT`` : default ``5000``
+
+If ``TWILL_ENABLED`` is set to ``True`` then Twill is initialized ready for use.
+
+In addition a number of helper methods are provided for Twill : see the API documentation
+for details.
+
 API
 ---
 
@@ -94,7 +113,7 @@ API
 
         :param response: Response returned from test client
 
-    .. method:: assertJSON(response, name, value)
+    .. method:: assertJSONEquals(response, name, value)
 
         If JSON returned in dict format, checks if ``name`` in dict and 
         that ``name`` equals ``value``.
@@ -103,5 +122,26 @@ API
         :param name: name in dict
         :param value: value of dict[name]
 
+    .. method:: twill_url(url)
+
+        Creates full URL for Twill tests, based on ``TWILL_SCHEME``,
+        ``TWILL_HOST`` and ``TWILL_PORT`` settings.
+
+        :param url: relative URL, e.g. "/"
+
+    .. method:: execute_twill_string(string, initial_url=None)
+
+        Executes a Twill script inside a string.
+
+        :param string: string containing Twill commands
+        :param initial_url: initial_url for commands (uses "/" by default)
+
+    .. method:: execute_twill_script(script, initial_url=None)
+
+        Executes a Twill script in a file.
+
+        :param script: filename of script
+        :param initial_url: initial_url for commands (uses "/" by default)
+        
 .. _Flask: http://flask.pocoo.org
 .. _Bitbucket: http://bitbucket.org/danjac/flask-testing

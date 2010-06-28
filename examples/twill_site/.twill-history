@@ -1,0 +1,29 @@
+from twill import commands as tc
+from twill.shell import TwillCommandLoop
+cmd.cmdloop()
+cmd = TwillCommandLoop
+cmd = TwillCommandLoop()
+cmd.cmdloop()
+go("http://localhost:5000/")
+go http://localhost:5000/
+go /
+go /foo/
+b = get_browser()
+showforms()
+showforms
+submit 0
+go "/"
+go /
+go http://localhost:5000/
+submit 0
+showlinks
+showforms
+hel;p
+help
+fv "todo" "testing"
+fv("todo", "test")
+fv("todo")
+fv todo
+fv 1 todo test
+showforms
+submit

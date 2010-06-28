@@ -31,6 +31,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
+        'twill',
         'simplejson',
     ],
     classifiers=[
