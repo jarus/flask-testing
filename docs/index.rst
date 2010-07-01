@@ -51,6 +51,21 @@ You must specify the ``create_app`` method, which should return a Flask instance
 
 If you don't define ``create_app`` a ``NotImplementedError`` will be raised.
 
+Testing JSON responses
+----------------------
+
+If you are testing a view that returns a JSON response, you can test the output using
+a special ``json`` attribute appended to the ``Response`` object::
+
+    @app.route("/ajax/")
+    def some_json():
+        return jsonify(success=True)
+
+    class TestViews(TestCase):
+        def test_some_json(self):
+            response = self.client.get("/ajax/")
+            self.assertEquals(response.json, dict(success=True))
+
 Using with Twill
 ----------------
 
@@ -95,11 +110,19 @@ API
         :param response: Response returned from test client
         :param location: URL (automatically prefixed by `http://localhost`)
 
+    .. method:: assert_redirects(response)
+        
+        Alias of ``assertRedirects``.
+
     .. method:: assert200(response)
         
         Checks if ``response.status_code`` == 200
 
         :param response: Response returned from test client
+
+    .. method:: assert_202(response)
+        
+        Alias of ``assert202``.
 
     .. method:: assert404(response)
         
@@ -107,21 +130,10 @@ API
 
         :param response: Response returned from test client
 
-    .. method:: getJSON(response)
-
-        Returns Pythonized data from Response if JSON
-
-        :param response: Response returned from test client
-
-    .. method:: assertJSONEquals(response, name, value)
-
-        If JSON returned in dict format, checks if ``name`` in dict and 
-        that ``name`` equals ``value``.
+    .. method:: assert_404(response)
         
-        :param response: Response returned from test client
-        :param name: name in dict
-        :param value: value of dict[name]
-
+        Alias of ``assert404``.
+        
     .. method:: twill_url(url)
 
         Creates full URL for Twill tests, based on ``TWILL_SCHEME``,
