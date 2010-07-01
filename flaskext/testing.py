@@ -8,13 +8,9 @@
     :copyright: (c) 2010 by Dan Jacob.
     :license: BSD, see LICENSE for more details.
 """
-import sys
-import StringIO
 import unittest
 import simplejson
 import twill
-
-from flask import url_for
 
 class TestCase(unittest.TestCase):
     
@@ -67,9 +63,6 @@ class TestCase(unittest.TestCase):
                               self.twill_host, 
                               self.twill_port,
                               url)
-
-    def build_twill_url(self, endpoint, **kwargs):
-        return self.twill_url(url_for(endpoint, **kwargs))
 
     def execute_twill_script(self, script, initial_url="/"):
         with open(script) as fp:
