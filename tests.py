@@ -1,6 +1,6 @@
 from flask import Flask, Response, abort, redirect, url_for, jsonify
 
-from flaskext.testing import TestCase
+from flaskext.testing import TestCase, TwillTestCase
 
 def create_app():
 
@@ -35,9 +35,7 @@ class TestSetup(TestCase):
         assert self.client
         assert self._ctx
 
-class TestTwill(TestCase):
-
-    TWILL_ENABLED = True
+class TestTwill(TwillTestCase):
     
     def create_app(self):
         app = create_app()
@@ -46,7 +44,6 @@ class TestTwill(TestCase):
 
     def test_twill_setup(self):
         
-        assert self.twill_enabled
         assert self.twill_host == '127.0.0.1'
         assert self.twill_port == 5000
 

@@ -1,10 +1,10 @@
-from flaskext.testing import TestCase
+from flaskext.testing import TwillTestCase
 
 from twill import commands as tc
 
 from todos import create_app
 
-class TestViews(TestCase):
+class TestViews(TwillTestCase):
 
     def create_app(self):
         return create_app()
