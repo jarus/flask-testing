@@ -15,7 +15,7 @@ import simplejson
 
 from werkzeug import cached_property
 
-__all__ = ["TestCase"]
+__all__ = ["TestCase", "TwillTestCase"]
 
 class JsonResponseMixin(object):
     """
