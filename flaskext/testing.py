@@ -3,7 +3,7 @@
     flaskext.testing
     ~~~~~~~~~~~~~~~~~
 
-    Description of the module goes here...
+    Flask unittest integration.
 
     :copyright: (c) 2010 by Dan Jacob.
     :license: BSD, see LICENSE for more details.

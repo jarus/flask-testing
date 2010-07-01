@@ -2,7 +2,7 @@
 Flask-Testing
 --------------
 
-Unit testing utilities for Flask.
+Flask unittest integration.
 
 Links
 `````
