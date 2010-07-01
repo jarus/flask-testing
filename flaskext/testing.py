@@ -9,8 +9,27 @@
     :license: BSD, see LICENSE for more details.
 """
 import unittest
-import simplejson
 import twill
+import simplejson
+
+from werkzeug import cached_property
+
+__all__ = ["TestCase"]
+
+class JsonResponseMixin(object):
+    """
+    Mixin with testing helper methods
+    """
+    @cached_property
+    def json(self):
+        return simplejson.loads(self.data)
+
+def _make_test_response(response_class):
+
+    class TestResponse(response_class, JsonResponseMixin):
+        pass
+
+    return TestResponse
 
 class TestCase(unittest.TestCase):
     
@@ -33,6 +52,11 @@ class TestCase(unittest.TestCase):
 
     def _pre_setup(self):
         self.app = self.create_app()
+
+        self._orig_response_class = self.app.response_class
+        print "OK"
+        self.app.response_class = _make_test_response(self.app.response_class)
+
         self.client = self.app.test_client()
        
         # now you can use flask thread locals
@@ -52,11 +76,14 @@ class TestCase(unittest.TestCase):
                                      lambda: self.app)
 
     def _post_tearDown(self):
-        self._ctx.pop()
         
         if self.twill_enabled:
             twill.remove_wsgi_intercept(self.twill_host, 
                                         self.twill_port)
+
+        self._ctx.pop()
+
+        self.app.response_class = self._orig_response_class
 
     def twill_url(self, url):
         return "%s%s:%d%s" % (self.twill_scheme,
@@ -71,30 +98,24 @@ class TestCase(unittest.TestCase):
     def execute_twill_string(self, string, initial_url="/"):
         twill.execute_string(string, initial_url=self.twill_url(initial_url))
 
-    def getJSON(self, response):
-        """
-        Returns a JSON value from a response
-        """
-        
-        return simplejson.loads(response.data)
-
-    def assertJSONEquals(self, response, name, value):
-        """
-        If JSON dict, checks if name matches value
-        """
-        
-        data = self.getJSON(response)
-        assert name in data and data[name] == value
-
     def assertRedirects(self, response, location):
         assert response.status_code in (301, 302)
         assert response.location == "http://localhost" + location
 
+    assert_redirects = assertRedirects
+
     def assertStatus(self, response, status_code):
         self.assertEqual(response.status_code, status_code)
+
+    assert_status = assertStatus
 
     def assert200(self, response):
         self.assertStatus(response, 200)
 
+    assert_200 = assert200
+
     def assert404(self, response):
         self.assertStatus(response, 404)
+
+    assert_404 = assert404
+

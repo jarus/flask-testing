@@ -58,12 +58,7 @@ class TestClientUtils(TestCase):
     def test_getJSON(self):
 
         response = self.client.get("/ajax/")
-        assert self.getJSON(response) == dict(name="test")
-
-    def test_assert_json(self):
-
-        response = self.client.get("/ajax/")
-        self.assertJSONEquals(response, "name", "test")
+        assert response.json == dict(name="test")
 
     def test_assert_200(self):
 
