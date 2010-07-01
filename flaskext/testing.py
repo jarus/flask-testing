@@ -54,7 +54,6 @@ class TestCase(unittest.TestCase):
         self.app = self.create_app()
 
         self._orig_response_class = self.app.response_class
-        print "OK"
         self.app.response_class = _make_test_response(self.app.response_class)
 
         self.client = self.app.test_client()
