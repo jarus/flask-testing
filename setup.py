@@ -7,7 +7,7 @@ Flask unittest integration.
 Links
 `````
 
-* `documentation <http://packages.python.org/flask-testing>`_
+* `documentation <http://packages.python.org/Flask-Testing>`_
 * `development version
   <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=flask-testing>`_
 
