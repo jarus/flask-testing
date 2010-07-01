@@ -8,6 +8,7 @@
     :copyright: (c) 2010 by Dan Jacob.
     :license: BSD, see LICENSE for more details.
 """
+import StringIO
 import unittest
 import twill
 import simplejson
@@ -107,15 +108,21 @@ class TwillTestCase(TestCase):
 
     def _pre_setup(self):
         super(TwillTestCase, self)._pre_setup()
+        twill.set_output(StringIO.StringIO())
+        twill.commands.clear_cookies()
         twill.add_wsgi_intercept(self.twill_host, 
                                  self.twill_port, 
                                  lambda: self.app)
     
+        self.browser = twill.get_browser()
+
     def _post_teardown(self):
 
         twill.remove_wsgi_intercept(self.twill_host, 
                                     self.twill_port)
 
+        twill.commands.reset_output()
+        
         super(TwillTestCase, self)._post_teardown()
 
     def make_twill_url(self, url):

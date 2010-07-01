@@ -22,7 +22,7 @@ or download the latest version from Bitbucket::
 
     python setup.py develop
 
-If you are using **virtualenv**, it is assumed that you are installing flask-testing
+If you are using **virtualenv**, it is assumed that you are installing **Flask-Testing**
 in the same virtualenv as your Flask application(s).
 
 Writing unit tests
@@ -69,21 +69,12 @@ a special ``json`` attribute appended to the ``Response`` object::
 Using with Twill
 ----------------
 
-`Twill <http://twill.idyll.org/>`_ is a simple language for browing the Web through
-a command line interface. You can use it in conjunction with ``TestCase`` to write
-functional tests for your views.
+`Twill`_ is a simple language for browing the Web through
+a command line interface. You can use it in conjunction with ``TwillTestCase`` to write
+functional tests for your views. 
 
-To use Twill with ``TestCase`` you need the following configuration settings:
-
-    * ``TWILL_ENABLED`` : default ``False``
-    * ``TWILL_SCHEME`` : default ``http://``
-    * ``TWILL_HOST`` : default ``localhost``
-    * ``TWILL_PORT`` : default ``5000``
-
-If ``TWILL_ENABLED`` is set to ``True`` then Twill is initialized ready for use.
-
-In addition a number of helper methods are provided for Twill : see the API documentation
-for details.
+``TwillTestCase`` is a subclass of ``TestCase``. It sets up `Twill`_ for use with your test 
+cases. See the API below for details.
 
 API
 ---
@@ -134,26 +125,31 @@ API
         
         Alias of ``assert404``.
         
-    .. method:: twill_url(url)
+.. class:: TwillTestCase(TestCase)
+    
+    Subclass of ``TestCase`` with additional functionality
+    for managing `Twill`_. Handles WSGI intercept inside each
+    test. 
 
-        Creates full URL for Twill tests, based on ``TWILL_SCHEME``,
-        ``TWILL_HOST`` and ``TWILL_PORT`` settings.
+    A ``browser`` instance is created with each setup, which is a `Twill`_ browser instance.
 
-        :param url: relative URL, e.g. "/"
+    .. attribute:: twill_scheme
 
-    .. method:: execute_twill_string(string, initial_url=None)
+        HTTP scheme used by `Twill`_ (default **http**)
 
-        Executes a Twill script inside a string.
+    .. attribute:: twill_host
 
-        :param string: string containing Twill commands
-        :param initial_url: initial_url for commands (uses "/" by default)
+        HTTP host used by `Twill`_ (default **127.0.0.1**)
 
-    .. method:: execute_twill_script(script, initial_url=None)
+    .. attribute:: twill_port
 
-        Executes a Twill script in a file.
+        HTTP port used by `Twill`_ (default **5000**)
 
-        :param script: filename of script
-        :param initial_url: initial_url for commands (uses "/" by default)
-        
+    .. method:: make_twill_url(url)
+
+        Creates an absolute URL based on the `Twill`_ URL attributes.
+
+
 .. _Flask: http://flask.pocoo.org
 .. _Bitbucket: http://bitbucket.org/danjac/flask-testing
+.. _Twill: http://twill.idyll.org/
