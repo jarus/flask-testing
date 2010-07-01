@@ -1,4 +1,4 @@
-flask-testing
+Flask-Testing
 ======================================
 
 .. module:: flask-testing

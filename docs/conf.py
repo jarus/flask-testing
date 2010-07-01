@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# flask-unittest documentation build configuration file, created by
+# flask-testing documentation build configuration file, created by
 # sphinx-quickstart on Wed Jun 23 08:26:41 2010.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -168,7 +168,7 @@ html_static_path = ['_static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'flask-unittestdoc'
+htmlhelp_basename = 'flask-testingdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -182,7 +182,7 @@ htmlhelp_basename = 'flask-unittestdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'flask-testing.tex', u'flask-testing Documentation',
+  ('index', 'flask-testing.tex', u'Flask-Testing Documentation',
    u'Dan Jacob', 'manual'),
 ]
 
@@ -215,6 +215,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'flask-testing', u'flask-testing Documentation',
+    ('index', 'flask-testing', u'Flask-Testing Documentation',
      [u'Dan Jacob'], 1)
 ]
