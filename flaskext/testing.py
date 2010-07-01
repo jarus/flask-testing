@@ -61,8 +61,6 @@ class TestCase(unittest.TestCase):
         self.app.response_class = _make_test_response(self.app.response_class)
 
         self.client = self.app.test_client()
-       
-        # now you can use flask thread locals
 
         self._ctx = self.app.test_request_context()
         self._ctx.push()
@@ -80,7 +78,6 @@ class TestCase(unittest.TestCase):
 
     def assertStatus(self, response, status_code):
         self.assertEqual(response.status_code, status_code)
-
 
     assert_status = assertStatus
 
