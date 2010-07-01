@@ -47,6 +47,11 @@ class TestTwill(TwillTestCase):
         assert self.twill_host == '127.0.0.1'
         assert self.twill_port == 5000
 
+    def test_make_twill_url(self):
+
+        assert self.make_twill_url("/") == \
+            "http://127.0.0.1:5000/"
+
 class TestClientUtils(TestCase):
 
     def create_app(self):

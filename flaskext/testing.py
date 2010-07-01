@@ -118,15 +118,9 @@ class TwillTestCase(TestCase):
 
         super(TwillTestCase, self)._post_teardown()
 
-    def twill_url(self, url):
+    def make_twill_url(self, url):
         return "%s://%s:%d%s" % (self.twill_scheme,
                                  self.twill_host, 
                                  self.twill_port,
                                  url)
 
-    def execute_twill_script(self, script, initial_url="/"):
-        with open(script) as fp:
-            self.execute_twill_string(fp.read(), initial_url)
-
-    def execute_twill_string(self, string, initial_url="/"):
-        twill.execute_string(string, initial_url=self.twill_url(initial_url))
