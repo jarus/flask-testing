@@ -76,6 +76,51 @@ functional tests for your views.
 ``TwillTestCase`` is a subclass of ``TestCase``. It sets up `Twill`_ for use with your test 
 cases. See the API below for details.
 
+Testing with SQLAlchemy
+-----------------------
+
+This covers a couple of points if you are using **Flask-Testing** with `SQLAlchemy`_. It is 
+assumed that you are using the `Flask-SQLAlchemy`_ extension, but if not the examples should
+not be too difficult to adapt to your own particular setup.
+
+First, ensure you set the database URI to something other than your production database ! Second,
+it's usually a good idea to create and drop your tables with each test run, to ensure clean tests::
+
+    from flaskext.testing import TestCase
+    
+    from myapp import create_app, db
+
+    class MyTest(TestCase):
+        
+        SQLALCHEMY_DATABASE_URI = "sqlite://"
+        TESTING = True
+
+        def create_app(self):
+            
+            # pass in test configuration
+            return create_app(self)
+        
+        def setUp(self):
+
+            db.create_all()
+
+        def tearDown(self):
+
+            db.session.remove()
+            db.drop_all()
+
+Notice also that ``db.session.remove()`` is called at the end of each test, to ensure the SQLAlchemy
+session is properly removed and that a new session is started with each test run - this is a common
+"gotcha".
+
+Also notice that for this example the SQLite in-memory database is used : while it is faster for tests,
+if you have database-specific code (e.g. for MySQL or PostgreSQL) it may not be applicable.
+
+You may also want to add a set of instances for your database inside of a ``setUp()`` once your database
+tables have been created. If you want to work with larger sets of data, look at `Fixture`_ which includes
+support for SQLAlchemy.
+    
+
 API
 ---
 
@@ -153,3 +198,6 @@ API
 .. _Flask: http://flask.pocoo.org
 .. _Bitbucket: http://bitbucket.org/danjac/flask-testing
 .. _Twill: http://twill.idyll.org/
+.. _Fixture: http://farmdev.com/projects/fixture/index.html
+.. _SQLAlchemy: http://sqlalchemy.org
+.. _Flask-SQLAlchemy: http://packages.python.org/Flask-SQLAlchemy/
