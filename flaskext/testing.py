@@ -55,6 +55,8 @@ class TestCase(unittest.TestCase):
             self._post_teardown()
 
     def _pre_setup(self):
+        self.app = self._ctx = None
+
         self.app = self.create_app()
 
         self._orig_response_class = self.app.response_class
@@ -66,9 +68,10 @@ class TestCase(unittest.TestCase):
         self._ctx.push()
 
     def _post_teardown(self):
-        self._ctx.pop()
-
-        self.app.response_class = self._orig_response_class
+        if self._ctx is not None:
+            self._ctx.pop()
+        if self.app is not None:
+            self.app.response_class = self._orig_response_class
 
     def assertRedirects(self, response, location):
         assert response.status_code in (301, 302)
