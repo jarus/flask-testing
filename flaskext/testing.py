@@ -15,6 +15,8 @@ import simplejson
 
 from werkzeug import cached_property
 
+from flask import template_rendered
+
 __all__ = ["TestCase", "TwillTestCase"]
 
 class JsonResponseMixin(object):
@@ -67,12 +69,26 @@ class TestCase(unittest.TestCase):
         self._ctx = self.app.test_request_context()
         self._ctx.push()
 
+        self.templates = []
+        template_rendered.connect(self._add_template)
+
+    def _add_template(self, app, template, context):
+        self.templates.append((template, context))
+
     def _post_teardown(self):
         if self._ctx is not None:
             self._ctx.pop()
         if self.app is not None:
             self.app.response_class = self._orig_response_class
+        template_rendered.disconnect(self._add_template)
 
+    def assertTemplateUsed(self, name):
+        for template, context in self.templates:
+            if template.name == name:
+                return True
+        raise AssertionError, "template %s not used" % name
+    assert_template_used = assertTemplateUsed
+    
     def assertRedirects(self, response, location):
         assert response.status_code in (301, 302)
         assert response.location == "http://localhost" + location
