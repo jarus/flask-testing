@@ -112,6 +112,12 @@ class TestCase(unittest.TestCase):
 
     assert_200 = assert200
 
+    def assert403(self, response):
+
+        self.assertStatus(response, 403)
+
+    assert_403 = assert403
+
     def assert404(self, response):
 
         self.assertStatus(response, 404)

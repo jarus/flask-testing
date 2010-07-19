@@ -1,4 +1,5 @@
-from flask import Flask, Response, abort, redirect, url_for, jsonify
+from flask import Flask, Response, abort, redirect, url_for, \
+    jsonify, render_template
 
 from flaskext.testing import TestCase, TwillTestCase
 
@@ -9,6 +10,10 @@ def create_app():
     @app.route("/")
     def index():
         return Response("OK")
+
+    @app.route("/template/")
+    def index_with_template():
+        return render_template("index.html", name="test")
 
     @app.route("/oops/")
     def bad_url():
@@ -21,6 +26,10 @@ def create_app():
     @app.route("/ajax/")
     def ajax():
         return jsonify(name="test")
+
+    @app.route("/forbidden/")
+    def forbidden():
+        abort(403)
 
     return app
 
@@ -72,7 +81,32 @@ class TestClientUtils(TestCase):
         response = self.client.get("/oops/")
         self.assert404(response)
 
+    def test_assert_403(self):
+
+        response = self.client.get("/forbidden/")
+        self.assert403(response)
+
     def test_assert_redirects(self):
 
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
+
+    def test_assert_template_used(self):
+
+        response = self.client.get("/template/")
+        self.assert_template_used("index.html")
+
+    def test_assert_template_not_used(self):
+
+        response = self.client.get("/")
+        try:
+            self.assert_template_used("index.html")
+            assert False
+        except AssertionError:
+            pass
+
+    def test_get_context_variable(self):
+
+        response = self.client.get("/template/")
+        assert self.get_context_variable("name") == "test"
+    
