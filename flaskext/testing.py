@@ -87,8 +87,14 @@ class TestCase(unittest.TestCase):
             if template.name == name:
                 return True
         raise AssertionError, "template %s not used" % name
+
     assert_template_used = assertTemplateUsed
     
+    def get_context_variable(self, name):
+        for template, context in self.templates:
+            if name in context:
+                return context[name]
+
     def assertRedirects(self, response, location):
         assert response.status_code in (301, 302)
         assert response.location == "http://localhost" + location
