@@ -86,6 +86,11 @@ class TestClientUtils(TestCase):
         response = self.client.get("/forbidden/")
         self.assert403(response)
 
+    def test_assert_405(self):
+
+        response = self.client.post("/")
+        self.assert405(response)
+
     def test_assert_redirects(self):
 
         response = self.client.get("/redirect/")

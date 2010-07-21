@@ -126,6 +126,11 @@ API
 
 .. module:: flaskext.testing
 
+.. autoclass:: TestCase
+   :members:
+
+.. autoclass:: TwillTestCase
+   :members:
 
 .. _Flask: http://flask.pocoo.org
 .. _Bitbucket: http://bitbucket.org/danjac/flask-testing

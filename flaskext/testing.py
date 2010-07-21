@@ -20,9 +20,9 @@ try:
     # available in this version of Flask
     import blinker
     from flask import template_rendered
-    _use_signals = True
+    _is_signals = True
 except ImportError:
-    _use_signals = False
+    _is_signals = False
 
 __all__ = ["TestCase", "TwillTestCase"]
 
@@ -77,7 +77,7 @@ class TestCase(unittest.TestCase):
         self._ctx.push()
 
         self.templates = []
-        if _use_signals:
+        if _is_signals:
             template_rendered.connect(self._add_template)
 
     def _add_template(self, app, template, context):
@@ -88,7 +88,7 @@ class TestCase(unittest.TestCase):
             self._ctx.pop()
         if self.app is not None:
             self.app.response_class = self._orig_response_class
-        if _use_signals:
+        if _is_signals:
             template_rendered.disconnect(self._add_template)
 
     def assertTemplateUsed(self, name):
@@ -147,24 +147,44 @@ class TestCase(unittest.TestCase):
     assert_status = assertStatus
 
     def assert200(self, response):
+        """
+        Checks if response status code is 200 
+
+        :param response: Flask response
+        """
 
         self.assertStatus(response, 200)
 
     assert_200 = assert200
 
     def assert403(self, response):
+        """
+        Checks if response status code is 403
+
+        :param response: Flask response
+        """
 
         self.assertStatus(response, 403)
 
     assert_403 = assert403
 
     def assert404(self, response):
+        """
+        Checks if response status code is 404
+
+        :param response: Flask response
+        """
 
         self.assertStatus(response, 404)
 
     assert_404 = assert404
 
     def assert405(self, response):
+        """
+        Checks if response status code is 405
+
+        :param response: Flask response
+        """
 
         self.assertStatus(response, 405)
 
