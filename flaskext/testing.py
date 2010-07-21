@@ -26,6 +26,9 @@ except ImportError:
 
 __all__ = ["TestCase", "TwillTestCase"]
 
+class ContextVariableDoesNotExist(Exception):
+    pass
+
 class JsonResponseMixin(object):
     """
     Mixin with testing helper methods
@@ -114,6 +117,9 @@ class TestCase(unittest.TestCase):
         template. Only works if your version of Flask
         has signals support (0.6+) and blinker is installed.
 
+        Raises a ContextVariableDoesNotExist exception if does
+        not exist in context.
+
         :param name: name of variable
         """
         assert _is_signals, "Signals not supported"
@@ -121,6 +127,23 @@ class TestCase(unittest.TestCase):
         for template, context in self.templates:
             if name in context:
                 return context[name]
+        raise ContextVariableDoesNotExist
+
+    def assertContext(self, name, value):
+        """
+        Checks if given name exists in the template context
+        and equals the given value.
+
+        :param name:name of context variable
+        :param value: value to check against
+        """
+
+        try:
+            assert self.get_context_variable(name) == value
+        except ContextVariableDoesNotExist:
+            assert False
+
+    assert_context = assertContext
 
     def assertRedirects(self, response, location):
         """

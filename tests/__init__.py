@@ -1,7 +1,8 @@
 from flask import Flask, Response, abort, redirect, url_for, \
     jsonify, render_template
 
-from flaskext.testing import TestCase, TwillTestCase
+from flaskext.testing import TestCase, TwillTestCase, \
+    ContextVariableDoesNotExist
 
 def create_app():
 
@@ -114,4 +115,22 @@ class TestClientUtils(TestCase):
 
         response = self.client.get("/template/")
         assert self.get_context_variable("name") == "test"
+
+    def test_assert_context(self):
+
+        response = self.client.get("/template/")
+        self.assert_context("name", "test")
+
+    def test_assert_bad_context(self):
+
+        response = self.client.get("/template/")
+        self.assertRaises(AssertionError, self.assert_context, "name", "foo")
+        self.assertRaises(AssertionError, self.assert_context, "foo", "foo")
+
+    def test_assert_get_context_variable_not_exists(self):
+
+        response = self.client.get("/template/")
+        self.assertRaises(ContextVariableDoesNotExist, 
+                          self.get_context_variable, "foo")
+
     
