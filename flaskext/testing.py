@@ -134,7 +134,7 @@ class TestCase(unittest.TestCase):
         Checks if given name exists in the template context
         and equals the given value.
 
-        :param name:name of context variable
+        :param name: name of context variable
         :param value: value to check against
         """
 
