@@ -15,7 +15,12 @@ import simplejson
 
 from werkzeug import cached_property
 
-from flask import template_rendered
+try:
+    from flask import template_rendered
+    import blinker
+    _use_signals = True
+except ImportError:
+    _use_signals = False
 
 __all__ = ["TestCase", "TwillTestCase"]
 
@@ -70,7 +75,8 @@ class TestCase(unittest.TestCase):
         self._ctx.push()
 
         self.templates = []
-        template_rendered.connect(self._add_template)
+        if _use_signals:
+            template_rendered.connect(self._add_template)
 
     def _add_template(self, app, template, context):
         self.templates.append((template, context))
@@ -80,7 +86,8 @@ class TestCase(unittest.TestCase):
             self._ctx.pop()
         if self.app is not None:
             self.app.response_class = self._orig_response_class
-        template_rendered.disconnect(self._add_template)
+        if _use_signals:
+            template_rendered.disconnect(self._add_template)
 
     def assertTemplateUsed(self, name):
         for template, context in self.templates:
