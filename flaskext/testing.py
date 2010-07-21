@@ -16,8 +16,10 @@ import simplejson
 from werkzeug import cached_property
 
 try:
-    from flask import template_rendered
+    # we'll use signals for template-related tests if
+    # available in this version of Flask
     import blinker
+    from flask import template_rendered
     _use_signals = True
 except ImportError:
     _use_signals = False
@@ -45,7 +47,7 @@ class TestCase(unittest.TestCase):
     def create_app(self):
         """
         Create your Flask app here, with any
-        configuration you need
+        configuration you need.
         """
         raise NotImplementedError
 
@@ -90,6 +92,15 @@ class TestCase(unittest.TestCase):
             template_rendered.disconnect(self._add_template)
 
     def assertTemplateUsed(self, name):
+        """
+        Checks if a given template is used in the request. 
+        Only works if your version of Flask has signals 
+        support (0.6+) and blinker is installed.
+
+        :param name: template name
+        """
+        assert _is_signals, "Signals not supported"
+
         for template, context in self.templates:
             if template.name == name:
                 return True
@@ -98,17 +109,39 @@ class TestCase(unittest.TestCase):
     assert_template_used = assertTemplateUsed
     
     def get_context_variable(self, name):
+        """
+        Returns a variable from the context passed to the 
+        template. Only works if your version of Flask
+        has signals support (0.6+) and blinker is installed.
+
+        :param name: name of variable
+        """
+        assert _is_signals, "Signals not supported"
+        
         for template, context in self.templates:
             if name in context:
                 return context[name]
 
     def assertRedirects(self, response, location):
+        """
+        Checks if response is an HTTP redirect to the 
+        given location.
+
+        :param response: Flask response
+        :param location: relative URL (i.e. without **http://localhost**)
+        """
         assert response.status_code in (301, 302)
         assert response.location == "http://localhost" + location
 
     assert_redirects = assertRedirects
 
     def assertStatus(self, response, status_code):
+        """
+        Helper method to check matching response status.
+        
+        :param response: Flask response
+        :param status_code: response status code (e.g. 200)
+        """
         self.assertEqual(response.status_code, status_code)
 
     assert_status = assertStatus
@@ -131,10 +164,18 @@ class TestCase(unittest.TestCase):
 
     assert_404 = assert404
 
+    def assert405(self, response):
+
+        self.assertStatus(response, 405)
+
+    assert_405 = assert405
 
 class TwillTestCase(TestCase):
     """
     TestCase with Twill helper methods.
+
+    Creates a Twill ``browser`` instance and handles
+    WSGI intercept.
     """
 
     twill_host = "127.0.0.1"
@@ -161,6 +202,12 @@ class TwillTestCase(TestCase):
         super(TwillTestCase, self)._post_teardown()
 
     def make_twill_url(self, url):
+        """
+        Makes complete URL based on host, port and scheme
+        Twill settings.
+
+        :param url: relative URL
+        """
         return "%s://%s:%d%s" % (self.twill_scheme,
                                  self.twill_host, 
                                  self.twill_port,

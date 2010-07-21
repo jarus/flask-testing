@@ -74,7 +74,7 @@ a command line interface. You can use it in conjunction with ``TwillTestCase`` t
 functional tests for your views. 
 
 ``TwillTestCase`` is a subclass of ``TestCase``. It sets up `Twill`_ for use with your test 
-cases. See the API below for details.
+cases. See the `API`_ below for details.
 
 Testing with SQLAlchemy
 -----------------------
@@ -125,74 +125,6 @@ API
 ---
 
 .. module:: flaskext.testing
-
-.. class:: TestCase
-        
-    Subclass of ``unittest.TestCase``. When run the following properties are defined:
-
-        * ``self.app`` : Flask application defined by ``create_app``
-        * ``self.client`` : Test client instance
-    
-    The Flask application test context is created and disposed of inside the test run.
-
-    .. method:: create_app()
-        
-        Returns a Flask app instance. If not defined raises ``NotImplementedError``.
-    
-    .. method:: assertRedirects(response, location)
-        
-        Checks if HTTP response and redirect URL matches location.
-
-        :param response: Response returned from test client
-        :param location: URL (automatically prefixed by `http://localhost`)
-
-    .. method:: assert_redirects(response)
-        
-        Alias of ``assertRedirects``.
-
-    .. method:: assert200(response)
-        
-        Checks if ``response.status_code`` == 200
-
-        :param response: Response returned from test client
-
-    .. method:: assert_202(response)
-        
-        Alias of ``assert202``.
-
-    .. method:: assert404(response)
-        
-        Checks if ``response.status_code`` == 404
-
-        :param response: Response returned from test client
-
-    .. method:: assert_404(response)
-        
-        Alias of ``assert404``.
-        
-.. class:: TwillTestCase(TestCase)
-    
-    Subclass of ``TestCase`` with additional functionality
-    for managing `Twill`_. Handles WSGI intercept inside each
-    test. 
-
-    A ``browser`` instance is created with each setup, which is a `Twill`_ browser instance.
-
-    .. attribute:: twill_scheme
-
-        HTTP scheme used by `Twill`_ (default **http**)
-
-    .. attribute:: twill_host
-
-        HTTP host used by `Twill`_ (default **127.0.0.1**)
-
-    .. attribute:: twill_port
-
-        HTTP port used by `Twill`_ (default **5000**)
-
-    .. method:: make_twill_url(url)
-
-        Creates an absolute URL based on the `Twill`_ URL attributes.
 
 
 .. _Flask: http://flask.pocoo.org
