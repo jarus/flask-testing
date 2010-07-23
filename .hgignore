@@ -6,10 +6,11 @@ syntax: glob
 *.swp
 *.swo
 *.zip
+*.egg
+*.orig
 *~
 
 dist
-build
 docs/output
 
 

@@ -27,12 +27,16 @@ setup(
     long_description=__doc__,
     packages=['flaskext'],
     namespace_packages=['flaskext'],
+    test_suite="nose.collector",
     zip_safe=False,
     platforms='any',
     install_requires=[
         'Flask',
         'twill',
         'simplejson',
+    ],
+    test_requires=[
+        'nose',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
