@@ -9,12 +9,10 @@ Links
 
 * `documentation <http://packages.python.org/Flask-Testing>`_
 * `development version
-  <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=flask-testing>`_
-
+  <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=Flask-Testing-dev>`_
 
 """
 from setuptools import setup
-
 
 setup(
     name='Flask-Testing',
