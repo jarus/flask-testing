@@ -102,6 +102,7 @@ class TestCase(unittest.TestCase):
         Only works if your version of Flask has signals 
         support (0.6+) and blinker is installed.
 
+        :versionadded: 0.2
         :param name: template name
         """
         if not _is_signals:
@@ -123,6 +124,7 @@ class TestCase(unittest.TestCase):
         Raises a ContextVariableDoesNotExist exception if does
         not exist in context.
 
+        :versionadded: 0.2
         :param name: name of variable
         """
         if not _is_signals:
@@ -138,6 +140,7 @@ class TestCase(unittest.TestCase):
         Checks if given name exists in the template context
         and equals the given value.
 
+        :versionadded: 0.2
         :param name: name of context variable
         :param value: value to check against
         """
@@ -188,6 +191,7 @@ class TestCase(unittest.TestCase):
         """
         Checks if response status code is 403
 
+        :versionadded: 0.2
         :param response: Flask response
         """
 
@@ -210,6 +214,7 @@ class TestCase(unittest.TestCase):
         """
         Checks if response status code is 405
 
+        :versionadded: 0.2
         :param response: Flask response
         """
 
