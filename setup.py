@@ -33,7 +33,7 @@ setup(
         'twill',
         'simplejson',
     ],
-    test_requires=[
+    tests_require=[
         'nose',
         'blinker',
     ],
