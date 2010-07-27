@@ -111,6 +111,8 @@ class TestClientUtils(TestCase):
         try:
             self.assert_template_used("index.html")
             assert False
+        except AssertionError:
+            pass
         except RuntimeError:
             pass
 
