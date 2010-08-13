@@ -113,6 +113,31 @@ Notice also that ``db.session.remove()`` is called at the end of each test, to e
 session is properly removed and that a new session is started with each test run - this is a common
 "gotcha".
 
+Another gotcha is that Flask-SQLAlchemy **also** removes the session instance at the end of every request (as
+should any threadsafe application using SQLAlchemy with **scoped_session**). Therefore the session
+is cleared along with any objects added to it every time you call ``client.get()`` or another client method. 
+
+For example::
+
+    class SomeTest(MyTest):
+        
+        def test_something(self):
+
+            user = User()
+            db.session.add(user)
+            db.session.commit()
+
+            # this works
+            assert user in db.session
+
+            response = self.client.get("/")
+
+            # this raises an AssertionError
+            assert user in db.session
+
+You now have to re-add the "user" instance back to the session with ``db.session.add(user)``, if you are going
+to make any further database operations on it.
+
 Also notice that for this example the SQLite in-memory database is used : while it is faster for tests,
 if you have database-specific code (e.g. for MySQL or PostgreSQL) it may not be applicable.
 
