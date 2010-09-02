@@ -31,6 +31,11 @@ def create_app():
     @app.route("/forbidden/")
     def forbidden():
         abort(403)
+    
+    @app.route("/unauthorized/")
+    def unauthorized():
+        abort(401)
+
 
     return app
 
@@ -86,6 +91,12 @@ class TestClientUtils(TestCase):
 
         response = self.client.get("/forbidden/")
         self.assert403(response)
+    
+    def test_assert_401(self):
+
+        response = self.client.get("/unauthorized/")
+        self.assert401(response)
+
 
     def test_assert_405(self):
 

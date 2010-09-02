@@ -186,6 +186,18 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 200)
 
     assert_200 = assert200
+    
+    def assert401(self, response):
+        """
+        Checks if response status code is 401
+
+        :versionadded: 0.2.1
+        :param response: Flask response
+        """
+
+        self.assertStatus(response, 401)
+
+    assert_401 = assert401
 
     def assert403(self, response):
         """
