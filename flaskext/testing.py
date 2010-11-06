@@ -186,7 +186,20 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 200)
 
     assert_200 = assert200
-    
+
+    def assert400(self, response):
+        """
+        Checks if response status code is 400
+
+        :versionadded: 0.2.5
+        :param response: Flask response
+        """
+
+        self.assertStatus(response, 400)
+
+    assert_400 = assert400
+
+   
     def assert401(self, response):
         """
         Checks if response status code is 401
@@ -233,6 +246,7 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 405)
 
     assert_405 = assert405
+
 
 class TwillTestCase(TestCase):
     """
