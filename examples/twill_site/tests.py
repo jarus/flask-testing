@@ -1,24 +1,26 @@
-from flaskext.testing import TwillTestCase
+from flaskext.testing import TestCase, Twill
 
 from todos import create_app
 
-class TestViews(TwillTestCase):
+class TestViews(TestCase, Twill):
 
     def create_app(self):
-        return create_app()
+        app = create_app()
+        self.twill = Twill(app)
+        return app
 
     def test_manually(self):
 
-        self.browser.go(self.make_twill_url("/"))
-        self.browser.showforms()
-        self.browser.submit(0)
+        self.twill.browser.go(self.twill.url("/"))
+        self.twill.browser.showforms()
+        self.twill.browser.submit(0)
 
     def test_bad_manually(self):
         """
         This will fail !
         """
-        self.browser.go(self.make_twill_url("/foo/"))
-        self.browser.showforms()
-        self.browser.submit(1)
+        self.twill.browser.go(self.twill.url("/foo/"))
+        self.twill.browser.showforms()
+        self.twill.browser.submit(1)
 
 

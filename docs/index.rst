@@ -70,11 +70,17 @@ Using with Twill
 ----------------
 
 `Twill`_ is a simple language for browing the Web through
-a command line interface. You can use it in conjunction with ``TwillTestCase`` to write
-functional tests for your views. 
+a command line interface. 
 
-``TwillTestCase`` is a subclass of ``TestCase``. It sets up `Twill`_ for use with your test 
-cases. See the `API`_ below for details.
+``Flask-Testing`` comes with a helper class for creating functional tests using Twill::
+
+    def test_something_with_twill(self):
+
+        with Twill(self.app, port=3000) as t:
+            t.browser.go(t.url("/"))
+
+
+The older ``TwillTestCase`` has been deprecated.
 
 Testing with SQLAlchemy
 -----------------------
@@ -152,6 +158,9 @@ API
 .. module:: flaskext.testing
 
 .. autoclass:: TestCase
+   :members:
+
+.. autoclass:: Twill
    :members:
 
 .. autoclass:: TwillTestCase

@@ -26,7 +26,7 @@ try:
 except ImportError:
     _is_signals = False
 
-__all__ = ["TestCase", "TwillTestCase"]
+__all__ = ["TestCase", "TwillMixin"]
 
 class ContextVariableDoesNotExist(Exception):
     pass
@@ -248,9 +248,65 @@ class TestCase(unittest.TestCase):
     assert_405 = assert405
 
 
-class TwillTestCase(TestCase):
+class Twill(object):
     """
-    TestCase with Twill helper methods.
+
+    :versionadded: 0.3
+
+    Twill wrapper utility class.
+
+    Creates a Twill ``browser`` instance and handles
+    WSGI intercept.
+        
+    Usage::
+
+        t = Twill(self.app)
+        with t:
+            t.browser.go("/")
+            t.url("/")
+
+    """
+    def __init__(self, app, host='127.0.0.1', port=5000, scheme='http'):
+        
+        self.app = app
+        self.host = host
+        self.port = port
+        self.scheme = scheme
+
+        self.browser = twill.get_browser()
+
+    def __enter__(self):
+        twill.set_output(StringIO.StringIO())
+        twill.commands.clear_cookies()
+        twill.add_wsgi_intercept(self.host, 
+                                 self.port, 
+                                 lambda: self.app)
+    
+        return self
+
+    def __exit__(self, exc_type, exc_value, tb):
+
+        twill.remove_wsgi_intercept(self.host, 
+                                    self.port)
+
+        twill.commands.reset_output()
+
+    def url(self, url):
+        """
+        Makes complete URL based on host, port and scheme
+        Twill settings.
+
+        :param url: relative URL
+        """
+        return "%s://%s:%d%s" % (self.scheme,
+                                 self.host, 
+                                 self.port,
+                                 url)
+
+class TwillTestCase(TestCase):
+
+    """
+    :deprecated: use Twill helper class instead.
 
     Creates a Twill ``browser`` instance and handles
     WSGI intercept.

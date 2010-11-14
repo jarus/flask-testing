@@ -16,7 +16,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Testing',
-    version='0.2.5',
+    version='0.3',
     url='http://bitbucket.org/danjac/flask-testing',
     license='BSD',
     author='Dan Jacob',
