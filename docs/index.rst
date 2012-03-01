@@ -5,7 +5,7 @@ Flask-Testing
 
 The **Flask-Testing** extension provides unit testing utilities for Flask.
 
-Source code and issue tracking at `Bitbucket`_.
+Source code and issue tracking at `GitHub`_.
 
 Installing Flask-Testing
 ------------------------
@@ -14,12 +14,10 @@ Install with **pip** and **easy_install**::
 
     pip install Flask-Testing
 
-or download the latest version from Bitbucket::
+or download the latest version from version control::
 
-    hg clone http://bitbucket.org/danjac/flask-testing
-
+    git clone https://github.com/rduplain/flask-testing.git
     cd flask-testing
-
     python setup.py develop
 
 If you are using **virtualenv**, it is assumed that you are installing **Flask-Testing**
@@ -167,7 +165,7 @@ API
    :members:
 
 .. _Flask: http://flask.pocoo.org
-.. _Bitbucket: http://bitbucket.org/danjac/flask-testing
+.. _GitHub: http://github.com/rduplain/flask-testing
 .. _Twill: http://twill.idyll.org/
 .. _Fixture: http://farmdev.com/projects/fixture/index.html
 .. _SQLAlchemy: http://sqlalchemy.org
