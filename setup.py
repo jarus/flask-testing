@@ -31,7 +31,6 @@ setup(
     install_requires=[
         'Flask',
         'twill',
-        'simplejson',
     ],
     tests_require=[
         'nose',
