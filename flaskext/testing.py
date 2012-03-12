@@ -106,12 +106,12 @@ class TestCase(unittest.TestCase):
         :param name: template name
         """
         if not _is_signals:
-            raise RuntimeError, "Signals not supported"
+            raise RuntimeError("Signals not supported")
 
         for template, context in self.templates:
             if template.name == name:
                 return True
-        raise AssertionError, "template %s not used" % name
+        raise AssertionError("template %s not used" % name)
 
     assert_template_used = assertTemplateUsed
     
@@ -128,7 +128,7 @@ class TestCase(unittest.TestCase):
         :param name: name of variable
         """
         if not _is_signals:
-            raise RuntimeError, "Signals not supported"
+            raise RuntimeError("Signals not supported")
         
         for template, context in self.templates:
             if name in context:
