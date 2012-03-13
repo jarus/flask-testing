@@ -106,12 +106,12 @@ class TestCase(unittest.TestCase):
         :param name: template name
         """
         if not _is_signals:
-            raise RuntimeError, "Signals not supported"
+            raise RuntimeError("Signals not supported")
 
         for template, context in self.templates:
             if template.name == name:
                 return True
-        raise AssertionError, "template %s not used" % name
+        raise AssertionError("template %s not used" % name)
 
     assert_template_used = assertTemplateUsed
     
@@ -128,7 +128,7 @@ class TestCase(unittest.TestCase):
         :param name: name of variable
         """
         if not _is_signals:
-            raise RuntimeError, "Signals not supported"
+            raise RuntimeError("Signals not supported")
         
         for template, context in self.templates:
             if name in context:
@@ -146,9 +146,9 @@ class TestCase(unittest.TestCase):
         """
 
         try:
-            assert self.get_context_variable(name) == value
+            self.assertEqual(self.get_context_variable(name), value)
         except ContextVariableDoesNotExist:
-            assert False
+            self.fail("Context variable does not exist: %s" % name)
 
     assert_context = assertContext
 
@@ -160,8 +160,8 @@ class TestCase(unittest.TestCase):
         :param response: Flask response
         :param location: relative URL (i.e. without **http://localhost**)
         """
-        assert response.status_code in (301, 302)
-        assert response.location == "http://localhost" + location
+        self.assertTrue(response.status_code in (301, 302))
+        self.assertEqual(response.location, "http://localhost" + location)
 
     assert_redirects = assertRedirects
 
@@ -267,7 +267,6 @@ class Twill(object):
 
     """
     def __init__(self, app, host='127.0.0.1', port=5000, scheme='http'):
-        
         self.app = app
         self.host = host
         self.port = port
@@ -285,7 +284,6 @@ class Twill(object):
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
-
         twill.remove_wsgi_intercept(self.host, 
                                     self.port)
 
@@ -303,8 +301,8 @@ class Twill(object):
                                  self.port,
                                  url)
 
-class TwillTestCase(TestCase):
 
+class TwillTestCase(TestCase):
     """
     :deprecated: use Twill helper class instead.
 
@@ -346,4 +344,3 @@ class TwillTestCase(TestCase):
                                  self.twill_host, 
                                  self.twill_port,
                                  url)
-
