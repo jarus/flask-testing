@@ -144,11 +144,7 @@ class TestCase(unittest.TestCase):
         :param name: name of context variable
         :param value: value to check against
         """
-
-        try:
-            assert self.get_context_variable(name) == value
-        except ContextVariableDoesNotExist:
-            assert False
+        self.assertEqual(self.get_context_variable(name), value)
 
     assert_context = assertContext
 
@@ -160,8 +156,8 @@ class TestCase(unittest.TestCase):
         :param response: Flask response
         :param location: relative URL (i.e. without **http://localhost**)
         """
-        assert response.status_code in (301, 302)
-        assert response.location == "http://localhost" + location
+        self.assertTrue(response.status_code in (301, 302))
+        self.assertEqual(response.location, "http://localhost" + location)
 
     assert_redirects = assertRedirects
 
