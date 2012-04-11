@@ -13,9 +13,13 @@ from __future__ import absolute_import
 import StringIO
 import unittest
 import twill
-import simplejson
 
 from werkzeug import cached_property
+
+# Use Flask's preferred JSON module so that our runtime behavior matches.
+from flask import json_available
+if json_available:
+    from flask import json
 
 try:
     # we'll use signals for template-related tests if
@@ -37,7 +41,9 @@ class JsonResponseMixin(object):
     """
     @cached_property
     def json(self):
-        return simplejson.loads(self.data)
+        if not json_available:
+            raise NotImplementedError
+        return json.loads(self.data)
 
 
 def _make_test_response(response_class):
