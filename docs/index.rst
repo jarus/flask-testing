@@ -5,8 +5,6 @@ Flask-Testing
 
 The **Flask-Testing** extension provides unit testing utilities for Flask.
 
-Source code and issue tracking at `GitHub`_.
-
 Installing Flask-Testing
 ------------------------
 
@@ -165,7 +163,6 @@ API
    :members:
 
 .. _Flask: http://flask.pocoo.org
-.. _GitHub: http://github.com/rduplain/flask-testing
 .. _Twill: http://twill.idyll.org/
 .. _Fixture: http://farmdev.com/projects/fixture/index.html
 .. _SQLAlchemy: http://sqlalchemy.org
