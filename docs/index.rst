@@ -66,7 +66,12 @@ Using with Twill
 ----------------
 
 `Twill`_ is a simple language for browing the Web through
-a command line interface. 
+a command line interface.
+
+Starting with version 0.4, Twill is no longer a dependency.  If you want to
+use Twill, you'll need to manually install it::
+
+    pip install twill
 
 ``Flask-Testing`` comes with a helper class for creating functional tests using Twill::
 

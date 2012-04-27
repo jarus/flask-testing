@@ -30,11 +30,11 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'twill',
     ],
     tests_require=[
         'nose',
         'blinker',
+        'twill',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
