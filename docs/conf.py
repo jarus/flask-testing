@@ -97,7 +97,7 @@ html_theme = 'flask_small'
 
 html_theme_options = {
      'index_logo': 'flask-testing.png',
-     'github_fork': 'rduplain/flask-testing'
+     'github_fork': 'jarus/flask-testing'
 }
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -14,7 +14,7 @@ Install with **pip** and **easy_install**::
 
 or download the latest version from version control::
 
-    git clone https://github.com/rduplain/flask-testing.git
+    git clone https://github.com/jarus/flask-testing.git
     cd flask-testing
     python setup.py develop
 
