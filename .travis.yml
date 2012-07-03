@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+env:
+  - FLASK=dev
+  - FLASK=0.9
+  - FLASK=0.8
+  - FLASK=0.7
+  - FLASK=0.6
+  - FLASK=0.5
+install:
+  - pip install flask==$FLASK --use-mirrors
+  - pip install -e . --use-mirrors
+script:
+  - python setup.py test
+notifications:
+  email:
+    - christoph.heer@googlemail.com
