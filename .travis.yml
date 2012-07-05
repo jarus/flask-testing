@@ -7,7 +7,7 @@ env:
   - FLASK=dev
   - FLASK=0.9
   - FLASK=0.8
-  - FLASK=0.7
+  - FLASK=0.7.1
   - FLASK=0.6
   - FLASK=0.5
 install:
