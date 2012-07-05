@@ -12,7 +12,16 @@ Links
   <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=Flask-Testing-dev>`_
 
 """
+import sys
 from setuptools import setup
+
+tests_require = [
+    'nose',
+    'blinker',
+]
+
+if sys.version_info < (2,6):
+    tests_require.append('simplejson')
 
 setup(
     name='Flask-Testing',
@@ -32,10 +41,7 @@ setup(
         'Flask',
         'twill',
     ],
-    tests_require=[
-        'nose',
-        'blinker',
-    ],
+    tests_require=tests_require,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
