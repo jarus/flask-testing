@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 from flask import Flask, Response, abort, redirect, url_for, \
     jsonify, render_template
 

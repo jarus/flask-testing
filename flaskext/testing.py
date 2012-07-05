@@ -8,7 +8,7 @@
     :copyright: (c) 2010 by Dan Jacob.
     :license: BSD, see LICENSE for more details.
 """
-from __future__ import absolute_import
+from __future__ import absolute_import, with_statement
 
 import StringIO
 import unittest
