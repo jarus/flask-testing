@@ -1,6 +1,6 @@
 """
 Flask-Testing
---------------
+-------------
 
 Flask unittest integration.
 
@@ -8,7 +8,7 @@ Links
 `````
 
 * `documentation <http://packages.python.org/Flask-Testing>`_
-* `development version <http://github.com/jarus/flask-testing/zipball/master#egg=Flask-Testing-dev`_
+* `development version <http://github.com/jarus/flask-testing/zipball/master#egg=Flask-Testing-dev>`_
 
 """
 import sys
