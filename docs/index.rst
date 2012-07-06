@@ -26,7 +26,7 @@ Writing unit tests
 
 Simply subclass the ``TestCase`` class::
 
-    from flaskext.testing import TestCase
+    from flask.ext.testing import TestCase
 
     class MyTest(TestCase):
 
@@ -35,7 +35,7 @@ Simply subclass the ``TestCase`` class::
 
 You must specify the ``create_app`` method, which should return a Flask instance::
 
-    from flaskext.testing import TestCase
+    from flask.ext.testing import TestCase
 
     class MyTest(TestCase):
 
@@ -88,7 +88,7 @@ not be too difficult to adapt to your own particular setup.
 First, ensure you set the database URI to something other than your production database ! Second,
 it's usually a good idea to create and drop your tables with each test run, to ensure clean tests::
 
-    from flaskext.testing import TestCase
+    from flask.ext.testing import TestCase
     
     from myapp import create_app, db
 
@@ -151,7 +151,7 @@ support for SQLAlchemy.
 API
 ---
 
-.. module:: flaskext.testing
+.. module:: flask.ext.testing
 
 .. autoclass:: TestCase
    :members:

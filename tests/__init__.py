@@ -3,7 +3,7 @@ from __future__ import with_statement
 from flask import Flask, Response, abort, redirect, url_for, \
     jsonify, render_template
 
-from flaskext.testing import TestCase, TwillTestCase, \
+from flask_testing import TestCase, TwillTestCase, \
     ContextVariableDoesNotExist, Twill
 
 

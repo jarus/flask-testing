@@ -8,8 +8,7 @@ Links
 `````
 
 * `documentation <http://packages.python.org/Flask-Testing>`_
-* `development version
-  <http://bitbucket.org/danjac/flask-testing/get/tip.gz#egg=Flask-Testing-dev>`_
+* `development version <http://github.com/jarus/flask-testing/zipball/master#egg=Flask-Testing-dev`_
 
 """
 import sys
@@ -25,15 +24,14 @@ if sys.version_info < (2,6):
 
 setup(
     name='Flask-Testing',
-    version='0.3',
-    url='http://bitbucket.org/danjac/flask-testing',
+    version='0.4',
+    url='https://github.com/jarus/flask-testing',
     license='BSD',
     author='Dan Jacob',
     author_email='danjac354@gmail.com',
     description='Unit testing for Flask',
     long_description=__doc__,
-    packages=['flaskext'],
-    namespace_packages=['flaskext'],
+    py_modules=['flask_testing'],
     test_suite="nose.collector",
     zip_safe=False,
     platforms='any',
