@@ -146,7 +146,17 @@ if you have database-specific code (e.g. for MySQL or PostgreSQL) it may not be 
 You may also want to add a set of instances for your database inside of a ``setUp()`` once your database
 tables have been created. If you want to work with larger sets of data, look at `Fixture`_ which includes
 support for SQLAlchemy.
-    
+
+Changelog
+---------
+
+* **0.4 (06.07.2012)**
+
+  * Use of the new introduced import way for flask extensions. Use ``import flask.ext.testing`` instead of ``import flaskext.testing``.
+  * Replace all ``assert`` with ``self.assert*`` methods for better output with unittest.
+  * Sounds crazy but improved python2.5 support.
+  * Use Flask's preferred JSON module.    
+
 
 API
 ---
