@@ -21,13 +21,13 @@ from flask import json_available
 if json_available:
     from flask import json
 
+# we'll use signals for template-related tests if
+# available in this version of Flask
 try:
-    # we'll use signals for template-related tests if
-    # available in this version of Flask
     import blinker
     from flask import template_rendered
     _is_signals = True
-except ImportError:
+except ImportError: # pragma: no cover
     _is_signals = False
 
 __all__ = ["TestCase", "TwillMixin"]
@@ -41,7 +41,7 @@ class JsonResponseMixin(object):
     """
     @cached_property
     def json(self):
-        if not json_available:
+        if not json_available: # pragma: no cover
             raise NotImplementedError
         return json.loads(self.data)
 
