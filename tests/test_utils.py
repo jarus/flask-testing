@@ -1,11 +1,4 @@
-from __future__ import with_statement
-
-from flask import Flask, Response, abort, redirect, url_for, \
-    jsonify, render_template
-
-from flask_testing import TestCase, TwillTestCase, \
-    ContextVariableDoesNotExist, Twill
-
+from flask_testing import TestCase, ContextVariableDoesNotExist
 from flask_app import create_app
 
 class TestSetup(TestCase):
@@ -18,27 +11,6 @@ class TestSetup(TestCase):
         self.assertTrue(self.app is not None)
         self.assertTrue(self.client is not None)
         self.assertTrue(self._ctx is not None)
-
-
-class TestTwill(TestCase):
-    
-    def create_app(self):
-        app = create_app()
-        app.config.from_object(self)
-        return app
-
-    def test_twill_setup(self):
-        
-        twill = Twill(self.app)
-
-        self.assertEqual(twill.host, "127.0.0.1")
-        self.assertEqual(twill.port, 5000)
-        self.assertTrue(twill.browser is not None)
-
-    def test_make_twill_url(self):
-        with Twill(self.app) as t:
-            self.assertEqual(t.url("/"), "http://127.0.0.1:5000/")
-
 
 class TestClientUtils(TestCase):
 
@@ -116,19 +88,3 @@ class TestClientUtils(TestCase):
                               self.get_context_variable, "foo")
         except RuntimeError:
             pass
-
- 
-class TestTwillDeprecated(TwillTestCase):
-    
-    def create_app(self):
-        app = create_app()
-        app.config.from_object(self)
-        return app
-
-    def test_twill_setup(self):
-        self.assertEqual(self.twill_host, '127.0.0.1')
-        self.assertEqual(self.twill_port, 5000)
-        self.assertTrue(self.browser is not None)
-
-    def test_make_twill_url(self):
-        self.assertEqual(self.make_twill_url("/"), "http://127.0.0.1:5000/")
