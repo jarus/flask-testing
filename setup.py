@@ -15,7 +15,6 @@ import sys
 from setuptools import setup
 
 tests_require = [
-    'nose',
     'blinker',
 ]
 
@@ -32,7 +31,7 @@ setup(
     description='Unit testing for Flask',
     long_description=__doc__,
     py_modules=['flask_testing'],
-    test_suite="nose.collector",
+    test_suite="tests.suite",
     zip_safe=False,
     platforms='any',
     install_requires=[
