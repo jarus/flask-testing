@@ -1,8 +1,9 @@
-from flaskext.testing import TestCase, Twill
+from twill.browser import TwillException
+from flask_testing import TestCase, Twill
 
 from todos import create_app
 
-class TestViews(TestCase, Twill):
+class TestViews(TestCase):
 
     def create_app(self):
         app = create_app()
@@ -10,17 +11,13 @@ class TestViews(TestCase, Twill):
         return app
 
     def test_manually(self):
-
-        self.twill.browser.go(self.twill.url("/"))
-        self.twill.browser.showforms()
-        self.twill.browser.submit(0)
+        with self.twill as t:
+            t.browser.go(self.twill.url("/"))
+            t.browser.showforms()
+            t.browser.submit(0)
 
     def test_bad_manually(self):
-        """
-        This will fail !
-        """
-        self.twill.browser.go(self.twill.url("/foo/"))
-        self.twill.browser.showforms()
-        self.twill.browser.submit(1)
-
-
+        with self.twill as t:
+            t.browser.go(self.twill.url("/foo/"))
+            t.browser.showforms()
+            self.assertRaises(TwillException, t.browser.submit, 1)
