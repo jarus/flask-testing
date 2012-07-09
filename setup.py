@@ -15,6 +15,7 @@ import sys
 from setuptools import setup
 
 tests_require = [
+    'twill',
     'blinker',
 ]
 
@@ -30,13 +31,12 @@ setup(
     author_email='danjac354@gmail.com',
     description='Unit testing for Flask',
     long_description=__doc__,
-    py_modules=['flask_testing'],
+    packages=['flask_testing'],
     test_suite="tests.suite",
     zip_safe=False,
     platforms='any',
     install_requires=[
         'Flask',
-        'twill',
     ],
     tests_require=tests_require,
     classifiers=[

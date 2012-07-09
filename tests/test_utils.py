@@ -1,4 +1,5 @@
-from flask_testing import TestCase, ContextVariableDoesNotExist
+from flask_testing import TestCase
+from flask_testing.utils import ContextVariableDoesNotExist
 from flask_app import create_app
 
 class TestSetup(TestCase):
