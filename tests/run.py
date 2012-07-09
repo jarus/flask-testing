@@ -12,7 +12,9 @@ def run():
         cov.start()
     
     from tests import suite
-    unittest.main(verbosity=2).run(suite())
+    result = unittest.TextTestRunner(verbosity=2).run(suite())
+    if not result.wasSuccessful:
+        sys.exit(1)
     
     if coverage_available:
         cov.stop()
