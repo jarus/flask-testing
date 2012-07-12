@@ -15,7 +15,6 @@ install:
   - pip install -e . --use-mirrors
 script:
   - python setup.py test
-  - python tests/run.py
 notifications:
   email:
     - christoph.heer@googlemail.com
