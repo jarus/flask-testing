@@ -1,3 +1,4 @@
+import sys
 import unittest
 
 try:
@@ -13,7 +14,7 @@ def run():
     
     from tests import suite
     result = unittest.TextTestRunner(verbosity=2).run(suite())
-    if not result.wasSuccessful:
+    if not result.wasSuccessful():
         sys.exit(1)
     
     if coverage_available:
