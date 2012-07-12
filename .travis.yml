@@ -11,11 +11,10 @@ env:
   - FLASK=0.6.1
   - FLASK=0.5.2
 install:
-  - pip install coverage --use-mirrors
-  - pip install flask==$FLASK --use-mirrors
-  - pip install -r tests/requirements.txt --use-mirrors
+  - pip install flask==$FLASK coverage --use-mirrors
   - pip install -e . --use-mirrors
 script:
+  - python setup.py test
   - python tests/run.py
 notifications:
   email:

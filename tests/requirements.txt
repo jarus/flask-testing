@@ -1,3 +1,0 @@
-twill
-blinker
-simplejson
