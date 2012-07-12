@@ -13,6 +13,7 @@ env:
 install:
   - pip install coverage --use-mirrors
   - pip install flask==$FLASK --use-mirrors
+  - pip install -r tests/requirements.txt --use-mirrors
   - pip install -e . --use-mirrors
 script:
   - python tests/run.py
