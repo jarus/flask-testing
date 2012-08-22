@@ -1,12 +1,12 @@
 Flask-Testing
-======================================
+*************
 
-.. module:: flask-testing
+.. module:: flask_testing
 
 The **Flask-Testing** extension provides unit testing utilities for Flask.
 
 Installing Flask-Testing
-------------------------
+========================
 
 Install with **pip** and **easy_install**::
 
@@ -21,8 +21,8 @@ or download the latest version from version control::
 If you are using **virtualenv**, it is assumed that you are installing **Flask-Testing**
 in the same virtualenv as your Flask application(s).
 
-Writing unit tests
-------------------
+Writing tests
+=============
 
 Simply subclass the ``TestCase`` class::
 
@@ -65,8 +65,8 @@ a special ``json`` attribute appended to the ``Response`` object::
 Using with Twill
 ----------------
 
-`Twill`_ is a simple language for browing the Web through
-a command line interface. 
+`Twill`_ is a simple language for browsing the Web through
+a command line interface.
 
 ``Flask-Testing`` comes with a helper class for creating functional tests using Twill::
 
@@ -81,7 +81,7 @@ The older ``TwillTestCase`` has been deprecated.
 Testing with SQLAlchemy
 -----------------------
 
-This covers a couple of points if you are using **Flask-Testing** with `SQLAlchemy`_. It is 
+This covers a couple of points if you are using **Flask-Testing** with `SQLAlchemy`_. It is
 assumed that you are using the `Flask-SQLAlchemy`_ extension, but if not the examples should
 not be too difficult to adapt to your own particular setup.
 
@@ -89,19 +89,19 @@ First, ensure you set the database URI to something other than your production d
 it's usually a good idea to create and drop your tables with each test run, to ensure clean tests::
 
     from flask.ext.testing import TestCase
-    
+
     from myapp import create_app, db
 
     class MyTest(TestCase):
-        
+
         SQLALCHEMY_DATABASE_URI = "sqlite://"
         TESTING = True
 
         def create_app(self):
-            
+
             # pass in test configuration
             return create_app(self)
-        
+
         def setUp(self):
 
             db.create_all()
@@ -116,13 +116,13 @@ session is properly removed and that a new session is started with each test run
 "gotcha".
 
 Another gotcha is that Flask-SQLAlchemy **also** removes the session instance at the end of every request (as
-should any threadsafe application using SQLAlchemy with **scoped_session**). Therefore the session
-is cleared along with any objects added to it every time you call ``client.get()`` or another client method. 
+should any thread safe application using SQLAlchemy with **scoped_session**). Therefore the session
+is cleared along with any objects added to it every time you call ``client.get()`` or another client method.
 
 For example::
 
     class SomeTest(MyTest):
-        
+
         def test_something(self):
 
             user = User()
@@ -147,19 +147,48 @@ You may also want to add a set of instances for your database inside of a ``setU
 tables have been created. If you want to work with larger sets of data, look at `Fixture`_ which includes
 support for SQLAlchemy.
 
-Changelog
+Running tests
+=============
+
+with unittest
+-------------
+
+For the beginning I go on the theory that you put all your tests into one file
+than you can use the :func:`unittest.main` function. This function will discover
+all your test methods in your :class:`TestCase` classes. Remember, the test
+methods and classes must starts with ``test`` (case-insensitive) that they will
+discover.
+
+An example test file cloud look like this::
+
+    import unittest
+    import flask.ext.testing
+
+    # your test cases
+
+    if __name__ == '__main__':
+        unittest.main()
+
+Now you can run your tests with ``python tests.py``.
+
+with nose
 ---------
+
+The `nose`_ collector and test runner works also fine with Flask-Testing.
+
+Changes
+=======
 
 * **0.4 (06.07.2012)**
 
   * Use of the new introduced import way for flask extensions. Use ``import flask.ext.testing`` instead of ``import flaskext.testing``.
   * Replace all ``assert`` with ``self.assert*`` methods for better output with unittest.
-  * Sounds crazy but improved python2.5 support.
-  * Use Flask's preferred JSON module.    
+  * Improved Python 2.5 support.
+  * Use Flask's preferred JSON module.
 
 
 API
----
+===
 
 .. module:: flask.ext.testing
 
@@ -177,3 +206,4 @@ API
 .. _Fixture: http://farmdev.com/projects/fixture/index.html
 .. _SQLAlchemy: http://sqlalchemy.org
 .. _Flask-SQLAlchemy: http://packages.python.org/Flask-SQLAlchemy/
+.. _nose: http://nose.readthedocs.org/en/latest/
