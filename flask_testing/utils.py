@@ -15,7 +15,7 @@ import unittest
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import json_available
+from flask import json_available, templating
 if json_available:
     from flask import json
 
@@ -50,6 +50,16 @@ def _make_test_response(response_class):
 
     return TestResponse
 
+def _empty_render(template, context, app):
+    """
+    Used to monkey patch the render_template flask method when
+    the render_templates property is set to False in the TestCase
+    """
+    if _is_signals:
+        from flaks import template_rendered
+        template_rendered.send(app, template=template, context=context)
+
+    return ""
 
 class TestCase(unittest.TestCase):
     
@@ -85,6 +95,9 @@ class TestCase(unittest.TestCase):
         self._ctx = self.app.test_request_context()
         self._ctx.push()
 
+        if self._is_not_render_templates():
+            self._monkey_patch_render_template()
+
         self.templates = []
         if _is_signals:
             template_rendered.connect(self._add_template)
@@ -99,6 +112,15 @@ class TestCase(unittest.TestCase):
             self.app.response_class = self._orig_response_class
         if _is_signals:
             template_rendered.disconnect(self._add_template)
+        if hasattr(self, '_true_render'):
+            templating._render = self._true_render
+
+    def _is_not_render_templates(self):
+        return hasattr(self, 'render_templates') and not self.render_templates
+
+    def _monkey_patch_render_template(self):
+        self._true_render = templating._render
+        templating._render = _empty_render
 
     def assertTemplateUsed(self, name):
         """
