@@ -111,5 +111,5 @@ class TestLiveServer(LiveServerTestCase):
 
         def test_server_listening(self):
             response = urllib2.urlopen(self.get_server_url())
-            self.assertIn('OK', response.read())
+            self.assertTrue('OK' in response.read())
             self.assertEqual(response.code, 200)
