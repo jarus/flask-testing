@@ -104,7 +104,7 @@ class TestLiveServer(LiveServerTestCase):
             process = self._process
 
             # Check the process is spawned
-            self.assertIsNotNone(process)
+            self.assertNotEqual(process, None)
             
             # Check the process is alive 
             self.assertTrue(process.is_alive())
