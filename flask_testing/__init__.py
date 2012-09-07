@@ -11,7 +11,7 @@
 
 from __future__ import absolute_import
 
-from .utils import TestCase
+from .utils import TestCase, LiveServerTestCase
 
 try:
     import twill

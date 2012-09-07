@@ -1,4 +1,5 @@
-from flask_testing import TestCase
+import urllib2
+from flask_testing import TestCase, LiveServerTestCase
 from flask_testing.utils import ContextVariableDoesNotExist
 from flask_app import create_app
 
@@ -89,3 +90,26 @@ class TestClientUtils(TestCase):
                               self.get_context_variable, "foo")
         except RuntimeError:
             pass
+
+class TestLiveServer(LiveServerTestCase):
+
+        def setUp(self):
+            self.port = 8943
+            super(TestLiveServer, self).setUp()
+
+        def create_app(self):
+            return create_app()
+
+        def test_server_process_is_spawned(self):
+            process = self._process
+
+            # Check the process is spawned
+            self.assertIsNotNone(process)
+            
+            # Check the process is alive 
+            self.assertTrue(process.is_alive())
+
+        def test_server_listening(self):
+            response = urllib2.urlopen(self.get_server_url())
+            self.assertIn('OK', response.read())
+            self.assertEqual(response.code, 200)

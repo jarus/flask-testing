@@ -10,7 +10,9 @@
 """
 from __future__ import absolute_import, with_statement
 
+import time
 import unittest
+import multiprocessing
 
 from werkzeug import cached_property
 
@@ -250,3 +252,53 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 405)
 
     assert_405 = assert405
+
+
+# A LiveServerTestCase useful with Selenium or headless browsers
+# Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
+
+class LiveServerTestCase(unittest.TestCase):
+
+    def create_app(self):
+        """
+        Create your Flask app here, with any
+        configuration you need.
+        """
+        raise NotImplementedError
+
+    def get_port(self):
+        "Return the port the server is running on"
+        port = 5000 #default
+        if hasattr(self, 'port'):
+            port = self.port 
+        return port
+
+    def get_server_url(self):
+        """
+        Return the url of the test server
+        """
+        return 'http://localhost:%s' % self.get_port()
+
+
+    def setUp(self): 
+        self._process = None
+
+        # Get the app
+        self.app = self.create_app()
+
+        worker = lambda app, port: app.run(port=port)
+
+        self._process = multiprocessing.Process(target=worker, 
+                                        args=(self.app, self.get_port()))
+
+        self._process.start()
+        
+        # we must wait the server start listening 
+        time.sleep(1)
+
+    def tearDown(self):
+        self._process.terminate()
+
+                
+
+
