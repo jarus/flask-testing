@@ -266,37 +266,45 @@ class LiveServerTestCase(unittest.TestCase):
         """
         raise NotImplementedError
 
-    def get_port(self):
-        "Return the port the server is running on"
-        port = 5000 #default
-        if hasattr(self, 'port'):
-            port = self.port 
-        return port
+    def __call__(self, result=None):
+        """
+        Does the required setup, doing it here
+        means you don't have to call super.setUp
+        in subclasses.
+        """
+        try:
+            self._pre_setup()
+            super(LiveServerTestCase, self).__call__(result)
+        finally:
+            self._post_teardown()
 
     def get_server_url(self):
         """
         Return the url of the test server
         """
-        return 'http://localhost:%s' % self.get_port()
+        return 'http://localhost:%s' % self.port
 
-
-    def setUp(self): 
+    def _pre_setup(self): 
         self._process = None
-
+        
         # Get the app
         self.app = self.create_app()
+        
+        self.port = 5000 # Default
+        if 'LIVESERVER_PORT' in self.app.config:
+            self.port = self.app.config['LIVESERVER_PORT']
 
         worker = lambda app, port: app.run(port=port)
 
         self._process = multiprocessing.Process(target=worker, 
-                                        args=(self.app, self.get_port()))
+                                        args=(self.app, self.port))
 
         self._process.start()
         
         # we must wait the server start listening 
         time.sleep(1)
 
-    def tearDown(self):
+    def _post_teardown(self):
         self._process.terminate()
 
                 

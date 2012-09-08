@@ -93,12 +93,10 @@ class TestClientUtils(TestCase):
 
 class TestLiveServer(LiveServerTestCase):
 
-        def setUp(self):
-            self.port = 8943
-            super(TestLiveServer, self).setUp()
-
         def create_app(self):
-            return create_app()
+            app = create_app()
+            app.config['LIVESERVER_PORT'] = 8943 
+            return app
 
         def test_server_process_is_spawned(self):
             process = self._process
