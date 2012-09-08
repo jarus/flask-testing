@@ -37,6 +37,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
+        'multiprocessing',
     ],
     tests_require=tests_require,
     classifiers=[

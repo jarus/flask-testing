@@ -10,7 +10,9 @@
 """
 from __future__ import absolute_import, with_statement
 
+import time
 import unittest
+import multiprocessing
 
 from werkzeug import cached_property
 
@@ -250,3 +252,61 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 405)
 
     assert_405 = assert405
+
+
+# A LiveServerTestCase useful with Selenium or headless browsers
+# Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
+
+class LiveServerTestCase(unittest.TestCase):
+
+    def create_app(self):
+        """
+        Create your Flask app here, with any
+        configuration you need.
+        """
+        raise NotImplementedError
+
+    def __call__(self, result=None):
+        """
+        Does the required setup, doing it here
+        means you don't have to call super.setUp
+        in subclasses.
+        """
+        try:
+            self._pre_setup()
+            super(LiveServerTestCase, self).__call__(result)
+        finally:
+            self._post_teardown()
+
+    def get_server_url(self):
+        """
+        Return the url of the test server
+        """
+        return 'http://localhost:%s' % self.port
+
+    def _pre_setup(self): 
+        self._process = None
+        
+        # Get the app
+        self.app = self.create_app()
+        
+        self.port = 5000 # Default
+        if 'LIVESERVER_PORT' in self.app.config:
+            self.port = self.app.config['LIVESERVER_PORT']
+
+        worker = lambda app, port: app.run(port=port)
+
+        self._process = multiprocessing.Process(target=worker, 
+                                        args=(self.app, self.port))
+
+        self._process.start()
+        
+        # we must wait the server start listening 
+        time.sleep(1)
+
+    def _post_teardown(self):
+        self._process.terminate()
+
+                
+
+

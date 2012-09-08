@@ -47,6 +47,32 @@ You must specify the ``create_app`` method, which should return a Flask instance
 
 If you don't define ``create_app`` a ``NotImplementedError`` will be raised.
 
+
+Testing with LiveServer
+-----------------------
+
+If you want your tests done via Selenium or other headless browser like
+PhantomJS you can use the LiveServerTestCase::
+
+    import urllib2
+    from flask.ext.testing import LiveServerTestCase
+    
+    class MyTest(LiveServerTestCase):
+
+        def create_app(self):
+            app = Flask(__name__)
+            app.config['TESTING'] = True
+            # Default port is 5000
+            app.config['LIVESERVER_PORT'] = 8943
+            return app
+
+        def test_server_is_up_and_running(self):
+            response = urllib2.open(self.get_server_url())
+            self.assertEqual(response.code, 200)
+
+The method ``get_server_url`` will return http://localhost:8943 in this case.
+
+
 Testing JSON responses
 ----------------------
 
