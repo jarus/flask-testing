@@ -56,7 +56,7 @@ def _empty_render(template, context, app):
     the render_templates property is set to False in the TestCase
     """
     if _is_signals:
-        from flaks import template_rendered
+        from flask import template_rendered
         template_rendered.send(app, template=template, context=context)
 
     return ""

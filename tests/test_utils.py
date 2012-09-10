@@ -103,6 +103,11 @@ class TestNotRenderTemplates(TestCase):
 
         assert "" == response.data
 
+    def test_assert_template_rendered_signal_sent(self):
+        response = self.client.get("/template/")
+
+        self.assert_template_used('index.html')
+
 class TestRenderTemplates(TestCase):
 
     render_templates = True
