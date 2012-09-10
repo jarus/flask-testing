@@ -1,3 +1,4 @@
+from unittest import TestResult
 from flask_testing import TestCase
 from flask_testing.utils import ContextVariableDoesNotExist
 from flask_app import create_app
@@ -89,3 +90,48 @@ class TestClientUtils(TestCase):
                               self.get_context_variable, "foo")
         except RuntimeError:
             pass
+
+class TestNotRenderTemplates(TestCase):
+
+    render_templates = False
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_not_process_the_template(self):
+        response = self.client.get("/template/")
+
+        assert "" == response.data
+
+    def test_assert_template_rendered_signal_sent(self):
+        response = self.client.get("/template/")
+
+        self.assert_template_used('index.html')
+
+class TestRenderTemplates(TestCase):
+
+    render_templates = True
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_not_process_the_template(self):
+        response = self.client.get("/template/")
+
+        assert "" != response.data
+
+class TestRestoreTheRealRender(TestCase):
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_the_real_render_template_is_restored(self):
+        test = TestNotRenderTemplates('test_assert_not_process_the_template')
+        test_result = TestResult()
+        test(test_result)
+
+        assert test_result.wasSuccessful()
+
+        response = self.client.get("/template/")
+
+        assert "" != response.data

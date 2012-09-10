@@ -62,6 +62,36 @@ a special ``json`` attribute appended to the ``Response`` object::
             response = self.client.get("/ajax/")
             self.assertEquals(response.json, dict(success=True))
 
+Opt to not render the templates
+-------------------------------
+
+When testing with mocks the template rendering can be a problem. If you don't want to render 
+the templates in the tests you can use the ``render_templates`` attribute::
+
+    class TestNotRenderTemplates(TestCase):
+
+        render_templates = False
+
+        def test_assert_not_process_the_template(self):
+            response = self.client.get("/template/")
+
+            assert "" == response.data
+
+The signal will be sent anyway so that you can check if the template was rendered using
+the ``assert_template_used`` method::
+
+    class TestNotRenderTemplates(TestCase):
+
+        render_templates = False
+
+        def test_assert_mytemplate_used(self):
+            response = self.client.get("/template/")
+
+            self.assert_template_used('mytemplate.html')
+
+When the template rendering is turned off the tests will also run faster and the view logic
+can be tested in isolation.
+
 Using with Twill
 ----------------
 
