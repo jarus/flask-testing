@@ -1,4 +1,5 @@
 import urllib2
+from unittest import TestResult
 from flask_testing import TestCase, LiveServerTestCase
 from flask_testing.utils import ContextVariableDoesNotExist
 from flask_app import create_app
@@ -18,7 +19,7 @@ class TestClientUtils(TestCase):
 
     def create_app(self):
         return create_app()
-    
+
     def test_get_json(self):
         response = self.client.get("/ajax/")
         self.assertEqual(response.json, dict(name="test"))
@@ -31,7 +32,7 @@ class TestClientUtils(TestCase):
 
     def test_assert_403(self):
         self.assert403(self.client.get("/forbidden/"))
-    
+
     def test_assert_401(self):
         self.assert401(self.client.get("/unauthorized/"))
 
@@ -86,16 +87,17 @@ class TestClientUtils(TestCase):
     def test_assert_get_context_variable_not_exists(self):
         try:
             response = self.client.get("/template/")
-            self.assertRaises(ContextVariableDoesNotExist, 
+            self.assertRaises(ContextVariableDoesNotExist,
                               self.get_context_variable, "foo")
         except RuntimeError:
             pass
+
 
 class TestLiveServer(LiveServerTestCase):
 
         def create_app(self):
             app = create_app()
-            app.config['LIVESERVER_PORT'] = 8943 
+            app.config['LIVESERVER_PORT'] = 8943
             return app
 
         def test_server_process_is_spawned(self):
@@ -103,11 +105,59 @@ class TestLiveServer(LiveServerTestCase):
 
             # Check the process is spawned
             self.assertNotEqual(process, None)
-            
-            # Check the process is alive 
+
+            # Check the process is alive
             self.assertTrue(process.is_alive())
 
         def test_server_listening(self):
             response = urllib2.urlopen(self.get_server_url())
             self.assertTrue('OK' in response.read())
             self.assertEqual(response.code, 200)
+
+
+class TestNotRenderTemplates(TestCase):
+
+    render_templates = False
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_not_process_the_template(self):
+        response = self.client.get("/template/")
+
+        assert "" == response.data
+
+    def test_assert_template_rendered_signal_sent(self):
+        response = self.client.get("/template/")
+
+        self.assert_template_used('index.html')
+
+
+class TestRenderTemplates(TestCase):
+
+    render_templates = True
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_not_process_the_template(self):
+        response = self.client.get("/template/")
+
+        assert "" != response.data
+
+
+class TestRestoreTheRealRender(TestCase):
+
+    def create_app(self):
+        return create_app()
+
+    def test_assert_the_real_render_template_is_restored(self):
+        test = TestNotRenderTemplates('test_assert_not_process_the_template')
+        test_result = TestResult()
+        test(test_result)
+
+        assert test_result.wasSuccessful()
+
+        response = self.client.get("/template/")
+
+        assert "" != response.data
