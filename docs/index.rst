@@ -67,7 +67,7 @@ PhantomJS you can use the LiveServerTestCase::
             return app
 
         def test_server_is_up_and_running(self):
-            response = urllib2.open(self.get_server_url())
+            response = urllib2.urlopen(self.get_server_url())
             self.assertEqual(response.code, 200)
 
 The method ``get_server_url`` will return http://localhost:8943 in this case.
