@@ -10,6 +10,7 @@
 """
 from __future__ import absolute_import, with_statement
 
+import gc
 import time
 import unittest
 import multiprocessing
@@ -64,7 +65,6 @@ def _empty_render(template, context, app):
     return ""
 
 class TestCase(unittest.TestCase):
-    
     def create_app(self):
         """
         Create your Flask app here, with any
@@ -85,8 +85,6 @@ class TestCase(unittest.TestCase):
             self._post_teardown()
 
     def _pre_setup(self):
-        self.app = self._ctx = None
-
         self.app = self.create_app()
 
         self._orig_response_class = self.app.response_class
@@ -116,6 +114,13 @@ class TestCase(unittest.TestCase):
             template_rendered.disconnect(self._add_template)
         if hasattr(self, '_true_render'):
             templating._render = self._true_render
+
+        del self.app
+        del self.client
+        del self.templates
+        del self._ctx
+
+        gc.collect()
 
     def _is_not_render_templates(self):
         return hasattr(self, 'render_templates') and not self.render_templates
