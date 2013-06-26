@@ -10,6 +10,7 @@
 """
 from __future__ import absolute_import, with_statement
 
+import gc
 import time
 import unittest
 import multiprocessing
@@ -118,6 +119,8 @@ class TestCase(unittest.TestCase):
         del self.client
         del self.templates
         del self._ctx
+
+        gc.collect()
 
     def _is_not_render_templates(self):
         return hasattr(self, 'render_templates') and not self.render_templates
