@@ -3,6 +3,7 @@ from __future__ import with_statement
 from flask_testing import TestCase, TwillTestCase, Twill
 from flask_app import create_app
 
+
 class TestTwill(TestCase):
 
     def create_app(self):
@@ -21,6 +22,7 @@ class TestTwill(TestCase):
     def test_make_twill_url(self):
         with Twill(self.app) as t:
             self.assertEqual(t.url("/"), "http://127.0.0.1:5000/")
+
 
 class TestTwillDeprecated(TwillTestCase):
 

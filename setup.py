@@ -7,8 +7,8 @@ Flask unittest integration.
 Links
 `````
 
-* `documentation <http://packages.python.org/Flask-Testing>`_
-* `development version <http://github.com/jarus/flask-testing/zipball/master#egg=Flask-Testing-dev>`_
+* `documentation <http://packages.python.org/Flask-Testing>`
+* `development version <http://github.com/jarus/flask-testing/zipball/master#egg=Flask-Testing-dev>`
 
 """
 import sys
@@ -19,7 +19,7 @@ tests_require = [
     'blinker',
 ]
 
-if sys.version_info < (2,6):
+if sys.version_info < (2, 6):
     tests_require.append('simplejson')
 
 setup(

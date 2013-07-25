@@ -1,10 +1,11 @@
 from flask import Flask, Response, abort, redirect, jsonify, render_template,\
     url_for
 
+
 def create_app():
 
     app = Flask(__name__)
-    
+
     @app.route("/")
     def index():
         return Response("OK")
