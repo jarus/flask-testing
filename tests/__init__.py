@@ -5,6 +5,7 @@ from flask_testing import is_twill_available
 from test_utils import TestSetup, TestClientUtils, TestLiveServer
 from test_twill import TestTwill, TestTwillDeprecated
 
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestSetup))
@@ -14,6 +15,5 @@ def suite():
         suite.addTest(unittest.makeSuite(TestTwill))
         suite.addTest(unittest.makeSuite(TestTwillDeprecated))
     else:
-        print "!!! Skipping tests of Twill components\n"
+        print("!!! Skipping tests of Twill components\n")
     return suite
-

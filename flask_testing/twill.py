@@ -16,6 +16,7 @@ import twill
 
 from .utils import TestCase
 
+
 class Twill(object):
     """
 
@@ -45,14 +46,14 @@ class Twill(object):
     def __enter__(self):
         twill.set_output(StringIO.StringIO())
         twill.commands.clear_cookies()
-        twill.add_wsgi_intercept(self.host, 
-                                 self.port, 
+        twill.add_wsgi_intercept(self.host,
+                                 self.port,
                                  lambda: self.app)
 
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
-        twill.remove_wsgi_intercept(self.host, 
+        twill.remove_wsgi_intercept(self.host,
                                     self.port)
 
         twill.commands.reset_output()
@@ -65,7 +66,7 @@ class Twill(object):
         :param url: relative URL
         """
         return "%s://%s:%d%s" % (self.scheme,
-                                 self.host, 
+                                 self.host,
                                  self.port,
                                  url)
 
@@ -86,15 +87,15 @@ class TwillTestCase(TestCase):
         super(TwillTestCase, self)._pre_setup()
         twill.set_output(StringIO.StringIO())
         twill.commands.clear_cookies()
-        twill.add_wsgi_intercept(self.twill_host, 
-                                 self.twill_port, 
+        twill.add_wsgi_intercept(self.twill_host,
+                                 self.twill_port,
                                  lambda: self.app)
 
         self.browser = twill.get_browser()
 
     def _post_teardown(self):
 
-        twill.remove_wsgi_intercept(self.twill_host, 
+        twill.remove_wsgi_intercept(self.twill_host,
                                     self.twill_port)
 
         twill.commands.reset_output()
@@ -109,6 +110,6 @@ class TwillTestCase(TestCase):
         :param url: relative URL
         """
         return "%s://%s:%d%s" % (self.twill_scheme,
-                                 self.twill_host, 
+                                 self.twill_host,
                                  self.twill_port,
                                  url)
