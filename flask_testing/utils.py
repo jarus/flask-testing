@@ -280,6 +280,18 @@ class TestCase(unittest.TestCase):
 
     assert_405 = assert405
 
+    def assert500(self, response):
+        """
+        Checks if response status code is 500
+
+        :versionadded: 0.4.1
+        :param response: Flask response
+        """
+
+        self.assertStatus(response, 500)
+
+    assert_500 = assert500
+
 
 # A LiveServerTestCase useful with Selenium or headless browsers
 # Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase

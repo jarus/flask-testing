@@ -33,4 +33,8 @@ def create_app():
     def unauthorized():
         abort(401)
 
+    @app.route("/internal_server_error/")
+    def internal_server_error():
+        abort(500)
+
     return app

@@ -24,7 +24,7 @@ if sys.version_info < (2,6):
 
 setup(
     name='Flask-Testing',
-    version='0.4',
+    version='0.4.1',
     url='https://github.com/jarus/flask-testing',
     license='BSD',
     author='Dan Jacob',

@@ -39,6 +39,9 @@ class TestClientUtils(TestCase):
     def test_assert_405(self):
         self.assert405(self.client.post("/"))
 
+    def test_assert_500(self):
+        self.assert500(self.client.get("/internal_server_error/"))
+
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
