@@ -3,8 +3,7 @@ python:
   - "2.7"
   - "2.6"
 env:
-  - FLASK=dev
-  - FLASK=0.10
+  - FLASK=0.10.1
   - FLASK=0.9
   - FLASK=0.8.1
 install:
