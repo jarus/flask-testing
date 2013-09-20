@@ -135,7 +135,7 @@ class TestCase(unittest.TestCase):
         self._true_render = templating._render
         templating._render = _empty_render
 
-    def assertTemplateUsed(self, name):
+    def assertTemplateUsed(self, name, attr='name'):
         """
         Checks if a given template is used in the request.
         Only works if your version of Flask has signals
@@ -148,7 +148,7 @@ class TestCase(unittest.TestCase):
             raise RuntimeError("Signals not supported")
 
         for template, context in self.templates:
-            if template.name == name:
+            if getattr(template, attr) == name:
                 return True
         raise AssertionError("template %s not used" % name)
 
