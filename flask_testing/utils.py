@@ -135,20 +135,24 @@ class TestCase(unittest.TestCase):
         self._true_render = templating._render
         templating._render = _empty_render
 
-    def assertTemplateUsed(self, name, attr='name'):
+    def assertTemplateUsed(self, name, tmpl_name_attribute='name'):
         """
         Checks if a given template is used in the request.
         Only works if your version of Flask has signals
         support (0.6+) and blinker is installed.
+        If the template engine used is not Jinja2, provide
+        :param tmpl_name_attribute: with a value of its `Template`
+        class attribute name which contains the provided :param name: value.
 
         :versionadded: 0.2
         :param name: template name
+        :param tmpl_name_attribute: template engine specific attribute name
         """
         if not _is_signals:
             raise RuntimeError("Signals not supported")
 
         for template, context in self.templates:
-            if getattr(template, attr) == name:
+            if getattr(template, tmpl_name_attribute) == name:
                 return True
         raise AssertionError("template %s not used" % name)
 
