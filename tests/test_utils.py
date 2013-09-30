@@ -4,6 +4,7 @@ from flask_testing import TestCase, LiveServerTestCase
 from flask_testing.utils import ContextVariableDoesNotExist
 from flask_app import create_app
 
+
 class TestSetup(TestCase):
 
     def create_app(self):
@@ -14,6 +15,7 @@ class TestSetup(TestCase):
         self.assertTrue(self.app is not None)
         self.assertTrue(self.client is not None)
         self.assertTrue(self._ctx is not None)
+
 
 class TestClientUtils(TestCase):
 
@@ -39,19 +41,22 @@ class TestClientUtils(TestCase):
     def test_assert_405(self):
         self.assert405(self.client.post("/"))
 
+    def test_assert_500(self):
+        self.assert500(self.client.get("/internal_server_error/"))
+
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
 
     def test_assert_template_used(self):
         try:
-            response = self.client.get("/template/")
+            self.client.get("/template/")
             self.assert_template_used("index.html")
         except RuntimeError:
             pass
 
     def test_assert_template_not_used(self):
-        response = self.client.get("/")
+        self.client.get("/")
         try:
             self.assert_template_used("index.html")
             assert False
@@ -62,21 +67,21 @@ class TestClientUtils(TestCase):
 
     def test_get_context_variable(self):
         try:
-            response = self.client.get("/template/")
+            self.client.get("/template/")
             self.assertEqual(self.get_context_variable("name"), "test")
         except RuntimeError:
             pass
 
     def test_assert_context(self):
         try:
-            response = self.client.get("/template/")
+            self.client.get("/template/")
             self.assert_context("name", "test")
         except RuntimeError:
             pass
 
     def test_assert_bad_context(self):
         try:
-            response = self.client.get("/template/")
+            self.client.get("/template/")
             self.assertRaises(AssertionError, self.assert_context,
                               "name", "foo")
             self.assertRaises(AssertionError, self.assert_context,
@@ -86,7 +91,7 @@ class TestClientUtils(TestCase):
 
     def test_assert_get_context_variable_not_exists(self):
         try:
-            response = self.client.get("/template/")
+            self.client.get("/template/")
             self.assertRaises(ContextVariableDoesNotExist,
                               self.get_context_variable, "foo")
         except RuntimeError:
@@ -128,7 +133,7 @@ class TestNotRenderTemplates(TestCase):
         assert "" == response.data
 
     def test_assert_template_rendered_signal_sent(self):
-        response = self.client.get("/template/")
+        self.client.get("/template/")
 
         self.assert_template_used('index.html')
 

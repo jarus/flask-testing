@@ -1,10 +1,11 @@
 from flask import Flask, Response, abort, redirect, jsonify, render_template,\
     url_for
 
+
 def create_app():
 
     app = Flask(__name__)
-    
+
     @app.route("/")
     def index():
         return Response("OK")
@@ -32,5 +33,9 @@ def create_app():
     @app.route("/unauthorized/")
     def unauthorized():
         abort(401)
+
+    @app.route("/internal_server_error/")
+    def internal_server_error():
+        abort(500)
 
     return app

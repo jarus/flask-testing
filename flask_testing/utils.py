@@ -18,7 +18,7 @@ import multiprocessing
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import json_available, templating
+from flask import json_available, templating, template_rendered
 if json_available:
     from flask import json
 
@@ -26,9 +26,8 @@ if json_available:
 # available in this version of Flask
 try:
     import blinker
-    from flask import template_rendered
     _is_signals = True
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     _is_signals = False
 
 __all__ = ["TestCase"]
@@ -62,7 +61,6 @@ def _empty_render(template, context, app):
     the render_templates property is set to False in the TestCase
     """
     if _is_signals:
-        from flask import template_rendered
         template_rendered.send(app, template=template, context=context)
 
     return ""
@@ -288,6 +286,18 @@ class TestCase(unittest.TestCase):
         self.assertStatus(response, 405)
 
     assert_405 = assert405
+
+    def assert500(self, response):
+        """
+        Checks if response status code is 500
+
+        :versionadded: 0.4.1
+        :param response: Flask response
+        """
+
+        self.assertStatus(response, 500)
+
+    assert_500 = assert500
 
 
 # A LiveServerTestCase useful with Selenium or headless browsers
