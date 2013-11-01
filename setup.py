@@ -19,8 +19,13 @@ tests_require = [
     'blinker',
 ]
 
+install_requires = [
+    'Flask'
+]
+
 if sys.version_info < (2, 6):
     tests_require.append('simplejson')
+    install_requires.append('multiprocessing')
 
 setup(
     name='Flask-Testing',
@@ -35,10 +40,7 @@ setup(
     test_suite="tests.suite",
     zip_safe=False,
     platforms='any',
-    install_requires=[
-        'Flask',
-        'multiprocessing',
-    ],
+    install_requires=install_requires,
     tests_require=tests_require,
     classifiers=[
         'Development Status :: 4 - Beta',
