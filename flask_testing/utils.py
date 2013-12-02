@@ -13,8 +13,10 @@ from __future__ import absolute_import, with_statement
 import gc
 import time
 import unittest
-import multiprocessing
-
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+import threading
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
@@ -319,10 +321,10 @@ class LiveServerTestCase(unittest.TestCase):
         in subclasses.
         """
         try:
-            self._pre_setup()
+            self._pre_setup_live()
             super(LiveServerTestCase, self).__call__(result)
         finally:
-            self._post_teardown()
+            self._post_teardown_live()
 
     def get_server_url(self):
         """
@@ -330,26 +332,30 @@ class LiveServerTestCase(unittest.TestCase):
         """
         return 'http://localhost:%s' % self.port
 
-    def _pre_setup(self):
-        self._process = None
+    def _pre_setup_live(self):
 
         # Get the app
         self.app = self.create_app()
 
-        self.port = 5000  # Default
         if 'LIVESERVER_PORT' in self.app.config:
             self.port = self.app.config['LIVESERVER_PORT']
+        else:
+            # find next free port
+            import socket
+            sock = socket.socket()
+            sock.bind(('localhost',0))
+            _, self.port = sock.getsockname()
+            sock.close()
 
-        worker = lambda app, port: app.run(port=port)
-
-        self._process = multiprocessing.Process(
-            target=worker, args=(self.app, self.port)
+        self.http_server = HTTPServer(WSGIContainer(self.app))
+        self.http_server.listen(self.port)
+        self._thread = threading.Thread(
+            target=IOLoop().instance().start
         )
 
-        self._process.start()
+        self._thread.start()
 
-        # we must wait the server start listening
-        time.sleep(1)
-
-    def _post_teardown(self):
-        self._process.terminate()
+    def _post_teardown_live(self):
+        self.http_server.stop()
+        IOLoop().instance().stop()
+        self._thread.join()

@@ -105,14 +105,14 @@ class TestLiveServer(LiveServerTestCase):
             app.config['LIVESERVER_PORT'] = 8943
             return app
 
-        def test_server_process_is_spawned(self):
-            process = self._process
+        def test_server_thread_is_spawned(self):
+            thread = self._thread
 
             # Check the process is spawned
-            self.assertNotEqual(process, None)
+            self.assertNotEqual(thread, None)
 
             # Check the process is alive
-            self.assertTrue(process.is_alive())
+            self.assertTrue(thread.is_alive())
 
         def test_server_listening(self):
             response = urllib2.urlopen(self.get_server_url())

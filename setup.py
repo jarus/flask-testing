@@ -20,7 +20,8 @@ tests_require = [
 ]
 
 install_requires = [
-    'Flask'
+    'Flask',
+    'tornado'
 ]
 
 if sys.version_info < (2, 6):
