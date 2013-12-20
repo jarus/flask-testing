@@ -11,10 +11,11 @@
 from __future__ import absolute_import, with_statement
 
 import gc
-import time
+import socket
 import unittest
+import weakref
 from tornado.wsgi import WSGIContainer
-from tornado.httpserver import HTTPServer
+from tornado.httpserver import HTTPServer, HTTPConnection
 from tornado.ioloop import IOLoop
 import threading
 from werkzeug import cached_property
@@ -341,13 +342,28 @@ class LiveServerTestCase(unittest.TestCase):
             self.port = self.app.config['LIVESERVER_PORT']
         else:
             # find next free port
-            import socket
+
             sock = socket.socket()
-            sock.bind(('localhost',0))
+            sock.bind(('localhost', 0))
             _, self.port = sock.getsockname()
             sock.close()
+        self.container = WSGIContainer(self.app)
 
-        self.http_server = HTTPServer(WSGIContainer(self.app))
+        class _HTTPServer(HTTPServer):
+            def __init__(self, *args, **kwargs):
+                self.connections = []
+                super(_HTTPServer, self).__init__(*args, **kwargs)
+
+            def handle_stream(self, stream, address):
+                self.connections.append(
+                    weakref.ref(HTTPConnection(stream, address, self.request_callback,
+                                   self.no_keep_alive, self.xheaders, self.protocol))
+                )
+            def stop(self):
+                super(_HTTPServer, self).stop()
+                [k().close() for k in self.connections if k()]
+
+        self.http_server = _HTTPServer(self.container)
         self.http_server.listen(self.port)
         self._thread = threading.Thread(
             target=IOLoop().instance().start
