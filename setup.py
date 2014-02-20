@@ -15,13 +15,15 @@ import sys
 from setuptools import setup
 
 tests_require = [
-    'twill',
-    'blinker',
+    'blinker'
 ]
 
 install_requires = [
     'Flask'
 ]
+
+if sys.version_info[0] < 3:
+    tests_require.append('twill')
 
 if sys.version_info < (2, 6):
     tests_require.append('simplejson')
@@ -49,6 +51,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]

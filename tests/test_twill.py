@@ -1,7 +1,7 @@
 from __future__ import with_statement
 
 from flask_testing import TestCase, TwillTestCase, Twill
-from flask_app import create_app
+from .flask_app import create_app
 
 
 class TestTwill(TestCase):
