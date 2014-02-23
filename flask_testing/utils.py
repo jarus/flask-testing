@@ -12,7 +12,10 @@ from __future__ import absolute_import, with_statement
 
 import gc
 import time
-import unittest
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 import multiprocessing
 
 from werkzeug import cached_property
