@@ -124,6 +124,8 @@ Using with Twill
 `Twill`_ is a simple language for browsing the Web through
 a command line interface.
 
+**Compatibility**: Please note that Twill only supports Python 2.x and therefore cannot be used with Python 3 or above.
+
 ``Flask-Testing`` comes with a helper class for creating functional tests using Twill::
 
     def test_something_with_twill(self):
