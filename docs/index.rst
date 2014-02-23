@@ -56,7 +56,7 @@ PhantomJS you can use the LiveServerTestCase::
 
     import urllib2
     from flask.ext.testing import LiveServerTestCase
-    
+
     class MyTest(LiveServerTestCase):
 
         def create_app(self):
@@ -91,7 +91,7 @@ a special ``json`` attribute appended to the ``Response`` object::
 Opt to not render the templates
 -------------------------------
 
-When testing with mocks the template rendering can be a problem. If you don't want to render 
+When testing with mocks the template rendering can be a problem. If you don't want to render
 the templates in the tests you can use the ``render_templates`` attribute::
 
     class TestNotRenderTemplates(TestCase):
@@ -123,6 +123,10 @@ Using with Twill
 
 `Twill`_ is a simple language for browsing the Web through
 a command line interface.
+
+.. note::
+
+   Please note that Twill only supports Python 2.x and therefore cannot be used with Python 3 or above.
 
 ``Flask-Testing`` comes with a helper class for creating functional tests using Twill::
 

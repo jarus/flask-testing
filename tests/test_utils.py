@@ -1,8 +1,11 @@
-import urllib2
+try:
+    from urllib2 import urlopen
+except ImportError:
+    from urllib.request import urlopen
 from unittest import TestResult
 from flask_testing import TestCase, LiveServerTestCase
 from flask_testing.utils import ContextVariableDoesNotExist
-from flask_app import create_app
+from .flask_app import create_app
 
 
 class TestSetup(TestCase):
@@ -115,8 +118,8 @@ class TestLiveServer(LiveServerTestCase):
             self.assertTrue(process.is_alive())
 
         def test_server_listening(self):
-            response = urllib2.urlopen(self.get_server_url())
-            self.assertTrue('OK' in response.read())
+            response = urlopen(self.get_server_url())
+            self.assertTrue(b'OK' in response.read())
             self.assertEqual(response.code, 200)
 
 
