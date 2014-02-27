@@ -142,8 +142,8 @@ class TestCase(unittest.TestCase):
         Only works if your version of Flask has signals
         support (0.6+) and blinker is installed.
         If the template engine used is not Jinja2, provide
-        :param tmpl_name_attribute: with a value of its `Template`
-        class attribute name which contains the provided :param name: value.
+        ``tmpl_name_attribute`` with a value of its `Template`
+        class attribute name which contains the provided ``name`` value.
 
         :versionadded: 0.2
         :param name: template name

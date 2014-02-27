@@ -239,7 +239,18 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
-* **0.4 (06.07.2012)**
+0.4.1 (27.02.2014)
+------------------
+
+This release is dedicated to every contributer who made this release possible. Thank you very much.
+
+  * Python 3 compatibility (without twill)
+  * Add ``LiveServerTestCase``
+  * Use unittest2 backports if available in python 2.6
+  * Install multiprocessing for python versions earlier than 2.6
+
+0.4 (06.07.2012)
+----------------
 
   * Use of the new introduced import way for flask extensions. Use ``import flask.ext.testing`` instead of ``import flaskext.testing``.
   * Replace all ``assert`` with ``self.assert*`` methods for better output with unittest.
