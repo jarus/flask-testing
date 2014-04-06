@@ -219,7 +219,7 @@ all your test methods in your :class:`TestCase` classes. Remember, the test
 methods and classes must starts with ``test`` (case-insensitive) that they will
 discover.
 
-An example test file cloud look like this::
+An example test file could look like this::
 
     import unittest
     import flask.ext.testing
