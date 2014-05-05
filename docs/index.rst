@@ -35,6 +35,7 @@ Simply subclass the ``TestCase`` class::
 
 You must specify the ``create_app`` method, which should return a Flask instance::
 
+    from flask import Flask
     from flask.ext.testing import TestCase
 
     class MyTest(TestCase):
@@ -55,6 +56,7 @@ If you want your tests done via Selenium or other headless browser like
 PhantomJS you can use the LiveServerTestCase::
 
     import urllib2
+    from flask import Flask
     from flask.ext.testing import LiveServerTestCase
 
     class MyTest(LiveServerTestCase):
