@@ -70,6 +70,11 @@ def _empty_render(template, context, app):
 
 
 class TestCase(unittest.TestCase):
+    
+    def __init__(self, methodName='runTest'):
+        self.app = self._ctx = self.client = self.templates = None
+        super(TestCase, self).__init__(methodName)
+    
     def create_app(self):
         """
         Create your Flask app here, with any
