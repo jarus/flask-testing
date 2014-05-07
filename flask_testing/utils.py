@@ -317,15 +317,18 @@ class LiveServerTestCase(unittest.TestCase):
 
     def __call__(self, result=None):
         """
-        Does the required setup, doing it here
-        means you don't have to call super.setUp
-        in subclasses.
+        Does the required setup, doing it here means you don't have to
+        call super.setUp in subclasses.
         """
+
+        # Get the app
+        self.app = self.create_app()
+
         try:
-            self._pre_setup()
+            self._spawn_live_server()
             super(LiveServerTestCase, self).__call__(result)
         finally:
-            self._post_teardown()
+            self._terminate_live_server()
 
     def get_server_url(self):
         """
@@ -333,15 +336,9 @@ class LiveServerTestCase(unittest.TestCase):
         """
         return 'http://localhost:%s' % self.port
 
-    def _pre_setup(self):
+    def _spawn_live_server(self):
         self._process = None
-
-        # Get the app
-        self.app = self.create_app()
-
-        self.port = 5000  # Default
-        if 'LIVESERVER_PORT' in self.app.config:
-            self.port = self.app.config['LIVESERVER_PORT']
+        self.port = self.app.config.get('LIVESERVER_PORT', 5000)
 
         worker = lambda app, port: app.run(port=port)
 
@@ -354,5 +351,6 @@ class LiveServerTestCase(unittest.TestCase):
         # we must wait the server start listening
         time.sleep(1)
 
-    def _post_teardown(self):
-        self._process.terminate()
+    def _terminate_live_server(self):
+        if self._process:
+            self._process.terminate()
