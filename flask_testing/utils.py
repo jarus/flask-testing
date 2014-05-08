@@ -83,6 +83,7 @@ class TestCase(unittest.TestCase):
         means you don't have to call super.setUp
         in subclasses.
         """
+        self.app = self._ctx = self.client = self.templates = None
         try:
             self._pre_setup()
             super(TestCase, self).__call__(result)
