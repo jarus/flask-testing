@@ -23,7 +23,7 @@ install_requires = [
 ]
 
 if sys.version_info[0] < 3:
-    tests_require.append('twill')
+    tests_require.append('twill==0.9')
 
 if sys.version_info < (2, 6):
     tests_require.append('simplejson')
