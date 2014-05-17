@@ -51,6 +51,13 @@ class TestClientUtils(TestCase):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
 
+    def test_redirects_error_message(self):
+        response = self.client.get("/")
+        self.assertRaisesRegexp(
+            AssertionError,
+            "200 not found in \(301, 302\)",
+            lambda: self.assertRedirects(response, "/"))
+
     def test_assert_template_used(self):
         try:
             self.client.get("/template/")
