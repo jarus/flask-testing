@@ -20,6 +20,16 @@ class TestSetup(TestCase):
         self.assertTrue(self._ctx is not None)
 
 
+class TestSetupFailure(TestCase):
+
+    def _pre_setup(self):
+        pass
+
+    def test_setup_failure(self):
+        '''Should not fail in _post_teardown if _pre_setup fails'''
+        assert True
+
+
 class TestClientUtils(TestCase):
 
     def create_app(self):
