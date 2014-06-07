@@ -59,7 +59,7 @@ class TestClientUtils(TestCase):
 
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
-        self.assertRedirects(response, "/")
+        self.assertRedirects(response, "http://localhost/")
 
     def test_assert_template_used(self):
         try:
