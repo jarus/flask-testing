@@ -114,9 +114,9 @@ class TestCase(unittest.TestCase):
         self.templates.append((template, context))
 
     def _post_teardown(self):
-        if self._ctx is not None:
+        if getattr(self, '_ctx', None) is not None:
             self._ctx.pop()
-        if self.app is not None:
+        if getattr(self, 'app', None) is not None:
             self.app.response_class = self._orig_response_class
         if _is_signals:
             template_rendered.disconnect(self._add_template)
