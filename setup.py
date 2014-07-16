@@ -21,7 +21,7 @@ tests_require = [
 
 install_requires = [
     'Flask',
-    'tornado'
+    'tornado==3.2'
 ]
 
 if sys.version_info < (2, 6):
