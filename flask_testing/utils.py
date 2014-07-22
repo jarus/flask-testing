@@ -210,96 +210,107 @@ class TestCase(unittest.TestCase):
 
     assert_redirects = assertRedirects
 
-    def assertStatus(self, response, status_code):
+    def assertStatus(self, response, status_code, message=None):
         """
         Helper method to check matching response status.
 
         :param response: Flask response
         :param status_code: response status code (e.g. 200)
+        :param message: Message to display on test failure
         """
-        self.assertEqual(response.status_code, status_code)
+
+        message = message or 'HTTP Status %s expected but got %s' \
+                             % (status_code, response.status_code)
+        self.assertEqual(response.status_code, status_code, message)
 
     assert_status = assertStatus
 
-    def assert200(self, response):
+    def assert200(self, response, message=None):
         """
         Checks if response status code is 200
 
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 200)
+        self.assertStatus(response, 200, message)
 
     assert_200 = assert200
 
-    def assert400(self, response):
+    def assert400(self, response, message=None):
         """
         Checks if response status code is 400
 
         :versionadded: 0.2.5
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 400)
+        self.assertStatus(response, 400, message)
 
     assert_400 = assert400
 
-    def assert401(self, response):
+    def assert401(self, response, message=None):
         """
         Checks if response status code is 401
 
         :versionadded: 0.2.1
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 401)
+        self.assertStatus(response, 401, message)
 
     assert_401 = assert401
 
-    def assert403(self, response):
+    def assert403(self, response, message=None):
         """
         Checks if response status code is 403
 
         :versionadded: 0.2
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 403)
+        self.assertStatus(response, 403, message)
 
     assert_403 = assert403
 
-    def assert404(self, response):
+    def assert404(self, response, message=None):
         """
         Checks if response status code is 404
 
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 404)
+        self.assertStatus(response, 404, message)
 
     assert_404 = assert404
 
-    def assert405(self, response):
+    def assert405(self, response, message=None):
         """
         Checks if response status code is 405
 
         :versionadded: 0.2
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 405)
+        self.assertStatus(response, 405, message)
 
     assert_405 = assert405
 
-    def assert500(self, response):
+    def assert500(self, response, message=None):
         """
         Checks if response status code is 500
 
         :versionadded: 0.4.1
         :param response: Flask response
+        :param message: Message to display on test failure
         """
 
-        self.assertStatus(response, 500)
+        self.assertStatus(response, 500, message)
 
     assert_500 = assert500
 
