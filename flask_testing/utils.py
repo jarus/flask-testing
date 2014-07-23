@@ -83,7 +83,6 @@ class TestCase(unittest.TestCase):
         means you don't have to call super.setUp
         in subclasses.
         """
-        self.app = self._ctx = self.client = self.templates = None
         try:
             self._pre_setup()
             super(TestCase, self).__call__(result)
@@ -116,17 +115,23 @@ class TestCase(unittest.TestCase):
     def _post_teardown(self):
         if getattr(self, '_ctx', None) is not None:
             self._ctx.pop()
+            del self._ctx
+
         if getattr(self, 'app', None) is not None:
-            self.app.response_class = self._orig_response_class
+            if getattr(self, '_orig_response_class', None) is not None:
+                self.app.response_class = self._orig_response_class
+            del self.app
+
+        if hasattr(self, 'client'):
+            del self.client
+
+        if hasattr(self, 'templates'):
+            del self.templates
+
         if _is_signals:
             template_rendered.disconnect(self._add_template)
         if hasattr(self, '_true_render'):
             templating._render = self._true_render
-
-        del self.app
-        del self.client
-        del self.templates
-        del self._ctx
 
         gc.collect()
 

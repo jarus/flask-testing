@@ -14,7 +14,6 @@ class TestSetup(TestCase):
         return create_app()
 
     def test_setup(self):
-
         self.assertTrue(self.app is not None)
         self.assertTrue(self.client is not None)
         self.assertTrue(self._ctx is not None)
@@ -29,6 +28,19 @@ class TestSetupFailure(TestCase):
         '''Should not fail in _post_teardown if _pre_setup fails'''
         assert True
 
+class TestTeardownGraceful(TestCase):
+
+    def create_app(self):
+        return create_app()
+
+    def test_remove_testcase_attributes(self):
+        """
+        There should no exception after this test because teardown
+        is graceful.
+        """
+
+        del self.app
+        del self._ctx
 
 class TestClientUtils(TestCase):
 
