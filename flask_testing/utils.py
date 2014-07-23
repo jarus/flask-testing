@@ -70,6 +70,9 @@ def _empty_render(template, context, app):
 
 
 class TestCase(unittest.TestCase):
+
+    run_gc_after_test = False
+
     def create_app(self):
         """
         Create your Flask app here, with any
@@ -133,7 +136,8 @@ class TestCase(unittest.TestCase):
         if hasattr(self, '_true_render'):
             templating._render = self._true_render
 
-        gc.collect()
+        if self.run_gc_after_test:
+            gc.collect()
 
     def _is_not_render_templates(self):
         return hasattr(self, 'render_templates') and not self.render_templates
