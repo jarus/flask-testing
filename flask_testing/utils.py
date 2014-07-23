@@ -71,6 +71,7 @@ def _empty_render(template, context, app):
 
 class TestCase(unittest.TestCase):
 
+    render_templates = True
     run_gc_after_test = False
 
     def create_app(self):
@@ -103,8 +104,10 @@ class TestCase(unittest.TestCase):
         self._ctx = self.app.test_request_context()
         self._ctx.push()
 
-        if self._is_not_render_templates():
-            self._monkey_patch_render_template()
+        if not self.render_templates:
+            # Monkey patch the original template render with a empty render
+            self._original_template_render = templating._render
+            templating._render = _empty_render
 
         self.templates = []
         if _is_signals:
@@ -138,13 +141,6 @@ class TestCase(unittest.TestCase):
 
         if self.run_gc_after_test:
             gc.collect()
-
-    def _is_not_render_templates(self):
-        return hasattr(self, 'render_templates') and not self.render_templates
-
-    def _monkey_patch_render_template(self):
-        self._true_render = templating._render
-        templating._render = _empty_render
 
     def assertTemplateUsed(self, name, tmpl_name_attribute='name'):
         """
