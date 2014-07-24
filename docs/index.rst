@@ -241,6 +241,12 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.4.2 (24.07.2014)
+------------------
+
+  * Improved teardown to be more graceful.
+  * Add ``message`` argument to ``assertStatus`` respectively all assertion methods with fixed status like ``assert404``.
+
 0.4.1 (27.02.2014)
 ------------------
 
