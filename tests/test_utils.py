@@ -51,6 +51,22 @@ class TestClientUtils(TestCase):
         response = self.client.get("/ajax/")
         self.assertEqual(response.json, dict(name="test"))
 
+    def test_status_failure_message(self):
+        expected_message = 'my message'
+        try:
+            self.assertStatus(self.client.get('/'), 404, expected_message)
+        except AssertionError as e:
+            self.assertTrue(expected_message in e.args[0] or \
+                            expected_message in e.message)
+
+    def test_default_status_failure_message(self):
+        expected_message = 'HTTP Status 404 expected but got 200'
+        try:
+            self.assertStatus(self.client.get('/'), 404)
+        except AssertionError as e:
+            self.assertTrue(expected_message in e.args[0] or \
+                            expected_message in e.message)
+
     def test_assert_200(self):
         self.assert200(self.client.get("/"))
 
