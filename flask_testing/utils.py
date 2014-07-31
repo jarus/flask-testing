@@ -12,6 +12,7 @@ from __future__ import absolute_import, with_statement
 
 import gc
 import time
+import urlparse
 try:
     import unittest2 as unittest
 except ImportError:
