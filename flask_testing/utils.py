@@ -211,7 +211,7 @@ class TestCase(unittest.TestCase):
         :param location: relative URL (i.e. without **http://localhost**)
         """
         self.assertTrue(response.status_code in (301, 302))
-        self.assertEqual(response.location, "http://localhost" + location)
+        self.assertEqual(response.location, urlparse.urljoin('http://localhost', location))
 
     assert_redirects = assertRedirects
 
