@@ -357,7 +357,7 @@ class LiveServerTestCase(unittest.TestCase):
         self._process = None
         self.port = self.app.config.get('LIVESERVER_PORT', 5000)
 
-        worker = lambda app, port: app.run(port=port)
+        worker = lambda app, port: app.run(port=port, use_reloader=False)
 
         self._process = multiprocessing.Process(
             target=worker, args=(self.app, self.port)
