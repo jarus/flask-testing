@@ -53,10 +53,10 @@ class TestClientUtils(TestCase):
 
     def test_redirects_error_message(self):
         response = self.client.get("/")
-        self.assertRaisesRegexp(
-            AssertionError,
-            "200 not found in \(301, 302\)",
-            lambda: self.assertRedirects(response, "/"))
+        with self.assertRaises(AssertionError) as cm:
+            self.assertRedirects(response, "/")
+        exception = cm.exception
+        self.assertEqual(exception.message, "False is not True : 200 not found in (301, 302)")
 
     def test_assert_template_used(self):
         try:
