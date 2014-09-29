@@ -56,7 +56,7 @@ class TestClientUtils(TestCase):
         with self.assertRaises(AssertionError) as cm:
             self.assertRedirects(response, "/")
         exception = cm.exception
-        self.assertEqual(exception.message, "False is not True : 200 not found in (301, 302)")
+        self.assertEqual(str(exception), "200 not found in (301, 302)")
 
     def test_assert_template_used(self):
         try:
