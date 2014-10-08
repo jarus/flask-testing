@@ -104,6 +104,11 @@ class TestCase(unittest.TestCase):
         self._ctx = self.app.test_request_context()
         self._ctx.push()
 
+        # compatibility for flask < 0.9
+        if hasattr(self.app, 'app_context'):
+            self._app_ctx = self.app.app_context()
+            self._app_ctx.push()
+
         if not self.render_templates:
             # Monkey patch the original template render with a empty render
             self._original_template_render = templating._render
@@ -122,6 +127,9 @@ class TestCase(unittest.TestCase):
         if getattr(self, '_ctx', None) is not None:
             self._ctx.pop()
             del self._ctx
+
+        if hasattr(self, '_app_ctx'):
+            self._app_ctx.pop()
 
         if getattr(self, 'app', None) is not None:
             if getattr(self, '_orig_response_class', None) is not None:
