@@ -16,6 +16,10 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+try:
+    from urllib2 import urlopen
+except ImportError:
+    from urllib.request import urlopen
 import multiprocessing
 
 from werkzeug import cached_property
@@ -365,8 +369,15 @@ class LiveServerTestCase(unittest.TestCase):
 
         self._process.start()
 
-        # we must wait the server start listening
-        time.sleep(1)
+        # we must wait for the server to start listening with a maximum timeout of 5 seconds
+        timeout = 5
+        while timeout > 0:
+            time.sleep(1)
+            try:
+                urlopen(self.get_server_url())
+                timeout = 0
+            except:
+                timeout -= 1
 
     def _terminate_live_server(self):
         if self._process:
