@@ -345,10 +345,15 @@ class LiveServerTestCase(unittest.TestCase):
         # Get the app
         self.app = self.create_app()
 
+        # We need to create a context in order for extensions to catch up
+        self._ctx = self.app.test_request_context()
+        self._ctx.push()
+
         try:
             self._spawn_live_server()
             super(LiveServerTestCase, self).__call__(result)
         finally:
+            self._post_teardown()
             self._terminate_live_server()
 
     def get_server_url(self):
@@ -378,6 +383,11 @@ class LiveServerTestCase(unittest.TestCase):
                 timeout = 0
             except:
                 timeout -= 1
+
+    def _post_teardown(self):
+        if getattr(self, '_ctx', None) is not None:
+            self._ctx.pop()
+            del self._ctx
 
     def _terminate_live_server(self):
         if self._process:
