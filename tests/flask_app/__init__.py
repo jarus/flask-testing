@@ -22,6 +22,10 @@ def create_app():
     def redirect_to_index():
         return redirect(url_for("index"))
 
+    @app.route("/redirect-next/")
+    def redirect_from_somewhere():
+        return redirect(url_for("index", next='/somewhere/'))
+
     @app.route("/ajax/")
     def ajax():
         return jsonify(name="test")
