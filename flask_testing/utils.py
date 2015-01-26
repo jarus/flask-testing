@@ -26,7 +26,7 @@ import multiprocessing
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import json_available, templating, template_rendered
+from flask import json_available, templating, template_rendered, message_flashed
 
 if json_available:
     from flask import json
@@ -117,13 +117,19 @@ class TestCase(unittest.TestCase):
             templating._render = _empty_render
 
         self.templates = []
+        self.flashed_messages = []
+
         if _is_signals:
             template_rendered.connect(self._add_template)
+            message_flashed.connect(self._add_flash_message)
 
     def _add_template(self, app, template, context):
         if len(self.templates) > 0:
             self.templates = []
         self.templates.append((template, context))
+
+    def _add_flash_message(self, app, message, category):
+        self.flashed_messages.append((message, category))
 
     def _post_teardown(self):
         if getattr(self, '_ctx', None) is not None:
@@ -141,8 +147,13 @@ class TestCase(unittest.TestCase):
         if hasattr(self, 'templates'):
             del self.templates
 
+        if hasattr(self, 'flashed_messages'):
+            del self.flashed_messages
+
         if _is_signals:
             template_rendered.disconnect(self._add_template)
+            message_flashed.disconnect(self._add_flash_message)
+
         if hasattr(self, '_true_render'):
             templating._render = self._true_render
 
@@ -176,6 +187,27 @@ class TestCase(unittest.TestCase):
         raise AssertionError("template %s not used. Templates were used: %s" % (name, ' '.join(used_templates)))
 
     assert_template_used = assertTemplateUsed
+
+    def assertMessageFlashed(self, message, category='message'):
+        """
+        Checks if a given message were flashed.
+        Only works if your version of Flask has signals
+        support (0.6+) and blinker is installed.
+
+        :param message: expected message
+        :param category: expected message category
+        """
+
+        if not _is_signals:
+            raise RuntimeError("Signals not supported")
+
+        for _message, _category in self.flashed_messages:
+            if _message == message and _category == category:
+                return True
+
+        raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
+
+    assert_message_flashed = assertMessageFlashed
 
     def get_context_variable(self, name):
         """
