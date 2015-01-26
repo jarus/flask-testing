@@ -12,6 +12,7 @@ from __future__ import absolute_import, with_statement
 
 import gc
 import time
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -26,6 +27,7 @@ from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
 from flask import json_available, templating, template_rendered
+
 if json_available:
     from flask import json
 
@@ -33,6 +35,7 @@ if json_available:
 # available in this version of Flask
 try:
     import blinker
+
     _is_signals = True
 except ImportError:  # pragma: no cover
     _is_signals = False
@@ -48,6 +51,7 @@ class JsonResponseMixin(object):
     """
     Mixin with testing helper methods
     """
+
     @cached_property
     def json(self):
         if not json_available:  # pragma: no cover
@@ -74,7 +78,6 @@ def _empty_render(template, context, app):
 
 
 class TestCase(unittest.TestCase):
-
     render_templates = True
     run_gc_after_test = False
 
@@ -162,10 +165,15 @@ class TestCase(unittest.TestCase):
         if not _is_signals:
             raise RuntimeError("Signals not supported")
 
+        used_templates = []
+
         for template, context in self.templates:
             if getattr(template, tmpl_name_attribute) == name:
                 return True
-        raise AssertionError("template %s not used" % name)
+
+            used_templates.append(template)
+
+        raise AssertionError("template %s not used. Templates were used: %s" % (name, ' '.join(used_templates)))
 
     assert_template_used = assertTemplateUsed
 
@@ -328,7 +336,6 @@ class TestCase(unittest.TestCase):
 # Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
 
 class LiveServerTestCase(unittest.TestCase):
-
     def create_app(self):
         """
         Create your Flask app here, with any
