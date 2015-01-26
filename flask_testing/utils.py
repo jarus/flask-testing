@@ -214,16 +214,17 @@ class TestCase(unittest.TestCase):
 
     assert_context = assertContext
 
-    def assertRedirects(self, response, location):
+    def assertRedirects(self, response, location=None):
         """
         Checks if response is an HTTP redirect to the
-        given location.
+        given location (if any).
 
         :param response: Flask response
-        :param location: relative URL (i.e. without **http://localhost**)
+        :param location: complete URL or ``None`` to skip location check
         """
         self.assertTrue(response.status_code in (301, 302))
-        self.assertEqual(response.location, "http://localhost" + location)
+        if location is not None:
+            self.assertEqual(response.location, location)
 
     assert_redirects = assertRedirects
 
