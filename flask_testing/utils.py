@@ -26,7 +26,15 @@ import multiprocessing
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import json_available, templating, template_rendered, message_flashed
+from flask import json_available, templating, template_rendered
+
+try:
+    from flask import message_flashed
+
+    _is_message_flashed = True
+except ImportError:
+    message_flashed = None
+    _is_message_flashed = False
 
 if json_available:
     from flask import json
@@ -121,6 +129,8 @@ class TestCase(unittest.TestCase):
 
         if _is_signals:
             template_rendered.connect(self._add_template)
+
+        if _is_message_flashed:
             message_flashed.connect(self._add_flash_message)
 
     def _add_template(self, app, template, context):
@@ -152,6 +162,8 @@ class TestCase(unittest.TestCase):
 
         if _is_signals:
             template_rendered.disconnect(self._add_template)
+
+        if _is_message_flashed:
             message_flashed.disconnect(self._add_flash_message)
 
         if hasattr(self, '_true_render'):
@@ -191,8 +203,8 @@ class TestCase(unittest.TestCase):
     def assertMessageFlashed(self, message, category='message'):
         """
         Checks if a given message were flashed.
-        Only works if your version of Flask has signals
-        support (0.6+) and blinker is installed.
+        Only works if your version of Flask has message_flashed
+        signal support (0.10+) and blinker is installed.
 
         :param message: expected message
         :param category: expected message category
@@ -200,6 +212,10 @@ class TestCase(unittest.TestCase):
 
         if not _is_signals:
             raise RuntimeError("Signals not supported")
+
+        if not _is_message_flashed:
+            raise RuntimeError("Your version of Flask doesn't support message_flashed signal."
+                               "You need Flask from 0.10 and higher.")
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
