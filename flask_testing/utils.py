@@ -336,6 +336,9 @@ class TestCase(unittest.TestCase):
 # Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
 
 class LiveServerTestCase(unittest.TestCase):
+
+    process_factory = multiprocessing.Process
+
     def create_app(self):
         """
         Create your Flask app here, with any
@@ -375,7 +378,7 @@ class LiveServerTestCase(unittest.TestCase):
 
         worker = lambda app, port: app.run(port=port, use_reloader=False)
 
-        self._process = multiprocessing.Process(
+        self._process = self.process_factory(
             target=worker, args=(self.app, self.port)
         )
 
