@@ -143,8 +143,8 @@ class TestCase(unittest.TestCase):
 
         if _is_signals:
             template_rendered.disconnect(self._add_template)
-        if hasattr(self, '_true_render'):
-            templating._render = self._true_render
+        if hasattr(self, '_original_template_render'):
+            templating._render = self._original_template_render
 
         if self.run_gc_after_test:
             gc.collect()
