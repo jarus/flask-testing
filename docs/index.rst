@@ -215,7 +215,7 @@ Running tests
 with unittest
 -------------
 
-I recommend you to put all your tests into one file so that you can you can use 
+I recommend you to put all your tests into one file so that you can use 
 the :func:`unittest.main` function. This function will discover all your test 
 methods in your :class:`TestCase` classes. Remember, the names of the test
 methods and classes must start with ``test`` (case-insensitive) so that 
