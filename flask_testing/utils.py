@@ -11,17 +11,14 @@
 from __future__ import absolute_import, with_statement
 
 import gc
+import multiprocessing
+import socket
 import time
 
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest
-try:
-    from urllib2 import urlopen
-except ImportError:
-    from urllib.request import urlopen
-import multiprocessing
 
 from werkzeug import cached_property
 
@@ -382,14 +379,17 @@ class LiveServerTestCase(unittest.TestCase):
         self._process.start()
 
         # we must wait for the server to start listening with a maximum timeout of 5 seconds
-        timeout = 5
-        while timeout > 0:
-            time.sleep(1)
+        start_time = time.time()
+        while True:
+            if time.time() - start_time > 5:
+                raise Exception()
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
-                urlopen(self.get_server_url())
-                timeout = 0
-            except:
-                timeout -= 1
+                s.connect(('localhost', self.port))
+            except socket.error:
+                pass
+            else:
+                return
 
     def _post_teardown(self):
         if getattr(self, '_ctx', None) is not None:
