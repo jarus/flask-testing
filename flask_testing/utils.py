@@ -378,11 +378,16 @@ class LiveServerTestCase(unittest.TestCase):
 
         self._process.start()
 
-        # we must wait for the server to start listening with a maximum timeout of 5 seconds
+        # We must wait for the server to start listening, with a maximum
+        # timeout of the amount of seconds specified in the LIVESERVER_TIMEOUT
+        # setting. Defaults to 5 seconds.
+        timeout = self.app.config.get('LIVESERVER_TIMEOUT', 5)
         start_time = time.time()
         while True:
-            if time.time() - start_time > 5:
-                raise Exception()
+            if (time.time() - start_time) > timeout:
+                raise socket.timeout(
+                    'Took more than %s seconds to start the server' % timeout
+                )
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
                 s.connect(('localhost', self.port))
