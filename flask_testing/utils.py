@@ -223,8 +223,10 @@ class TestCase(unittest.TestCase):
         :param location: relative URL (i.e. without **http://localhost**)
         """
         server_name = self.app.config.get('SERVER_NAME') or 'localhost'
+        scheme = self.app.config.get('PREFERRED_URL_SCHEME') or 'http'
         self.assertTrue(response.status_code in (301, 302))
-        self.assertEqual(response.location, "http://" + server_name + location)
+        self.assertEqual(response.location,
+                         scheme + "://" + server_name + location)
 
     assert_redirects = assertRedirects
 
