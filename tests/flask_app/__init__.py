@@ -1,10 +1,11 @@
 from flask import Flask, Response, abort, redirect, jsonify, render_template,\
-    url_for
+    url_for, flash
 
 
 def create_app():
 
     app = Flask(__name__)
+    app.secret_key = 'some_secret'
 
     @app.route("/")
     def index():
@@ -13,6 +14,11 @@ def create_app():
     @app.route("/template/")
     def index_with_template():
         return render_template("index.html", name="test")
+
+    @app.route("/flash/")
+    def index_with_flash():
+        flash("Flashed message")
+        return render_template("index.html")
 
     @app.route("/oops/")
     def bad_url():
