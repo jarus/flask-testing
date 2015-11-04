@@ -166,8 +166,8 @@ class TestCase(unittest.TestCase):
         if _is_message_flashed:
             message_flashed.disconnect(self._add_flash_message)
 
-        if hasattr(self, '_true_render'):
-            templating._render = self._true_render
+        if hasattr(self, '_original_template_render'):
+            templating._render = self._original_template_render
 
         if self.run_gc_after_test:
             gc.collect()
