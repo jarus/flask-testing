@@ -1,5 +1,5 @@
 from flask import Flask, Response, abort, redirect, jsonify, render_template,\
-    url_for
+    url_for, flash
 
 
 def create_app():
@@ -13,6 +13,11 @@ def create_app():
     @app.route("/template/")
     def index_with_template():
         return render_template("index.html", name="test")
+
+    @app.route("/flash/")
+    def index_with_flash():
+        flash("Flashed message")
+        return render_template("index.html")
 
     @app.route("/oops/")
     def bad_url():
