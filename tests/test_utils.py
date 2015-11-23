@@ -56,16 +56,14 @@ class TestClientUtils(TestCase):
         try:
             self.assertStatus(self.client.get('/'), 404, expected_message)
         except AssertionError as e:
-            self.assertTrue(expected_message in e.args[0] or \
-                            expected_message in e.message)
+            self.assertTrue(expected_message in str(e))
 
     def test_default_status_failure_message(self):
         expected_message = 'HTTP Status 404 expected but got 200'
         try:
             self.assertStatus(self.client.get('/'), 404)
         except AssertionError as e:
-            self.assertTrue(expected_message in e.args[0] or \
-                            expected_message in e.message)
+            self.assertTrue(expected_message in str(e))
 
     def test_assert_200(self):
         self.assert200(self.client.get("/"))
@@ -94,14 +92,14 @@ class TestClientUtils(TestCase):
         try:
             self.assertRedirects(response, "/anything")
         except AssertionError as e:
-            self.assertEqual(e.message, "HTTP Status 301 or 302 expected but got 200")
+            self.assertTrue("HTTP Status 301 or 302 expected but got 200" in str(e))
 
     def test_assert_redirects_custom_message(self):
         response = self.client.get("/")
         try:
             self.assertRedirects(response, "/anything", "Custom message")
         except AssertionError as e:
-            self.assertEqual(e.message, "Custom message")
+            self.assertTrue("Custom message" in str(e))
 
     def test_assert_template_used(self):
         try:
@@ -139,7 +137,7 @@ class TestClientUtils(TestCase):
         try:
             self.assert_context("name", "nothing", "Custom message")
         except AssertionError as e:
-            self.assertEqual(e.message, "Custom message")
+            self.assertTrue("Custom message" in str(e))
         except RuntimeError:
             pass
 
@@ -158,7 +156,7 @@ class TestClientUtils(TestCase):
         try:
             self.assert_context("foo", "foo", "Custom message")
         except AssertionError as e:
-            self.assertEqual(e.message, "Custom message")
+            self.assertTrue("Custom message" in str(e))
         except RuntimeError:
             pass
 
