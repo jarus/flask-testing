@@ -96,6 +96,13 @@ class TestClientUtils(TestCase):
         except AssertionError as e:
             self.assertEqual(e.message, "HTTP Status 301 or 302 expected but got 200")
 
+    def test_assert_redirects_custom_message(self):
+        response = self.client.get("/")
+        try:
+            self.assertRedirects(response, "/anything", "Custom message")
+        except AssertionError as e:
+            self.assertEqual(e.message, "Custom message")
+
     def test_assert_template_used(self):
         try:
             self.client.get("/template/")
@@ -127,6 +134,15 @@ class TestClientUtils(TestCase):
         except RuntimeError:
             pass
 
+    def test_assert_context_custom_message(self):
+        self.client.get("/template/")
+        try:
+            self.assert_context("name", "nothing", "Custom message")
+        except AssertionError as e:
+            self.assertEqual(e.message, "Custom message")
+        except RuntimeError:
+            pass
+
     def test_assert_bad_context(self):
         try:
             self.client.get("/template/")
@@ -134,6 +150,15 @@ class TestClientUtils(TestCase):
                               "name", "foo")
             self.assertRaises(AssertionError, self.assert_context,
                               "foo", "foo")
+        except RuntimeError:
+            pass
+
+    def test_assert_bad_context_custom_message(self):
+        self.client.get("/template/")
+        try:
+            self.assert_context("foo", "foo", "Custom message")
+        except AssertionError as e:
+            self.assertEqual(e.message, "Custom message")
         except RuntimeError:
             pass
 

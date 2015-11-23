@@ -197,7 +197,7 @@ class TestCase(unittest.TestCase):
                 return context[name]
         raise ContextVariableDoesNotExist
 
-    def assertContext(self, name, value):
+    def assertContext(self, name, value, message=None):
         """
         Checks if given name exists in the template context
         and equals the given value.
@@ -208,13 +208,13 @@ class TestCase(unittest.TestCase):
         """
 
         try:
-            self.assertEqual(self.get_context_variable(name), value)
+            self.assertEqual(self.get_context_variable(name), value, message)
         except ContextVariableDoesNotExist:
-            self.fail("Context variable does not exist: %s" % name)
+            self.fail(message or "Context variable does not exist: %s" % name)
 
     assert_context = assertContext
 
-    def assertRedirects(self, response, location):
+    def assertRedirects(self, response, location, message=None):
         """
         Checks if response is an HTTP redirect to the
         given location.
@@ -222,9 +222,9 @@ class TestCase(unittest.TestCase):
         :param response: Flask response
         :param location: relative URL (i.e. without **http://localhost**)
         """
-        failure_message = "HTTP Status 301 or 302 expected but got %d" % response.status_code
-        self.assertTrue(response.status_code in (301, 302), failure_message)
-        self.assertEqual(response.location, "http://localhost" + location)
+        not_redirect = "HTTP Status 301 or 302 expected but got %d" % response.status_code
+        self.assertTrue(response.status_code in (301, 302), message or not_redirect)
+        self.assertEqual(response.location, "http://localhost" + location, message)
 
     assert_redirects = assertRedirects
 
