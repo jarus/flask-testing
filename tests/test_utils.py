@@ -89,6 +89,13 @@ class TestClientUtils(TestCase):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
 
+    def test_assert_redirects_failure_message(self):
+        response = self.client.get("/")
+        try:
+            self.assertRedirects(response, "/anything")
+        except AssertionError as e:
+            self.assertEqual(e.message, "HTTP Status 301 or 302 expected but got 200")
+
     def test_assert_template_used(self):
         try:
             self.client.get("/template/")
