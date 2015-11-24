@@ -26,7 +26,7 @@ Writing tests
 
 Simply subclass the ``TestCase`` class::
 
-    from flask.ext.testing import TestCase
+    from flask_testing import TestCase
 
     class MyTest(TestCase):
 
@@ -36,7 +36,7 @@ Simply subclass the ``TestCase`` class::
 You must specify the ``create_app`` method, which should return a Flask instance::
 
     from flask import Flask
-    from flask.ext.testing import TestCase
+    from flask_testing import TestCase
 
     class MyTest(TestCase):
 
@@ -57,7 +57,7 @@ PhantomJS you can use the LiveServerTestCase::
 
     import urllib2
     from flask import Flask
-    from flask.ext.testing import LiveServerTestCase
+    from flask_testing import LiveServerTestCase
 
     class MyTest(LiveServerTestCase):
 
@@ -150,7 +150,7 @@ not be too difficult to adapt to your own particular setup.
 First, ensure you set the database URI to something other than your production database ! Second,
 it's usually a good idea to create and drop your tables with each test run, to ensure clean tests::
 
-    from flask.ext.testing import TestCase
+    from flask_testing import TestCase
 
     from myapp import create_app, db
 
@@ -224,7 +224,7 @@ they can be discovered.
 An example test file could look like this::
 
     import unittest
-    import flask.ext.testing
+    import flask_testing
 
     # your test cases
 
@@ -269,7 +269,7 @@ This release is dedicated to every contributer who made this release possible. T
 API
 ===
 
-.. module:: flask.ext.testing
+.. module:: flask_testing
 
 .. autoclass:: TestCase
    :members:
