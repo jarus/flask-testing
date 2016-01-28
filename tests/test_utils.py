@@ -89,6 +89,10 @@ class TestClientUtils(TestCase):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
 
+    def test_assert_redirects_with_query(self):
+        response = self.client.get("/redirect-next/")
+        self.assertRedirects(response, "/?next=/somewhere/")
+
     def test_assert_template_used(self):
         try:
             self.client.get("/template/")

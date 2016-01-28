@@ -23,6 +23,7 @@ except ImportError:
     from urllib.request import urlopen
 import multiprocessing
 
+from urllib import unquote
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
@@ -223,7 +224,7 @@ class TestCase(unittest.TestCase):
         :param location: relative URL (i.e. without **http://localhost**)
         """
         self.assertTrue(response.status_code in (301, 302))
-        self.assertEqual(response.location, "http://localhost" + location)
+        self.assertEqual(unquote(response.location), "http://localhost" + location)
 
     assert_redirects = assertRedirects
 
