@@ -56,16 +56,14 @@ class TestClientUtils(TestCase):
         try:
             self.assertStatus(self.client.get('/'), 404, expected_message)
         except AssertionError as e:
-            self.assertTrue(expected_message in e.args[0] or \
-                            expected_message in e.message)
+            self.assertTrue(expected_message in str(e))
 
     def test_default_status_failure_message(self):
         expected_message = 'HTTP Status 404 expected but got 200'
         try:
             self.assertStatus(self.client.get('/'), 404)
         except AssertionError as e:
-            self.assertTrue(expected_message in e.args[0] or \
-                            expected_message in e.message)
+            self.assertTrue(expected_message in str(e))
 
     def test_assert_200(self):
         self.assert200(self.client.get("/"))
@@ -88,6 +86,20 @@ class TestClientUtils(TestCase):
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
+
+    def test_assert_redirects_failure_message(self):
+        response = self.client.get("/")
+        try:
+            self.assertRedirects(response, "/anything")
+        except AssertionError as e:
+            self.assertTrue("HTTP Status 301 or 302 expected but got 200" in str(e))
+
+    def test_assert_redirects_custom_message(self):
+        response = self.client.get("/")
+        try:
+            self.assertRedirects(response, "/anything", "Custom message")
+        except AssertionError as e:
+            self.assertTrue("Custom message" in str(e))
 
     def test_assert_template_used(self):
         try:
@@ -120,6 +132,15 @@ class TestClientUtils(TestCase):
         except RuntimeError:
             pass
 
+    def test_assert_context_custom_message(self):
+        self.client.get("/template/")
+        try:
+            self.assert_context("name", "nothing", "Custom message")
+        except AssertionError as e:
+            self.assertTrue("Custom message" in str(e))
+        except RuntimeError:
+            pass
+
     def test_assert_bad_context(self):
         try:
             self.client.get("/template/")
@@ -127,6 +148,15 @@ class TestClientUtils(TestCase):
                               "name", "foo")
             self.assertRaises(AssertionError, self.assert_context,
                               "foo", "foo")
+        except RuntimeError:
+            pass
+
+    def test_assert_bad_context_custom_message(self):
+        self.client.get("/template/")
+        try:
+            self.assert_context("foo", "foo", "Custom message")
+        except AssertionError as e:
+            self.assertTrue("Custom message" in str(e))
         except RuntimeError:
             pass
 
