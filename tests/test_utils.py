@@ -201,7 +201,7 @@ class TestNotRenderTemplates(TestCase):
     def test_assert_not_process_the_template(self):
         response = self.client.get("/template/")
 
-        assert "" == response.data
+        assert len(response.data) == 0
 
     def test_assert_template_rendered_signal_sent(self):
         self.client.get("/template/")
@@ -219,7 +219,7 @@ class TestRenderTemplates(TestCase):
     def test_assert_not_process_the_template(self):
         response = self.client.get("/template/")
 
-        assert "" != response.data
+        assert len(response.data) > 0
 
 
 class TestRestoreTheRealRender(TestCase):
@@ -236,4 +236,4 @@ class TestRestoreTheRealRender(TestCase):
 
         response = self.client.get("/template/")
 
-        assert "" != response.data
+        assert len(response.data) > 0
