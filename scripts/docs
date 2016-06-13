@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Generates the documentation site. The resulting zip
+# file can be uploaded directly to PyPI.
+
+set -e
+
+if [[ ! -d docs ]]; then
+  echo "Could not locate directory docs. Are you running from the top level?"
+  exit 1
+fi
+
+start=`pwd`
+
+function finish () {
+  cd $start
+}
+
+trap finish EXIT
+
+cd docs
+make html
+cd _build/html
+zip -r site .
+mv site.zip $start

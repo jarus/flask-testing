@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Release process
+#  1. Add notes to changelog and bump setup.py version
+#  2. Tag the release and push it; update release notes in Github
+#  3. Upload source dist to PyPI
+#  4. Generate the docs and upload to PyPI
+
+set -e
+
+if [[ ! -f setup.py ]]; then
+  echo "Could not locate setup.py. Are you running from the top level?"
+  exit 1
+fi
+
+rm -rf dist
+python setup.py sdist upload

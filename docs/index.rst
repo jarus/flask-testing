@@ -245,9 +245,11 @@ Changes
 ------------------
 
   * Improvements to ``LiveServerTestCase``
+
     * The test case will now block until the server is available
     * Fixed an issue where no request context was available
     * Fixed an issue where tests would be run twice when ``DEBUG`` was set to True
+
   * Add missing message arguments for assertRedirects and assertContext
   * Better default failure message for assertRedirects
   * Better default failure message for assertTemplateUsed
