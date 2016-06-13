@@ -241,6 +241,19 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.5.0 (12.06.2016)
+------------------
+
+  * Improvements to ``LiveServerTestCase``
+    * The test case will now block until the server is available
+    * Fixed an issue where no request context was available
+    * Fixed an issue where tests would be run twice when ``DEBUG`` was set to True
+  * Add missing message arguments for assertRedirects and assertContext
+  * Better default failure message for assertRedirects
+  * Better default failure message for assertTemplateUsed
+  * Fix an issue that caused the ``render_templates`` option to not clean up after itself if set to False
+  * Update docs to use new Flask extension import specification
+
 0.4.2 (24.07.2014)
 ------------------
 
