@@ -23,7 +23,7 @@ install_requires = [
 ]
 
 if sys.version_info[0] < 3:
-    tests_require.append('twill==0.9')
+    tests_require.append('twill==0.9.1')
 
 if sys.version_info < (2, 6):
     tests_require.append('simplejson')
@@ -31,7 +31,7 @@ if sys.version_info < (2, 6):
 
 setup(
     name='Flask-Testing',
-    version='0.4.2',
+    version='0.5.0',
     url='https://github.com/jarus/flask-testing',
     license='BSD',
     author='Dan Jacob',

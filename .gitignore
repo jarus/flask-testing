@@ -8,6 +8,8 @@
 *.orig
 *~
 
+.eggs
 dist
+build
 docs/output
 docs/_build/

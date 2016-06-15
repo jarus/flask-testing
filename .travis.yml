@@ -1,5 +1,7 @@
 language: python
 python:
+  - "3.5"
+  - "3.4"
   - "3.3"
   - "2.7"
   - "2.6"
@@ -13,6 +15,14 @@ matrix:
       env: FLASK=0.9
     - python: "3.3"
       env: FLASK=0.8.1
+    - python: "3.4"
+      env: FLASK=0.9
+    - python: "3.4"
+      env: FLASK=0.8.1
+    - python: "3.5"
+      env: FLASK=0.9
+    - python: "3.5"
+      env: FLASK=0.8.1
 install:
   - pip install flask==$FLASK coverage --use-mirrors
   - pip install -e . --use-mirrors
@@ -21,3 +31,4 @@ script:
 notifications:
   email:
     - christoph.heer@googlemail.com
+    - jonathan.como@gmail.com
