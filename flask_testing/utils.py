@@ -30,7 +30,7 @@ from flask import json_available, templating, template_rendered
 
 try:
     from flask import message_flashed
-    
+
     _is_message_flashed = True
 except ImportError:
     message_flashed = None
@@ -165,7 +165,7 @@ class TestCase(unittest.TestCase):
 
         if _is_message_flashed:
             message_flashed.disconnect(self._add_flash_message)
-        
+
         if hasattr(self, '_original_template_render'):
             templating._render = self._original_template_render
 
@@ -175,28 +175,23 @@ class TestCase(unittest.TestCase):
     def assertMessageFlashed(self, message, category='message'):
         """
         Checks if a given message were flashed.
-        Only works if your version of Flask has signals
-        support (0.6+) and blinker is installed.
         Only works if your version of Flask has message_flashed
         signal support (0.10+) and blinker is installed.
-        
+
         :param message: expected message
         :param category: expected message category
         """
-        
-        if not _is_signals:
-            raise RuntimeError("Signals not supported")
 
-        if not _is_message_flashed:
+        if not _is_signals or not _is_message_flashed:
             raise RuntimeError("Your version of Flask doesn't support message_flashed signal."
-                               "You need Flask from 0.10 and higher.")
+                               "You need Flask from 0.10 and higher and installed blinker.")
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
                     return True
-    
+
             raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
-    
+
     assert_message_flashed = assertMessageFlashed
 
     def assertTemplateUsed(self, name, tmpl_name_attribute='name'):

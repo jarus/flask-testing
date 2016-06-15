@@ -5,7 +5,6 @@ from flask import Flask, Response, abort, redirect, jsonify, render_template,\
 def create_app():
 
     app = Flask(__name__)
-    app.secret_key = 'some_secret'
 
     @app.route("/")
     def index():
