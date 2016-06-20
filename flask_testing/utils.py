@@ -174,7 +174,7 @@ class TestCase(unittest.TestCase):
 
     def assertMessageFlashed(self, message, category='message'):
         """
-        Checks if a given message were flashed.
+        Checks if a given message was flashed.
         Only works if your version of Flask has message_flashed
         signal support (0.10+) and blinker is installed.
 
@@ -183,8 +183,8 @@ class TestCase(unittest.TestCase):
         """
 
         if not _is_signals or not _is_message_flashed:
-            raise RuntimeError("Your version of Flask doesn't support message_flashed signal."
-                               "You need Flask from 0.10 and higher and installed blinker.")
+            raise RuntimeError("Your version of Flask doesn't support message_flashed."
+                               "This requires Flask 0.10+ with signals support")
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
