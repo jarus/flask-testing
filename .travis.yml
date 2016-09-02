@@ -25,8 +25,8 @@ matrix:
     - python: "3.5"
       env: FLASK=0.8.1
 install:
-  - pip install flask==$FLASK coverage --use-mirrors
-  - pip install -e . --use-mirrors
+  - pip install flask==$FLASK coverage
+  - pip install -e .
 script:
   - python setup.py test
 notifications:
