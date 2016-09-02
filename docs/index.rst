@@ -243,6 +243,13 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.6.0 (02.09.2016)
+------------------
+
+  * ``LiveServerTestCase`` will now start running as soon as the server is up
+  * ``assertRedirects`` now respects the ``SERVER_NAME`` config value and can compare against absolute URLs
+  * Compatibility with Flask 0.11.1
+
 0.5.0 (12.06.2016)
 ------------------
 
