@@ -20,7 +20,11 @@ try:
 except ImportError:
     import unittest
 
-from urlparse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    # Python 2 urlparse fallback
+    from urlparse import urlparse
 
 from werkzeug import cached_property
 
