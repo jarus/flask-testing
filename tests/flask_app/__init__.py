@@ -1,10 +1,19 @@
-from flask import Flask, Response, abort, redirect, jsonify, render_template,\
-    url_for, flash
+from flask import (
+    Flask,
+    Response,
+    abort,
+    redirect,
+    jsonify,
+    render_template,
+    url_for,
+    flash,
+)
 
 
 def create_app():
 
     app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'super secret testing key'
 
     @app.route("/")
     def index():
