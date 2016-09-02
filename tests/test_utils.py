@@ -188,24 +188,24 @@ class TestClientUtils(TestCase):
 
 class TestLiveServer(LiveServerTestCase):
 
-        def create_app(self):
-            app = create_app()
-            app.config['LIVESERVER_PORT'] = 8943
-            return app
+    def create_app(self):
+        app = create_app()
+        app.config['LIVESERVER_PORT'] = 8943
+        return app
 
-        def test_server_process_is_spawned(self):
-            process = self._process
+    def test_server_process_is_spawned(self):
+        process = self._process
 
-            # Check the process is spawned
-            self.assertNotEqual(process, None)
+        # Check the process is spawned
+        self.assertNotEqual(process, None)
 
-            # Check the process is alive
-            self.assertTrue(process.is_alive())
+        # Check the process is alive
+        self.assertTrue(process.is_alive())
 
-        def test_server_listening(self):
-            response = urlopen(self.get_server_url())
-            self.assertTrue(b'OK' in response.read())
-            self.assertEqual(response.code, 200)
+    def test_server_listening(self):
+        response = urlopen(self.get_server_url())
+        self.assertTrue(b'OK' in response.read())
+        self.assertEqual(response.code, 200)
 
 
 class TestNotRenderTemplates(TestCase):

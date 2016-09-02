@@ -11,17 +11,16 @@
 from __future__ import absolute_import, with_statement
 
 import gc
+import multiprocessing
+import socket
 import time
 
 try:
     import unittest2 as unittest
 except ImportError:
     import unittest
-try:
-    from urllib2 import urlopen
-except ImportError:
-    from urllib.request import urlopen
-import multiprocessing
+
+from urlparse import urlparse
 
 from werkzeug import cached_property
 
@@ -397,6 +396,7 @@ class LiveServerTestCase(unittest.TestCase):
 
         # Get the app
         self.app = self.create_app()
+        self.port = self.app.config.get('LIVESERVER_PORT', 5000)
 
         # We need to create a context in order for extensions to catch up
         self._ctx = self.app.test_request_context()
@@ -417,7 +417,6 @@ class LiveServerTestCase(unittest.TestCase):
 
     def _spawn_live_server(self):
         self._process = None
-        self.port = self.app.config.get('LIVESERVER_PORT', 5000)
 
         worker = lambda app, port: app.run(port=port, use_reloader=False)
 
@@ -427,15 +426,57 @@ class LiveServerTestCase(unittest.TestCase):
 
         self._process.start()
 
-        # we must wait for the server to start listening with a maximum timeout of 5 seconds
-        timeout = 5
-        while timeout > 0:
-            time.sleep(1)
-            try:
-                urlopen(self.get_server_url())
-                timeout = 0
-            except:
-                timeout -= 1
+        # We must wait for the server to start listening, but give up
+        # after a specified maximum timeout
+        timeout = self.app.config.get('LIVESERVER_TIMEOUT', 5)
+        start_time = time.time()
+
+        while True:
+            elapsed_time = (time.time() - start_time)
+            if elapsed_time > timeout:
+                raise RuntimeError(
+                    "Failed to start the server after %d seconds. " % timeout
+                )
+
+            if self._can_ping_server():
+                break
+
+    def _can_ping_server(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        try:
+            sock.connect(self._get_sever_address())
+        except socket.error as e:
+            success = False
+        else:
+            success = True
+        finally:
+            sock.close()
+
+        return success
+
+    def _get_sever_address(self):
+        """
+        Gets the server address used to test the connection with a socket.
+        Respects both the LIVESERVER_PORT config value and overriding
+        get_server_url()
+        """
+        parts = urlparse(self.get_server_url())
+
+        host = parts.hostname
+        port = parts.port
+
+        if not port:
+            if parts.scheme == 'http':
+                port = 80
+            elif parts.scheme == 'https':
+                port = 443
+            else:
+                raise RuntimeError(
+                    "Unsupported server url scheme: %s" % parts.scheme
+                )
+
+        return host, port
 
     def _post_teardown(self):
         if getattr(self, '_ctx', None) is not None:

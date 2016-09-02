@@ -66,6 +66,8 @@ PhantomJS you can use the LiveServerTestCase::
             app.config['TESTING'] = True
             # Default port is 5000
             app.config['LIVESERVER_PORT'] = 8943
+            # Default timeout is 5 seconds
+            app.config['LIVESERVER_TIMEOUT'] = 10
             return app
 
         def test_server_is_up_and_running(self):
