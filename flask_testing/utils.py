@@ -133,8 +133,8 @@ class TestCase(unittest.TestCase):
         if _is_signals:
             template_rendered.connect(self._add_template)
 
-        if _is_message_flashed:
-            message_flashed.connect(self._add_flash_message)
+            if _is_message_flashed:
+                message_flashed.connect(self._add_flash_message)
 
     def _add_flash_message(self, app, message, category):
         self.flashed_messages.append((message, category))
@@ -166,8 +166,8 @@ class TestCase(unittest.TestCase):
         if _is_signals:
             template_rendered.disconnect(self._add_template)
 
-        if _is_message_flashed:
-            message_flashed.disconnect(self._add_flash_message)
+            if _is_message_flashed:
+                message_flashed.disconnect(self._add_flash_message)
 
         if hasattr(self, '_original_template_render'):
             templating._render = self._original_template_render
