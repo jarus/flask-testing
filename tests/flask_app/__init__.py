@@ -36,6 +36,10 @@ def create_app():
     def redirect_to_index():
         return redirect(url_for("index"))
 
+    @app.route("/external_redirect/")
+    def redirect_to_flask_docs():
+        return redirect("http://flask.pocoo.org/")
+
     @app.route("/ajax/")
     def ajax():
         return jsonify(name="test")

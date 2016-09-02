@@ -87,6 +87,10 @@ class TestClientUtils(TestCase):
         response = self.client.get("/redirect/")
         self.assertRedirects(response, "/")
 
+    def test_assert_redirects_full_url(self):
+        response = self.client.get("/external_redirect/")
+        self.assertRedirects(response, "http://flask.pocoo.org/")
+
     def test_assert_redirects_failure_message(self):
         response = self.client.get("/")
         try:

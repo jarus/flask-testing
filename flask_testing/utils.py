@@ -264,11 +264,19 @@ class TestCase(unittest.TestCase):
         given location.
 
         :param response: Flask response
-        :param location: relative URL (i.e. without **http://localhost**)
+        :param location: relative URL path to SERVER_NAME or an absolute URL
         """
+        parts = urlparse(location)
+
+        if parts.netloc:
+            expected_location = location
+        else:
+            server_name = self.app.config.get('SERVER_NAME') or 'localhost'
+            expected_location = "http://%s%s" % (server_name, location)
+
         not_redirect = "HTTP Status 301 or 302 expected but got %d" % response.status_code
         self.assertTrue(response.status_code in (301, 302), message or not_redirect)
-        self.assertEqual(response.location, "http://localhost" + location, message)
+        self.assertEqual(response.location, expected_location, message)
 
     assert_redirects = assertRedirects
 
