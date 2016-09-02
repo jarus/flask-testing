@@ -243,6 +243,11 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.6.1 (03.09.2016)
+------------------
+
+  * Fix issues that prevented tests from running when blinker was not installed
+
 0.6.0 (02.09.2016)
 ------------------
 
