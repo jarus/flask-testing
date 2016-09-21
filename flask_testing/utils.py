@@ -221,7 +221,7 @@ class TestCase(unittest.TestCase):
 
             used_templates.append(template)
 
-        raise AssertionError("template %s not used. Templates were used: %s" % (name, ' '.join(used_templates)))
+        raise AssertionError("Template %s not used. Templates were used: %s" % (name, ' '.join(repr(used_templates))))
 
     assert_template_used = assertTemplateUsed
 

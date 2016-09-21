@@ -113,9 +113,9 @@ class TestClientUtils(TestCase):
             pass
 
     def test_assert_template_not_used(self):
-        self.client.get("/")
+        self.client.get("/template/")
         try:
-            self.assertRaises(AssertionError, self.assert_template_used, "index.html")
+            self.assertRaises(AssertionError, self.assert_template_used, "invalid.html")
         except RuntimeError:
             pass
 
