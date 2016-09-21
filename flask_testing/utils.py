@@ -191,9 +191,9 @@ class TestCase(unittest.TestCase):
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
-                    return True
+                return True
 
-            raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
+        raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
 
     assert_message_flashed = assertMessageFlashed
 

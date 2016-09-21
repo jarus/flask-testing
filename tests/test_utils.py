@@ -182,10 +182,14 @@ class TestClientUtils(TestCase):
     def test_assert_flashed_messages_failed(self):
         try:
             self.client.get("/flash/")
-            self.assertMessageFlashed("Flask-testing has assertMessageFlashed now")
-            assert False
-        except AssertionError:
+            self.assertRaises(AssertionError, self.assertMessageFlashed, "Flask-testing has assertMessageFlashed now")
+        except RuntimeError:
             pass
+
+    def test_assert_no_flashed_messages_fail(self):
+        try:
+            self.client.get("/no_flash/")
+            self.assertRaises(AssertionError, self.assertMessageFlashed, "Flashed message")
         except RuntimeError:
             pass
 
