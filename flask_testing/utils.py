@@ -12,7 +12,10 @@ from __future__ import absolute_import, with_statement
 
 import gc
 import time
-import urlparse
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 try:
     import unittest2 as unittest
 except ImportError:
@@ -212,7 +215,7 @@ class TestCase(unittest.TestCase):
         :param location: relative URL (i.e. without **http://localhost**)
         """
         self.assertTrue(response.status_code in (301, 302))
-        self.assertEqual(response.location, urlparse.urljoin('http://localhost', location))
+        self.assertEqual(response.location, urljoin('http://localhost', location))
 
     assert_redirects = assertRedirects
 
