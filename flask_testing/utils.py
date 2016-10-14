@@ -191,9 +191,9 @@ class TestCase(unittest.TestCase):
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
-                    return True
+                return True
 
-            raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
+        raise AssertionError("Message '%s' in category '%s' wasn't flashed" % (message, category))
 
     assert_message_flashed = assertMessageFlashed
 
@@ -221,7 +221,7 @@ class TestCase(unittest.TestCase):
 
             used_templates.append(template)
 
-        raise AssertionError("template %s not used. Templates were used: %s" % (name, ' '.join(used_templates)))
+        raise AssertionError("Template %s not used. Templates were used: %s" % (name, ' '.join(repr(used_templates))))
 
     assert_template_used = assertTemplateUsed
 

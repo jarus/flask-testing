@@ -28,6 +28,10 @@ def create_app():
         flash("Flashed message")
         return render_template("index.html")
 
+    @app.route("/no_flash/")
+    def index_without_flash():
+        return render_template("index.html")
+
     @app.route("/oops/")
     def bad_url():
         abort(404)
