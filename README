@@ -4,4 +4,4 @@ Unit testing support for Flask.
 
 For full information please refer to the online docs:
 
-http://packages.python.org/Flask-Testing
+http://pythonhosted.org/Flask-Testing/
