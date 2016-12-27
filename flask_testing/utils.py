@@ -16,6 +16,12 @@ import socket
 import time
 
 try:
+    import socketserver
+except ImportError:
+    # Python 2 SocketServer fallback
+    import SocketServer as socketserver
+
+try:
     import unittest2 as unittest
 except ImportError:
     import unittest
@@ -408,7 +414,9 @@ class LiveServerTestCase(unittest.TestCase):
 
         # Get the app
         self.app = self.create_app()
-        self.port = self.app.config.get('LIVESERVER_PORT', 5000)
+
+        self._configured_port = self.app.config.get('LIVESERVER_PORT', 5000)
+        self._port_value = multiprocessing.Value('i', self._configured_port)
 
         # We need to create a context in order for extensions to catch up
         self._ctx = self.app.test_request_context()
@@ -425,15 +433,34 @@ class LiveServerTestCase(unittest.TestCase):
         """
         Return the url of the test server
         """
-        return 'http://localhost:%s' % self.port
+        return 'http://localhost:%s' % self._port_value.value
 
     def _spawn_live_server(self):
         self._process = None
+        port_value = self._port_value
 
-        worker = lambda app, port: app.run(port=port, use_reloader=False)
+        def worker(app, port):
+            # Based on solution: http://stackoverflow.com/a/27598916
+            # Monkey-patch the server_bind so we can determine the port bound by Flask.
+            # This handles the case where the port specified is `0`, which means that
+            # the OS chooses the port. This is the only known way (currently) of getting
+            # the port out of Flask once we call `run`.
+            original_socket_bind = socketserver.TCPServer.server_bind
+            def socket_bind_wrapper(self):
+                ret = original_socket_bind(self)
+
+                # Get the port and save it into the port_value, so the parent process
+                # can read it.
+                (_, port) = self.socket.getsockname()
+                port_value.value = port
+                socketserver.TCPServer.server_bind = original_socket_bind
+                return ret
+
+            socketserver.TCPServer.server_bind = socket_bind_wrapper
+            app.run(port=port, use_reloader=False)
 
         self._process = multiprocessing.Process(
-            target=worker, args=(self.app, self.port)
+            target=worker, args=(self.app, self._configured_port)
         )
 
         self._process.start()
@@ -454,10 +481,15 @@ class LiveServerTestCase(unittest.TestCase):
                 break
 
     def _can_ping_server(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host, port = self._get_server_address()
+        if port == 0:
+            # Port specified by the user was 0, and the OS has not yet assigned
+            # the proper port.
+            return False
 
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            sock.connect(self._get_sever_address())
+            sock.connect((host, port))
         except socket.error as e:
             success = False
         else:
@@ -467,7 +499,7 @@ class LiveServerTestCase(unittest.TestCase):
 
         return success
 
-    def _get_sever_address(self):
+    def _get_server_address(self):
         """
         Gets the server address used to test the connection with a socket.
         Respects both the LIVESERVER_PORT config value and overriding
@@ -478,7 +510,7 @@ class LiveServerTestCase(unittest.TestCase):
         host = parts.hostname
         port = parts.port
 
-        if not port:
+        if port is None:
             if parts.scheme == 'http':
                 port = 80
             elif parts.scheme == 'https':
