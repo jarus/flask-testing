@@ -88,6 +88,22 @@ def _empty_render(template, context, app):
     return ""
 
 
+def _check_for_message_flashed_support():
+    if not _is_signals or not _is_message_flashed:
+        raise RuntimeError(
+            "Your version of Flask doesn't support message_flashed. "
+            "This requires Flask 0.10+ with the blinker module installed."
+        )
+
+
+def _check_for_signals_support():
+    if not _is_signals:
+        raise RuntimeError(
+            "Your version of Flask doesn't support signals. "
+            "This requires Flask 0.6+ with the blinker module installed."
+        )
+
+
 class TestCase(unittest.TestCase):
     render_templates = True
     run_gc_after_test = False
@@ -184,10 +200,7 @@ class TestCase(unittest.TestCase):
         :param message: expected message
         :param category: expected message category
         """
-
-        if not _is_signals or not _is_message_flashed:
-            raise RuntimeError("Your version of Flask doesn't support message_flashed."
-                               "This requires Flask 0.10+ with signals support")
+        _check_for_message_flashed_support()
 
         for _message, _category in self.flashed_messages:
             if _message == message and _category == category:
@@ -210,8 +223,7 @@ class TestCase(unittest.TestCase):
         :param name: template name
         :param tmpl_name_attribute: template engine specific attribute name
         """
-        if not _is_signals:
-            raise RuntimeError("Signals not supported")
+        _check_for_signals_support()
 
         used_templates = []
 
@@ -237,8 +249,7 @@ class TestCase(unittest.TestCase):
         :versionadded: 0.2
         :param name: name of variable
         """
-        if not _is_signals:
-            raise RuntimeError("Signals not supported")
+        _check_for_signals_support()
 
         for template, context in self.templates:
             if name in context:
