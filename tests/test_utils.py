@@ -168,7 +168,7 @@ class TestClientUtils(TestCase):
                               self.get_context_variable, "foo")
         except RuntimeError:
             pass
-        
+
     def test_assert_flashed_messages_succeed(self):
         try:
             self.client.get("/flash/")
@@ -191,12 +191,7 @@ class TestClientUtils(TestCase):
             pass
 
 
-class TestLiveServer(LiveServerTestCase):
-
-    def create_app(self):
-        app = create_app()
-        app.config['LIVESERVER_PORT'] = 8943
-        return app
+class BaseTestLiveServer(LiveServerTestCase):
 
     def test_server_process_is_spawned(self):
         process = self._process
@@ -211,6 +206,22 @@ class TestLiveServer(LiveServerTestCase):
         response = urlopen(self.get_server_url())
         self.assertTrue(b'OK' in response.read())
         self.assertEqual(response.code, 200)
+
+
+class TestLiveServer(BaseTestLiveServer):
+
+    def create_app(self):
+        app = create_app()
+        app.config['LIVESERVER_PORT'] = 8943
+        return app
+
+
+class TestLiveServerOSPicksPort(BaseTestLiveServer):
+
+    def create_app(self):
+        app = create_app()
+        app.config['LIVESERVER_PORT'] = 0
+        return app
 
 
 class TestNotRenderTemplates(TestCase):

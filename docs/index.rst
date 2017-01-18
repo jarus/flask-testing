@@ -77,6 +77,35 @@ PhantomJS you can use the LiveServerTestCase::
 The method ``get_server_url`` will return http://localhost:8943 in this case.
 
 
+Dynamic LiveServerTestCase port
+-------------------------------
+
+By default, ``LiveServerTestCase`` will use the pre-defined port for running the live server. If
+multiple tests need to run in parallel, the ``LIVESERVER_PORT`` can be set to ``0`` to have the
+underlying operating system pick an open port for the server. The full address of the running
+server can be accessed via the ``get_server_url`` call on the test case::
+
+
+    import urllib2
+    from flask import Flask
+    from flask_testing import LiveServerTestCase
+
+    class MyTest(LiveServerTestCase):
+
+        def create_app(self):
+            app = Flask(__name__)
+            app.config['TESTING'] = True
+
+            # Set to 0 to have the OS pick the port.
+            app.config['LIVESERVER_PORT'] = 0
+
+            return app
+
+        def test_server_is_up_and_running(self):
+            response = urllib2.urlopen(self.get_server_url())
+            self.assertEqual(response.code, 200)
+
+
 Testing JSON responses
 ----------------------
 
@@ -217,10 +246,10 @@ Running tests
 with unittest
 -------------
 
-I recommend you to put all your tests into one file so that you can use 
-the :func:`unittest.main` function. This function will discover all your test 
+I recommend you to put all your tests into one file so that you can use
+the :func:`unittest.main` function. This function will discover all your test
 methods in your :class:`TestCase` classes. Remember, the names of the test
-methods and classes must start with ``test`` (case-insensitive) so that 
+methods and classes must start with ``test`` (case-insensitive) so that
 they can be discovered.
 
 An example test file could look like this::
