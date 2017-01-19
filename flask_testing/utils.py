@@ -295,8 +295,9 @@ class TestCase(unittest.TestCase):
             server_name = self.app.config.get('SERVER_NAME') or 'localhost'
             expected_location = urljoin("http://%s" % server_name, location)
 
-        not_redirect = "HTTP Status 301 or 302 expected but got %d" % response.status_code
-        self.assertTrue(response.status_code in (301, 302), message or not_redirect)
+        valid_status_codes = (301, 302, 303, 305, 307)
+        not_redirect = "HTTP Status 301, 302, 303, 305 or 307 expected but got %d" % response.status_code
+        self.assertTrue(response.status_code in valid_status_codes, message or not_redirect)
         self.assertEqual(response.location, expected_location, message)
 
     assert_redirects = assertRedirects
