@@ -39,12 +39,8 @@ def create_app():
 
     @app.route("/redirect/")
     def redirect_to_index():
-        code = request.args.get('code')
-
-        if code:
-            return redirect(url_for("index"), code=code)
-        else:
-            return redirect(url_for("index"))
+        code = request.args.get('code') or 301
+        return redirect(url_for("index"), code=code)
 
     @app.route("/external_redirect/")
     def redirect_to_flask_docs():
