@@ -96,7 +96,7 @@ class TestClientUtils(TestCase):
         try:
             self.assertRedirects(response, "/anything")
         except AssertionError as e:
-            self.assertTrue("HTTP Status 301 or 302 expected but got 200" in str(e))
+            self.assertTrue("HTTP Status 301, 302, 303, 305, 307 expected but got 200" in str(e))
 
     def test_assert_redirects_custom_message(self):
         response = self.client.get("/")
@@ -104,6 +104,23 @@ class TestClientUtils(TestCase):
             self.assertRedirects(response, "/anything", "Custom message")
         except AssertionError as e:
             self.assertTrue("Custom message" in str(e))
+
+    def test_assert_redirects_valid_status_codes(self):
+        valid_redirect_status_codes = (301, 302, 303, 305, 307)
+
+        for status_code in valid_redirect_status_codes:
+            response = self.client.get("/redirect/?code=" + str(status_code))
+            self.assertRedirects(response, "/")
+            self.assertStatus(response, status_code)
+
+    def test_assert_redirects_invalid_status_code(self):
+        status_code = 200
+        response = self.client.get("/redirect/?code=" + str(status_code))
+        self.assertStatus(response, status_code)
+        try:
+            self.assertRedirects(response, "/")
+        except AssertionError as e:
+            self.assertTrue("HTTP Status 301, 302, 303, 305, 307 expected but got 200" in str(e))
 
     def test_assert_template_used(self):
         try:

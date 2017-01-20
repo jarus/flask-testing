@@ -7,6 +7,7 @@ from flask import (
     render_template,
     url_for,
     flash,
+    request
 )
 
 
@@ -38,7 +39,8 @@ def create_app():
 
     @app.route("/redirect/")
     def redirect_to_index():
-        return redirect(url_for("index"))
+        code = request.args.get('code') or 301
+        return redirect(url_for("index"), code=code)
 
     @app.route("/external_redirect/")
     def redirect_to_flask_docs():
