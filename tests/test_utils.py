@@ -273,9 +273,9 @@ class TestNotRenderTemplates(TestCase):
             used_templates.append(template)
         errmsg = "Template %s not used. Templates were used: %s" % (name, ' '.join(repr(used_templates)))
 
-        self.assertIsInstance(name, str)
-        self.assertIsInstance(' '.join(repr(used_templates)), str)
-        self.assertIsInstance(errmsg, str)
+        self.assertEqual(type(name), str)
+        self.assertEqual(type(' '.join(repr(used_templates))), str)
+        self.assertEqual(type(errmsg), str)
 
     def _template_fail(self, badtemplate):
         errmsg = 'Template {0} not used. Templates were used'.format(badtemplate)
