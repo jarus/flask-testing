@@ -272,6 +272,18 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.6.2 (26.02.2017)
+------------------
+
+  * Add support for OS chosen port in `LiveServerTestCase`
+  * Better error messages when missing required modules
+  * `assertRedirects` now supports all valid redirect codes as specified
+    in the HTTP protocol
+  * Fixed bug that caused `TypeError` instead of `AssertionError` when
+    testing against used templates
+  * Fixed bug in `assertRedirects` where the location was not being
+    checked properly
+
 0.6.1 (03.09.2016)
 ------------------
 
