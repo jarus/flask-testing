@@ -83,9 +83,9 @@ class TestClientUtils(TestCase):
 
     def test_new_context_used_per_request(self):
         response = self.client.get("/context")
-        self.assertEqual(response.data, "SET")
+        self.assertEqual(response.data, b"SET")
         response = self.client.get("/context")
-        self.assertEqual(response.data, "SET")
+        self.assertEqual(response.data, b"SET")
 
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
