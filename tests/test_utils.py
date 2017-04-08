@@ -16,7 +16,6 @@ class TestSetup(TestCase):
     def test_setup(self):
         self.assertTrue(self.app is not None)
         self.assertTrue(self.client is not None)
-        self.assertTrue(self._ctx is not None)
 
 
 class TestSetupFailure(TestCase):
@@ -40,7 +39,6 @@ class TestTeardownGraceful(TestCase):
         """
 
         del self.app
-        del self._ctx
 
 class TestClientUtils(TestCase):
 
@@ -82,6 +80,12 @@ class TestClientUtils(TestCase):
 
     def test_assert_500(self):
         self.assert500(self.client.get("/internal_server_error/"))
+
+    def test_new_context_used_per_request(self):
+        response = self.client.get("/context")
+        self.assertEqual(response.data, "SET")
+        response = self.client.get("/context")
+        self.assertEqual(response.data, "SET")
 
     def test_assert_redirects(self):
         response = self.client.get("/redirect/")
