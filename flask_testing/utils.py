@@ -133,6 +133,13 @@ class TestCase(unittest.TestCase):
         finally:
             self._post_teardown()
 
+    def debug(self):
+        try:
+            self._pre_setup()
+            super(TestCase, self).debug()
+        finally:
+            self._post_teardown()
+
     def _pre_setup(self):
         self.app = self.create_app()
 
