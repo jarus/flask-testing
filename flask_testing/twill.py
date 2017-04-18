@@ -14,7 +14,7 @@ from __future__ import absolute_import
 import StringIO
 import twill
 
-from .utils import TestCase
+from flask_testing.utils import TestCase
 
 
 class Twill(object):

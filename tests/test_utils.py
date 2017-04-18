@@ -28,6 +28,7 @@ class TestSetupFailure(TestCase):
         '''Should not fail in _post_teardown if _pre_setup fails'''
         assert True
 
+
 class TestTeardownGraceful(TestCase):
 
     def create_app(self):
@@ -41,6 +42,7 @@ class TestTeardownGraceful(TestCase):
 
         del self.app
         del self._ctx
+
 
 class TestClientUtils(TestCase):
 
@@ -255,8 +257,51 @@ class TestNotRenderTemplates(TestCase):
 
     def test_assert_template_rendered_signal_sent(self):
         self.client.get("/template/")
-
         self.assert_template_used('index.html')
+
+    def test_template_types(self):
+        self.client.get("/template/")
+        name = 'index.html'
+        tmpl_name_attribute = 'name'
+
+        # code inside assert_template_used
+        used_templates = []
+        for template, context in self.templates:
+            if getattr(template, tmpl_name_attribute) == name:
+                pass
+
+            used_templates.append(template)
+        errmsg = "Template %s not used. Templates were used: %s" % (name, ' '.join(repr(used_templates)))
+
+        self.assertEqual(type(name), str)
+        self.assertEqual(type(' '.join(repr(used_templates))), str)
+        self.assertEqual(type(errmsg), str)
+
+    def _template_fail(self, badtemplate):
+        errmsg = 'Template {0} not used. Templates were used'.format(badtemplate)
+        with self.assertRaises(AssertionError) as cm:
+            self.assert_template_used(badtemplate)
+        self.assertIn(errmsg, str(cm.exception))
+
+    def test_assert_wrong_template(self):
+        # route name for index.html template
+        self.client.get("/template/")
+        self._template_fail('badtemplate.html')
+
+    def test_assert_template_no_name(self):
+        # route name for index.html template
+        self.client.get("/template/")
+        self._template_fail('')
+
+    def test_assert_template_misspelled(self):
+        # route name for index.html template
+        self.client.get("/template/")
+        self._template_fail('inde.html')
+
+    def test_assert_wrong_bp_template(self):
+        # route name for the blueprint template
+        self.client.get("/bppage/")
+        self._template_fail('badtemplate.html')
 
 
 class TestRenderTemplates(TestCase):

@@ -7,7 +7,8 @@ from flask import (
     render_template,
     url_for,
     flash,
-    request
+    request,
+    Blueprint
 )
 
 
@@ -23,6 +24,13 @@ def create_app():
     @app.route("/template/")
     def index_with_template():
         return render_template("index.html", name="test")
+
+    bp = Blueprint("myblueprint", __name__)
+
+    @bp.route('/bppage/')
+    def bp_template():
+        return render_template('index.html', name='test')
+    app.register_blueprint(bp)
 
     @app.route("/flash/")
     def index_with_flash():
