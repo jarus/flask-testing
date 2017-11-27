@@ -6,7 +6,7 @@ from .test_twill import TestTwill, TestTwillDeprecated
 from .test_utils import TestSetup, TestSetupFailure, TestClientUtils, \
         TestLiveServer, TestTeardownGraceful, TestRenderTemplates, \
         TestNotRenderTemplates, TestRestoreTheRealRender, \
-        TestLiveServerOSPicksPort
+        TestLiveServerOSPicksPort, TestLiveServerReuseApp
 
 
 def suite():
@@ -16,6 +16,7 @@ def suite():
     suite.addTest(unittest.makeSuite(TestClientUtils))
     suite.addTest(unittest.makeSuite(TestLiveServer))
     suite.addTest(unittest.makeSuite(TestLiveServerOSPicksPort))
+    suite.addTest(unittest.makeSuite(TestLiveServerReuseApp))
     suite.addTest(unittest.makeSuite(TestTeardownGraceful))
     suite.addTest(unittest.makeSuite(TestRenderTemplates))
     suite.addTest(unittest.makeSuite(TestNotRenderTemplates))

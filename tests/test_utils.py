@@ -245,6 +245,23 @@ class TestLiveServerOSPicksPort(BaseTestLiveServer):
         return app
 
 
+class TestLiveServerReuseApp(BaseTestLiveServer):
+    create_app_once = True
+    apps_created = 0
+
+    def create_app(self):
+        self.__class__.apps_created += 1
+        app = create_app()
+        return app
+
+    def test_created_single_app(self):
+        self.assertEqual(1, self.apps_created)
+
+    def test_created_single_app_sanity(self):
+        # In case they run out of order
+        self.assertEqual(1, self.apps_created)
+
+
 class TestNotRenderTemplates(TestCase):
 
     render_templates = False

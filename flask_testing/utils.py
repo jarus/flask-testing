@@ -57,7 +57,7 @@ try:
 except ImportError:  # pragma: no cover
     _is_signals = False
 
-__all__ = ["TestCase"]
+__all__ = ('TestCase', 'LiveServerTestCase')
 
 
 class ContextVariableDoesNotExist(Exception):
@@ -412,6 +412,9 @@ class TestCase(unittest.TestCase):
 # Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
 
 class LiveServerTestCase(unittest.TestCase):
+    create_app_once = False
+    _app_instance = None
+
     def create_app(self):
         """
         Create your Flask app here, with any
@@ -426,7 +429,7 @@ class LiveServerTestCase(unittest.TestCase):
         """
 
         # Get the app
-        self.app = self.create_app()
+        self.app = self._get_or_create_app()
 
         self._configured_port = self.app.config.get('LIVESERVER_PORT', 5000)
         self._port_value = multiprocessing.Value('i', self._configured_port)
@@ -442,6 +445,23 @@ class LiveServerTestCase(unittest.TestCase):
         Return the url of the test server
         """
         return 'http://localhost:%s' % self._port_value.value
+
+    def _get_or_create_app(self):
+        """
+        This is a lazy way of doing class setup since we want to be consistent
+        and not have users call super in setUpClass if they do not call it in
+        setUp. Returns the singleton app if the test case has specified using
+        a single app (also could not do this in a class method since create_app
+        is not a classmethod).
+        """
+        cls = self.__class__
+        if not cls.create_app_once:
+            return self.create_app()
+
+        if not cls._app_instance:
+            cls._app_instance = self.create_app()
+
+        return cls._app_instance
 
     def _spawn_live_server(self):
         self._process = None
