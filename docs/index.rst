@@ -121,6 +121,23 @@ a special ``json`` attribute appended to the ``Response`` object::
             response = self.client.get("/ajax/")
             self.assertEquals(response.json, dict(success=True))
 
+
+Single app instance
+-------------------
+
+In some cases, creating the app instance can be expensive. If you want to create one
+app instance per TestCase class, you can use the ``create_app_once`` flag. This works
+on both TestCase and LiveServerTestCase and is not enabled by default::
+
+    from flask_testing import TestCase
+
+    class MyTest(TestCase):
+        create_app_once = True
+
+        def test_something(self):
+            pass
+
+
 Opt to not render the templates
 -------------------------------
 
