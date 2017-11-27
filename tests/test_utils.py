@@ -40,6 +40,22 @@ class TestTeardownGraceful(TestCase):
 
         del self.app
 
+
+class TestSingletonApp(TestCase):
+    create_app_once = True
+    apps_created = 0
+
+    def create_app(self):
+        self.__class__.apps_created += 1
+        return create_app()
+
+    def test_create_app_once(self):
+        self.assertEqual(self.apps_created, 1)
+
+    def test_create_app_once_sanity(self):
+        # In case sorting method changes
+        self.assertEqual(self.apps_created, 1)
+
 class TestClientUtils(TestCase):
 
     def create_app(self):
@@ -245,14 +261,13 @@ class TestLiveServerOSPicksPort(BaseTestLiveServer):
         return app
 
 
-class TestLiveServerReuseApp(BaseTestLiveServer):
+class TestLiveServerSingletonApp(BaseTestLiveServer):
     create_app_once = True
     apps_created = 0
 
     def create_app(self):
         self.__class__.apps_created += 1
-        app = create_app()
-        return app
+        return create_app()
 
     def test_created_single_app(self):
         self.assertEqual(1, self.apps_created)

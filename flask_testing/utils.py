@@ -110,7 +110,29 @@ def _check_for_signals_support():
         )
 
 
-class TestCase(unittest.TestCase):
+class SingletonAppMixin(object):
+    create_app_once = False
+    _app_instance = None
+
+    def _get_or_create_app(self):
+        """
+        This is a lazy way of doing class setup since we want to be consistent
+        and not have users call super in setUpClass if they do not call it in
+        setUp. Returns the singleton app if the test case has specified using
+        a single app (also could not do this in a class method since create_app
+        is not a classmethod).
+        """
+        cls = self.__class__
+        if not cls.create_app_once:
+            return self.create_app()
+
+        if not cls._app_instance:
+            cls._app_instance = self.create_app()
+
+        return cls._app_instance
+
+
+class TestCase(unittest.TestCase, SingletonAppMixin):
     render_templates = True
     run_gc_after_test = False
 
@@ -141,7 +163,7 @@ class TestCase(unittest.TestCase):
             self._post_teardown()
 
     def _pre_setup(self):
-        self.app = self.create_app()
+        self.app = self._get_or_create_app()
 
         self._orig_response_class = self.app.response_class
         self.app.response_class = _make_test_response(self.app.response_class)
@@ -410,10 +432,7 @@ class TestCase(unittest.TestCase):
 
 # A LiveServerTestCase useful with Selenium or headless browsers
 # Inspired by https://docs.djangoproject.com/en/dev/topics/testing/#django.test.LiveServerTestCase
-
-class LiveServerTestCase(unittest.TestCase):
-    create_app_once = False
-    _app_instance = None
+class LiveServerTestCase(unittest.TestCase, SingletonAppMixin):
 
     def create_app(self):
         """
@@ -445,23 +464,6 @@ class LiveServerTestCase(unittest.TestCase):
         Return the url of the test server
         """
         return 'http://localhost:%s' % self._port_value.value
-
-    def _get_or_create_app(self):
-        """
-        This is a lazy way of doing class setup since we want to be consistent
-        and not have users call super in setUpClass if they do not call it in
-        setUp. Returns the singleton app if the test case has specified using
-        a single app (also could not do this in a class method since create_app
-        is not a classmethod).
-        """
-        cls = self.__class__
-        if not cls.create_app_once:
-            return self.create_app()
-
-        if not cls._app_instance:
-            cls._app_instance = self.create_app()
-
-        return cls._app_instance
 
     def _spawn_live_server(self):
         self._process = None
