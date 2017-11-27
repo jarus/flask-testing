@@ -119,8 +119,7 @@ class SingletonAppMixin(object):
         This is a lazy way of doing class setup since we want to be consistent
         and not have users call super in setUpClass if they do not call it in
         setUp. Returns the singleton app if the test case has specified using
-        a single app (also could not do this in a class method since create_app
-        is not a classmethod).
+        a single app.
         """
         cls = self.__class__
         if not cls.create_app_once:
