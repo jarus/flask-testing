@@ -14,4 +14,5 @@ if [[ ! -f setup.py ]]; then
 fi
 
 rm -rf dist
-python setup.py sdist upload
+python setup.py sdist
+twine upload dist/*

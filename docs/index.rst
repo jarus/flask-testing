@@ -272,6 +272,12 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.7.0 (18.12.2017)
+------------------
+
+  * Changes the way request contexts are managed. Let's Flask be responsible
+    for the context, which fixes some subtle bugs.
+
 0.6.2 (26.02.2017)
 ------------------
 
