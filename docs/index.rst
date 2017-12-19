@@ -272,6 +272,13 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.7.1 (19.12.2017)
+------------------
+
+  * Reverts the request context changes from ``0.7.0``. This change broke
+    backwards compatibility so it will be moved to a major version release
+    instead.
+
 0.7.0 (18.12.2017)
 ------------------
 
