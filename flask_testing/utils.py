@@ -148,6 +148,9 @@ class TestCase(unittest.TestCase):
 
         self.client = self.app.test_client()
 
+        self._ctx = self.app.test_request_context()
+        self._ctx.push()
+
         if not self.render_templates:
             # Monkey patch the original template render with a empty render
             self._original_template_render = templating._render
@@ -171,6 +174,10 @@ class TestCase(unittest.TestCase):
         self.templates.append((template, context))
 
     def _post_teardown(self):
+        if getattr(self, '_ctx', None) is not None:
+            self._ctx.pop()
+            del self._ctx
+
         if getattr(self, 'app', None) is not None:
             if getattr(self, '_orig_response_class', None) is not None:
                 self.app.response_class = self._orig_response_class
@@ -431,10 +438,15 @@ class LiveServerTestCase(unittest.TestCase):
         self._configured_port = self.app.config.get('LIVESERVER_PORT', 5000)
         self._port_value = multiprocessing.Value('i', self._configured_port)
 
+        # We need to create a context in order for extensions to catch up
+        self._ctx = self.app.test_request_context()
+        self._ctx.push()
+
         try:
             self._spawn_live_server()
             super(LiveServerTestCase, self).__call__(result)
         finally:
+            self._post_teardown()
             self._terminate_live_server()
 
     def get_server_url(self):
@@ -529,6 +541,11 @@ class LiveServerTestCase(unittest.TestCase):
                 )
 
         return host, port
+
+    def _post_teardown(self):
+        if getattr(self, '_ctx', None) is not None:
+            self._ctx.pop()
+            del self._ctx
 
     def _terminate_live_server(self):
         if self._process:

@@ -7,8 +7,7 @@ from flask import (
     render_template,
     url_for,
     flash,
-    request,
-    g
+    request
 )
 
 
@@ -20,14 +19,6 @@ def create_app():
     @app.route("/")
     def index():
         return Response("OK")
-
-    @app.route("/context")
-    def context():
-        if hasattr(g, "thing"):
-            return "ALREADY SET"
-
-        g.thing = True
-        return "SET"
 
     @app.route("/template/")
     def index_with_template():
