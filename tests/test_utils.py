@@ -210,14 +210,14 @@ class TestClientUtils(TestCase):
 
 class BaseTestLiveServer(LiveServerTestCase):
 
-    def test_server_process_is_spawned(self):
-        process = self._process
+    def test_server_thread_is_spawned(self):
+        thread = self._thread
 
-        # Check the process is spawned
-        self.assertNotEqual(process, None)
+        # Check the thread is spawned
+        self.assertNotEqual(thread, None)
 
-        # Check the process is alive
-        self.assertTrue(process.is_alive())
+        # Check the thread is alive
+        self.assertTrue(thread.is_alive())
 
     def test_server_listening(self):
         response = urlopen(self.get_server_url())
