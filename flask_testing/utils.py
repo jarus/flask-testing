@@ -169,9 +169,7 @@ class TestCase(unittest.TestCase):
         self.flashed_messages.append((message, category))
 
     def _add_template(self, app, template, context):
-        if len(self.templates) > 0:
-            self.templates = []
-        self.templates.append((template, context))
+        self.templates.insert(0, (template, context))
 
     def _post_teardown(self):
         if getattr(self, '_ctx', None) is not None:
