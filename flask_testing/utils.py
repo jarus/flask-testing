@@ -244,9 +244,9 @@ class TestCase(unittest.TestCase):
             if getattr(template, tmpl_name_attribute) == name:
                 return True
 
-            used_templates.append(template)
+            used_templates.append(template.name)
 
-        raise AssertionError("Template %s not used. Templates were used: %s" % (name, ' '.join(repr(used_templates))))
+        raise AssertionError("Template %s not used. Templates used: %r" % (name, used_templates))
 
     assert_template_used = assertTemplateUsed
 
