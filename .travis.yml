@@ -1,5 +1,6 @@
 language: python
 python:
+  - "3.6"
   - "3.5"
   - "3.4"
   - "3.3"
@@ -31,6 +32,10 @@ matrix:
     - python: "3.5"
       env: FLASK=0.9
     - python: "3.5"
+      env: FLASK=0.8.1
+    - python: "3.6"
+      env: FLASK=0.9
+    - python: "3.6"
       env: FLASK=0.8.1
 install:
   - pip install flask==$FLASK coverage
