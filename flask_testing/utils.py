@@ -35,7 +35,7 @@ except ImportError:
 from werkzeug import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import json_available, templating, template_rendered
+from flask import json, templating, template_rendered
 
 try:
     from flask import message_flashed
@@ -44,9 +44,6 @@ try:
 except ImportError:
     message_flashed = None
     _is_message_flashed = False
-
-if json_available:
-    from flask import json
 
 # we'll use signals for template-related tests if
 # available in this version of Flask

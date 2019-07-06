@@ -26,7 +26,6 @@ if sys.version_info[0] < 3:
     tests_require.append('twill==0.9.1')
 
 if sys.version_info < (2, 6):
-    tests_require.append('simplejson')
     install_requires.append('multiprocessing')
 
 setup(
