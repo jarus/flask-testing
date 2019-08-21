@@ -307,7 +307,7 @@ class TestCase(unittest.TestCase):
             server_name = self.app.config.get('SERVER_NAME') or 'localhost'
             expected_location = urljoin("http://%s" % server_name, location)
 
-        valid_status_codes = (301, 302, 303, 305, 307)
+        valid_status_codes = (301, 302, 303, 305, 307, 308)
         valid_status_code_str = ', '.join(str(code) for code in valid_status_codes)
         not_redirect = "HTTP Status %s expected but got %d" % (valid_status_code_str, response.status_code)
         self.assertTrue(response.status_code in valid_status_codes, message or not_redirect)
