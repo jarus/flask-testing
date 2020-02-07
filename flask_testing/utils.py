@@ -32,7 +32,7 @@ except ImportError:
     # Python 2 urlparse fallback
     from urlparse import urlparse, urljoin
 
-from werkzeug import cached_property
+from werkzeug.utils import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
 from flask import json_available, templating, template_rendered
