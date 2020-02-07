@@ -31,3 +31,4 @@ notifications:
   email:
     - christoph.heer@googlemail.com
     - jonathan.como@gmail.com
+version: ~> 1.0
