@@ -49,8 +49,7 @@ class TestClientUtils(TestCase):
 
     def test_get_json(self):
         response = self.client.get("/ajax/")
-        import json
-        self.assertEqual(response.data, json.dumps(dict(name="test")))
+        self.assertEqual(response.json, dict(name="test"))
 
     def test_status_failure_message(self):
         expected_message = 'my message'
