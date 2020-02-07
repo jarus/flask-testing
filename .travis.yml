@@ -9,21 +9,21 @@ python:
   - "3.7"
   - "3.8"
 env:
-  - FLASK=1.1.1
-  - FLASK=1.0.4
-  - FLASK=0.12.4
-  - FLASK=0.11.1
-  - FLASK=0.10.1
-  - FLASK=0.9
-  - FLASK=0.8.1
+  - FLASK=1.1.1 WERKZEUG=1.0.0
+  - FLASK=1.0.4 WERKZEUG=0.16.1
+  - FLASK=0.12.4 WERKZEUG=0.16.1
+  - FLASK=0.11.1 WERKZEUG=0.16.1
+  - FLASK=0.10.1 WERKZEUG=0.16.1
+  - FLASK=0.9 WERKZEUG=0.16.1
+  - FLASK=0.8.1 WERKZEUG=0.16.1
 matrix:
   exclude:
     - python: "3.5"
-      env: FLASK=0.9
+      env: FLASK=0.9 WERKZEUG=0.16.1
     - python: "3.5"
-      env: FLASK=0.8.1
+      env: FLASK=0.8.1 WERKZEUG=0.16.1
 install:
-  - pip install flask==$FLASK coverage
+  - pip install werkzeug==$WERKZEUG flask==$FLASK coverage
   - pip install -e .
 script:
   - python setup.py test
