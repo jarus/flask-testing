@@ -48,7 +48,7 @@ def create_app():
 
     @app.route("/ajax/")
     def ajax():
-        return jsonify((**dict(name="test"))
+        return jsonify(**dict(name="test"))
 
     @app.route("/forbidden/")
     def forbidden():
