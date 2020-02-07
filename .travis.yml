@@ -22,6 +22,18 @@ matrix:
       env: FLASK=0.9 WERKZEUG=0.16.1
     - python: "3.5"
       env: FLASK=0.8.1 WERKZEUG=0.16.1
+    - python: "3.6"
+      env: FLASK=0.9 WERKZEUG=0.16.1
+    - python: "3.6"
+      env: FLASK=0.8.1 WERKZEUG=0.16.1
+    - python: "3.7"
+      env: FLASK=0.9 WERKZEUG=0.16.1
+    - python: "3.7"
+      env: FLASK=0.8.1 WERKZEUG=0.16.1
+    - python: "3.8"
+      env: FLASK=0.9 WERKZEUG=0.16.1
+    - python: "3.8"
+      env: FLASK=0.8.1 WERKZEUG=0.16.1
 install:
   - pip install werkzeug==$WERKZEUG flask==$FLASK coverage
   - pip install -e .
