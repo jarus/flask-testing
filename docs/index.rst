@@ -272,6 +272,12 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.8.0 (05.03.2020)
+------------------
+
+  * Drops support for python 2.6, 3.3, and 3.4 due to end-of-life.
+  * Fixes werkzeug 1.0 compatibility issue with import paths
+
 0.7.1 (19.12.2017)
 ------------------
 
