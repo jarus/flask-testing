@@ -35,7 +35,7 @@ except ImportError:
 from werkzeug.utils import cached_property
 
 # Use Flask's preferred JSON module so that our runtime behavior matches.
-from flask import templating, template_rendered
+from flask import json, templating, template_rendered
 
 try:
     from flask import message_flashed
@@ -44,13 +44,6 @@ try:
 except ImportError:
     message_flashed = None
     _is_message_flashed = False
-
-json_available = True
-
-try:
-    from flask import json
-except ImportError:
-    json_available = False
 
 
 # we'll use signals for template-related tests if
@@ -76,8 +69,6 @@ class JsonResponseMixin(object):
 
     @cached_property
     def json(self):
-        if not json_available:  # pragma: no cover
-            raise NotImplementedError
         return json.loads(self.data)
 
 
