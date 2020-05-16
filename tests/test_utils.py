@@ -69,13 +69,13 @@ class TestClientUtils(TestCase):
         self.assert200(self.client.get("/"))
 
     def test_assert_201(self):
-        self.assert201(self.client.post("/created"))
+        self.assert201(self.client.get("/created"))
 
     def test_assert_202(self):
-        self.assert202(self.client.post("/accepted"))
+        self.assert202(self.client.get("/accepted"))
 
     def test_assert_204(self):
-        self.assert204(self.client.post("/no-content"))
+        self.assert204(self.client.get("/no-content"))
 
     def test_assert_404(self):
         self.assert404(self.client.get("/oops/"))

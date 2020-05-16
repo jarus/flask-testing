@@ -62,15 +62,15 @@ def create_app():
     def internal_server_error():
         abort(500)
 
-    @app.route("/created", methods=["POST"])
+    @app.route("/created")
     def created():
         return Response("Created"), 201
 
-    @app.route("/accepted", methods=["POST"])
+    @app.route("/accepted")
     def accepted():
         return Response("Accepted"), 202
 
-    @app.route("/no-content", methods=["POST"])
+    @app.route("/no-content")
     def no_content():
         return Response("No-Content"), 204
 
