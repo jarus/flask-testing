@@ -72,6 +72,6 @@ def create_app():
 
     @app.route("/no-content", methods=["POST"])
     def no_content():
-        return Response(), 204
+        return Response("No-Content"), 204
 
     return app
