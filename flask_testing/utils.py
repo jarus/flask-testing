@@ -342,6 +342,42 @@ class TestCase(unittest.TestCase):
 
     assert_200 = assert200
 
+    def assert201(self, response, message=None):
+        """
+        Checks if response status code is 201
+
+        :param response: Flask response
+        :param message: Message to display on test failure
+        """
+
+        self.assertStatus(response, 201, message)
+
+    assert_201 = assert201
+
+    def assert202(self, response, message=None):
+        """
+        Checks if response status code is 202
+
+        :param response: Flask response
+        :param message: Message to display on test failure
+        """
+
+        self.assertStatus(response, 202, message)
+
+    assert_202 = assert202
+
+    def assert204(self, response, message=None):
+        """
+        Checks if response status code is 204
+
+        :param response: Flask response
+        :param message: Message to display on test failure
+        """
+
+        self.assertStatus(response, 204, message)
+
+    assert_204 = assert204
+
     def assert400(self, response, message=None):
         """
         Checks if response status code is 400
