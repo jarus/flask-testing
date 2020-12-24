@@ -272,6 +272,11 @@ The `nose`_ collector and test runner works also fine with Flask-Testing.
 Changes
 =======
 
+0.8.1 (12.24.2020)
+------------------
+
+  * Fixes compatibility with ``json_available`` from previous versions of Flask
+
 0.8.0 (05.03.2020)
 ------------------
 
