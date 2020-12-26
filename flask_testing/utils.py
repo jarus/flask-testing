@@ -440,6 +440,7 @@ class LiveServerTestCase(unittest.TestCase):
         # Get the app
         self.app = self.create_app()
 
+        self._configured_host = self.app.config.get('LIVESERVER_HOST', 'localhost')
         self._configured_port = self.app.config.get('LIVESERVER_PORT', 5000)
         self._port_value = multiprocessing.Value('i', self._configured_port)
 
@@ -458,7 +459,7 @@ class LiveServerTestCase(unittest.TestCase):
         """
         Return the url of the test server
         """
-        return 'http://localhost:%s' % self._port_value.value
+        return 'http://{}:{}'.format(self._configured_host, self._port_value.value)
 
     def _spawn_live_server(self):
         self._process = None
@@ -482,7 +483,7 @@ class LiveServerTestCase(unittest.TestCase):
                 return ret
 
             socketserver.TCPServer.server_bind = socket_bind_wrapper
-            app.run(port=port, use_reloader=False)
+            app.run(port=port, use_reloader=False, host=self._configured_host)
 
         self._process = multiprocessing.Process(
             target=worker, args=(self.app, self._configured_port)
