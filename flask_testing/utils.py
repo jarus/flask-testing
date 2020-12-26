@@ -326,7 +326,7 @@ class TestCase(unittest.TestCase):
 
         message = message or 'HTTP Status %s expected but got %s' \
                              % (status_code, response.status_code)
-        self.assertEqual(response.status_code, status_code, message)
+        self.assertEqual(status_code, response.status_code, message)
 
     assert_status = assertStatus
 
