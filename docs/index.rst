@@ -121,6 +121,26 @@ a special ``json`` attribute appended to the ``Response`` object::
             response = self.client.get("/ajax/")
             self.assertEquals(response.json, dict(success=True))
 
+Testing text responses
+----------------------
+
+Without Flask-Testing, if you are testing a view that returns text responses (like HTML),
+you can test the output using the ``data`` attribute or the ``get_data()`` method on the
+``Response`` object. These returns byte strings, not a unicode string. To get the
+textual representation, you need to use ``get_data(as_text=True)``.
+
+With Flask-Testing, there is now a convenience attribute, ``text``, on the
+``Response.object``, providing the same functionality as ``get_data(as_text=True)``::
+
+    @app.route("/html/")
+    def some_html():
+        return "<html><body><h1>Hello</h1></body></html>"
+
+    class TestViews(TestCase):
+        def test_some_html(self):
+            response = self.client.get("/html/")
+            self.assertIn(response.text, "<h1>Hello</h1>")
+
 Opt to not render the templates
 -------------------------------
 

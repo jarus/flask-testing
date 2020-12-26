@@ -81,8 +81,18 @@ class JsonResponseMixin(object):
         return json.loads(self.data)
 
 
+class TextResponseMixin(object):
+    """
+    Mixin with testing helper for text responses.
+    """
+
+    @cached_property
+    def text(self):
+        return self.get_data(as_text=True)
+
+
 def _make_test_response(response_class):
-    class TestResponse(response_class, JsonResponseMixin):
+    class TestResponse(response_class, JsonResponseMixin, TextResponseMixin):
         pass
 
     return TestResponse
