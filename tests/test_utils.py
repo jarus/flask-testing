@@ -42,6 +42,22 @@ class TestTeardownGraceful(TestCase):
         del self.app
         del self._ctx
 
+
+class TestSingletonApp(TestCase):
+    create_app_once = True
+    apps_created = 0
+
+    def create_app(self):
+        self.__class__.apps_created += 1
+        return create_app()
+
+    def test_create_app_once(self):
+        self.assertEqual(self.apps_created, 1)
+
+    def test_create_app_once_sanity(self):
+        # In case sorting method changes
+        self.assertEqual(self.apps_created, 1)
+
 class TestClientUtils(TestCase):
 
     def create_app(self):
@@ -239,6 +255,22 @@ class TestLiveServerOSPicksPort(BaseTestLiveServer):
         app = create_app()
         app.config['LIVESERVER_PORT'] = 0
         return app
+
+
+class TestLiveServerSingletonApp(BaseTestLiveServer):
+    create_app_once = True
+    apps_created = 0
+
+    def create_app(self):
+        self.__class__.apps_created += 1
+        return create_app()
+
+    def test_created_single_app(self):
+        self.assertEqual(1, self.apps_created)
+
+    def test_created_single_app_sanity(self):
+        # In case they run out of order
+        self.assertEqual(1, self.apps_created)
 
 
 class TestNotRenderTemplates(TestCase):
