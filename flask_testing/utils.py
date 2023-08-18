@@ -88,7 +88,7 @@ def _make_test_response(response_class):
     return TestResponse
 
 
-def _empty_render(template, context, app):
+def _empty_render(app, template, context):
     """
     Used to monkey patch the render_template flask method when
     the render_templates property is set to False in the TestCase
