@@ -119,7 +119,7 @@ a special ``json`` attribute appended to the ``Response`` object::
     class TestViews(TestCase):
         def test_some_json(self):
             response = self.client.get("/ajax/")
-            self.assertEquals(response.json, dict(success=True))
+            self.assertEqual(response.json, dict(success=True))
 
 Opt to not render the templates
 -------------------------------
